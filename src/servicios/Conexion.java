@@ -5,8 +5,23 @@
  */
 package servicios;
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 public class Conexion {
-   private static Connection cnx = null;
+   static Connection cnx = null;
+   public static Connection getConnection()
+    {
+        if (cnx != null) return cnx;
+       try {
+           // get db, user, pass from settings file
+           return obtener();
+       } catch (SQLException ex) {
+           Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+       } catch (ClassNotFoundException ex) {
+           Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+       }
+       return cnx;
+    }
    public static Connection obtener() throws SQLException, ClassNotFoundException {
       if (cnx == null) {
          try {

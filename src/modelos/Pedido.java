@@ -15,7 +15,8 @@ public class Pedido {
     private final String nombreEmpleado;
     private final Integer idProducto;
     private final String fecha;
-    
+    private final Integer idUsuarioCreacion;
+    private final String fechaCreacion;
     
     public Pedido(){
         this.idPedido = null;
@@ -23,14 +24,18 @@ public class Pedido {
         this.nombreEmpleado=null;
         this.idProducto = null;
         this.fecha = null;
+        this.idUsuarioCreacion = null;
+        this.fechaCreacion = null;
     }
     
-    public Pedido(Integer idPedido,Integer idEmpleado,String nombreEmpleado,Integer idProducto, String fecha){
+    public Pedido(Integer idPedido,Integer idEmpleado,String nombreEmpleado,Integer idProducto, String fecha, Integer idUsuarioCreacion, String fechaCreacion){
         this.idPedido = idPedido;
         this.idEmpleado = idEmpleado;
         this.nombreEmpleado = nombreEmpleado;
         this.idProducto = idProducto;
         this.fecha = fecha;
+        this.idUsuarioCreacion = idUsuarioCreacion;
+        this.fechaCreacion = fechaCreacion;
     }
     
     public Integer getIdPedido(){
@@ -51,6 +56,14 @@ public class Pedido {
     
     public String getFecha(){
         return fecha;
+    }
+    
+    public String getFechaCreacion(){
+        return fechaCreacion;
+    }
+    
+    public Integer getIdUsuarioCreacion(){
+        return idUsuarioCreacion;
     }
     
 }

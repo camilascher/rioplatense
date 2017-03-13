@@ -33,11 +33,26 @@ public class Productos_servicio {
    public Producto recuperarPorId(Connection conexion, int id_prod) throws SQLException {
       Producto prod = null;
       try{
-         PreparedStatement consulta = conexion.prepareStatement("SELECT idproducto, descripcion FROM " + this.tabla + " WHERE idproducto = ?" );
+         PreparedStatement consulta = conexion.prepareStatement("SELECT idproducto, descripcion, precio FROM " + this.tabla + " WHERE idproducto = ?" );
          consulta.setInt(1, id_prod);
          ResultSet resultado = consulta.executeQuery();
          while(resultado.next()){
-            prod = new Producto(id_prod, resultado.getString("descripcion"));
+            prod = new Producto(id_prod, resultado.getString("descripcion"), resultado.getInt("precio"));
+         }
+      }catch(SQLException ex){
+         throw new SQLException(ex);
+      }
+      return prod;
+   }
+   
+   public Producto recuperarPorDescripcion(Connection conexion, String desc) throws SQLException {
+      Producto prod = null;
+      try{
+         PreparedStatement consulta = conexion.prepareStatement("SELECT idproducto, descripcion, precio FROM " + this.tabla + " WHERE descripcion = ?" );
+         consulta.setString(1, desc);
+         ResultSet resultado = consulta.executeQuery();
+         while(resultado.next()){
+            prod = new Producto(resultado.getInt("idproducto"), resultado.getString("descripcion"), resultado.getInt("precio"));
          }
       }catch(SQLException ex){
          throw new SQLException(ex);
@@ -56,10 +71,10 @@ public class Productos_servicio {
    public List<Producto> recuperarTodas(Connection conexion) throws SQLException{
       List<Producto> prods = new ArrayList<>();
       try{
-         PreparedStatement consulta = conexion.prepareStatement("SELECT idproducto, descripcion FROM " + this.tabla + " ORDER BY idproducto");
+         PreparedStatement consulta = conexion.prepareStatement("SELECT idproducto, descripcion, precio FROM " + this.tabla + " ORDER BY idproducto");
          ResultSet resultado = consulta.executeQuery();
          while(resultado.next()){
-            prods.add(new Producto(resultado.getInt("idproducto"), resultado.getString("descripcion")));
+            prods.add(new Producto(resultado.getInt("idproducto"), resultado.getString("descripcion"), resultado.getInt("precio")));
          }
       }catch(SQLException ex){
          throw new SQLException(ex);

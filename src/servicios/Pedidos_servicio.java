@@ -35,7 +35,7 @@ public class Pedidos_servicio {
             PreparedStatement consulta = conexion.prepareStatement("SELECT distinct ped.idpedido,ped.idempleado,emp.nombre,ped.fecha from ABMPrueba."+this.tabla+" ped, ABMPrueba.empleado emp where emp.idempleado = ped.idempleado "+where+" ORDER BY fecha desc");
             ResultSet resultado = consulta.executeQuery();
             while(resultado.next()){
-                ped.add(new Pedido(resultado.getInt("idpedido"),resultado.getInt("idempleado"),resultado.getString("nombre"),null,resultado.getString("fecha")));
+                ped.add(new Pedido(resultado.getInt("idpedido"),resultado.getInt("idempleado"),resultado.getString("nombre"),null,resultado.getString("fecha"),null,null));
                 
             }
         }catch(SQLException ex){
