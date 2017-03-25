@@ -31,6 +31,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.UIManager;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -309,9 +311,6 @@ public class Pedidos extends javax.swing.JFrame {
 
         jTableEditPed.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
                 {null, null, null, null}
             },
             new String [] {
@@ -320,6 +319,22 @@ public class Pedidos extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTableEditPed);
         columnaProducto(jTableEditPed, jTableEditPed.getColumnModel().getColumn(0));
+        jTableEditPed.getModel().addTableModelListener(new TableModelListener(){
+            public void tableChanged(TableModelEvent e){
+                if(e.getType()== TableModelEvent.UPDATE)
+                {
+                    int column = e.getColumn();
+                    if (column == 2)
+                    {
+                        int precio = (Integer)jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),1);
+                        int cant = (Integer) Integer.parseInt((String)jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),2));
+                        int tot = precio*cant;
+                        jTableEditPed.setValueAt(tot,jTableEditPed.getSelectedRow(),3);
+                    }
+
+                }
+            }
+        });
 
         javax.swing.GroupLayout jPanelModifPedLayout = new javax.swing.GroupLayout(jPanelModifPed);
         jPanelModifPed.setLayout(jPanelModifPedLayout);
@@ -468,7 +483,7 @@ public class Pedidos extends javax.swing.JFrame {
                  jComboEmpleado1.addItem(empleados.get(i).getNombreEmpleado());
                  
              }
-             jComboEmpleado1.insertItemAt("", 0);
+             jComboEmpleado1.insertItemAt("", 0);             
              
         } catch (SQLException ex) {
             Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
@@ -664,10 +679,8 @@ public void columnaProducto(JTable table,
                     } catch (SQLException ex) {
                         Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    table.
-                    
-                    
-            
+                   jTableEditPed.setValueAt(prodSel.getPrecio(),jTableEditPed.getSelectedRow(),1);
+                  
                 }
             }
         });
