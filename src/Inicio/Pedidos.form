@@ -308,12 +308,6 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          <Component id="jButtonCancelarPed" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                          <Component id="jButtonGuardarPed" min="-2" max="-2" attributes="0"/>
-                      </Group>
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
@@ -329,12 +323,27 @@
                           </Group>
                           <EmptySpace min="0" pref="215" max="32767" attributes="0"/>
                       </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <Component id="jButtonCancelarPed" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                                  <Component id="jButtonGuardarPed" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                      </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" min="-2" pref="453" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Component id="jLabelTotal" min="-2" pref="66" max="-2" attributes="0"/>
+                      <Component id="jButtonAddItem" min="-2" max="-2" attributes="0"/>
+                      <Component id="jScrollPane1" min="-2" pref="453" max="-2" attributes="0"/>
+                  </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -351,10 +360,16 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jComboEmpleado1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButtonAddItem" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
-                  <Component id="jScrollPane1" min="-2" pref="326" max="-2" attributes="0"/>
+                  <Component id="jScrollPane1" min="-2" pref="262" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabelTotal" alignment="3" min="-2" pref="15" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jButtonGuardarPed" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jButtonCancelarPed" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -422,11 +437,26 @@
                 </Property>
               </Properties>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="columnaProducto(jTableEditPed, jTableEditPed.getColumnModel().getColumn(0));&#xa;jTableEditPed.getModel().addTableModelListener(new TableModelListener(){&#xa;    public void tableChanged(TableModelEvent e){&#xa;    if(e.getType()== TableModelEvent.UPDATE)&#xa;    {&#xa;    int column = e.getColumn();&#xa;    if (column == 2)&#xa;    {&#xa;    int precio = (Integer)jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),1);&#xa;    int cant = (Integer) Integer.parseInt((String)jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),2));&#xa;    int tot = precio*cant;&#xa;    jTableEditPed.setValueAt(tot,jTableEditPed.getSelectedRow(),3);&#xa;    }&#xa;    &#xa;}&#xa;    }&#xa;});"/>
+                <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="columnaProducto(jTableEditPed, jTableEditPed.getColumnModel().getColumn(0));&#xa;jTableEditPed.getModel().addTableModelListener(new TableModelListener(){&#xa;    public void tableChanged(TableModelEvent e){&#xa;    if(e.getType()== TableModelEvent.UPDATE)&#xa;    {&#xa;    int column = e.getColumn();&#xa;    if (column == 2)&#xa;    {&#xa;    int precio = (Integer)jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),1);&#xa;    int cant = (Integer) Integer.parseInt((String)jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),2));&#xa;    int tot = precio*cant;&#xa;    jTableEditPed.setValueAt(tot,jTableEditPed.getSelectedRow(),3);&#xa;    &#xa;    int total = 0;&#xa;    int parcial = 0;&#xa;    for(int i=0;i&lt;jTableEditPed.getRowCount();i++){&#xa;    parcial = (Integer) jTableEditPed.getValueAt(i,3);&#xa;    total=total+parcial;&#xa;    }&#xa;    jLabelTotal.setText(Integer.toString(total));&#xa;}&#xa;    &#xa;}&#xa;    }&#xa;});"/>
               </AuxValues>
             </Component>
           </SubComponents>
         </Container>
+        <Component class="javax.swing.JButton" name="jButtonAddItem">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Agregar item"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAddItemActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel6">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Total"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabelTotal">
+        </Component>
       </SubComponents>
     </Container>
   </SubComponents>

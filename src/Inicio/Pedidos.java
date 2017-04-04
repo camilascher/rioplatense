@@ -113,6 +113,9 @@ public class Pedidos extends javax.swing.JFrame {
         jComboEmpleado1 = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableEditPed = new javax.swing.JTable();
+        jButtonAddItem = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jLabelTotal = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -330,11 +333,28 @@ public class Pedidos extends javax.swing.JFrame {
                         int cant = (Integer) Integer.parseInt((String)jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),2));
                         int tot = precio*cant;
                         jTableEditPed.setValueAt(tot,jTableEditPed.getSelectedRow(),3);
+
+                        int total = 0;
+                        int parcial = 0;
+                        for(int i=0;i<jTableEditPed.getRowCount();i++){
+                            parcial = (Integer) jTableEditPed.getValueAt(i,3);
+                            total=total+parcial;
+                        }
+                        jLabelTotal.setText(Integer.toString(total));
                     }
 
                 }
             }
         });
+
+        jButtonAddItem.setText("Agregar item");
+        jButtonAddItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAddItemActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setText("Total");
 
         javax.swing.GroupLayout jPanelModifPedLayout = new javax.swing.GroupLayout(jPanelModifPed);
         jPanelModifPed.setLayout(jPanelModifPedLayout);
@@ -343,11 +363,6 @@ public class Pedidos extends javax.swing.JFrame {
             .addGroup(jPanelModifPedLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelModifPedLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButtonCancelarPed)
-                        .addGap(30, 30, 30)
-                        .addComponent(jButtonGuardarPed))
                     .addGroup(jPanelModifPedLayout.createSequentialGroup()
                         .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanelModifPedLayout.createSequentialGroup()
@@ -358,11 +373,22 @@ public class Pedidos extends javax.swing.JFrame {
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jComboEmpleado1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 215, Short.MAX_VALUE)))
+                        .addGap(0, 215, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelModifPedLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addGroup(jPanelModifPedLayout.createSequentialGroup()
+                                .addComponent(jButtonCancelarPed)
+                                .addGap(30, 30, 30)
+                                .addComponent(jButtonGuardarPed)))))
                 .addContainerGap())
             .addGroup(jPanelModifPedLayout.createSequentialGroup()
                 .addGap(55, 55, 55)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabelTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonAddItem)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanelModifPedLayout.setVerticalGroup(
@@ -375,10 +401,15 @@ public class Pedidos extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jComboEmpleado1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboEmpleado1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonAddItem))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabelTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(49, 49, 49)
                 .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonGuardarPed)
                     .addComponent(jButtonCancelarPed))
@@ -458,6 +489,15 @@ public class Pedidos extends javax.swing.JFrame {
 
     private void jButtonCancelarPedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarPedActionPerformed
         jPanelModifPed.setVisible(false);
+        jComboEmpleado1.setSelectedIndex(0); //ok pero limpiar el combo 
+        jComboEmpleado1.removeAllItems();
+        DefaultTableModel model = (DefaultTableModel) jTableEditPed.getModel();
+        while (model.getRowCount()>0){
+            for(int i=0;i<model.getRowCount();i++){
+                model.removeRow(i);
+            }
+        }
+        model.addRow(new Object[]{"","","",""});
         jPanelBusqPed.setVisible(true);
         
     }//GEN-LAST:event_jButtonCancelarPedActionPerformed
@@ -494,6 +534,11 @@ public class Pedidos extends javax.swing.JFrame {
     private void jComboEmpleado1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboEmpleado1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboEmpleado1ActionPerformed
+
+    private void jButtonAddItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddItemActionPerformed
+        DefaultTableModel model = (DefaultTableModel) jTableEditPed.getModel();
+        model.addRow(new Object[]{"","","",""});
+    }//GEN-LAST:event_jButtonAddItemActionPerformed
 
     
     
@@ -688,6 +733,7 @@ public void columnaProducto(JTable table,
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonAddItem;
     private javax.swing.JButton jButtonBuscar;
     private javax.swing.JButton jButtonCancelarPed;
     private javax.swing.JButton jButtonGuardarPed;
@@ -699,7 +745,9 @@ public void columnaProducto(JTable table,
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabelNped;
+    private javax.swing.JLabel jLabelTotal;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
