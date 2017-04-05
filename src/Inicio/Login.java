@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import modelos.Usuario;
 import servicios.Conexion;
 import servicios.Usuarios_servicio;
+import util.RequeridoListener;
 
 /**
  *
@@ -25,6 +26,8 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
+        new RequeridoListener(nombre);
+        new RequeridoListener(clave);
     }
 
     /**
@@ -46,15 +49,19 @@ public class Login extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Login");
         setAlwaysOnTop(true);
+        setLocationByPlatform(true);
+        setResizable(false);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createCompoundBorder());
 
         jLabel1.setText("Usuario");
         jLabel1.setName(""); // NOI18N
 
+        nombre.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
         jLabel2.setText("Password");
 
-        clave.setCaretPosition(0);
+        clave.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         clave.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
 
         jButton1.setText("Iniciar Sesion");
@@ -86,31 +93,33 @@ public class Login extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(clave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                    .addComponent(clave, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(18, 18, 18)
                 .addComponent(jButton1))
         );
+
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {clave, nombre});
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(98, Short.MAX_VALUE)
+                .addContainerGap(29, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(72, 72, 72))
+                .addGap(25, 25, 25))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(27, 27, 27)
+                .addGap(20, 20, 20)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(46, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         pack();
@@ -120,32 +129,34 @@ public class Login extends javax.swing.JFrame {
         Usuarios_servicio servicio = new Usuarios_servicio();
         Usuario usuario = null;
         Connection con = null;
-        try {
-            con = Conexion.obtener();
-        } catch (SQLException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            usuario = servicio.recuperarUsuario(con, nombre.getText());
-        } catch (SQLException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        if(usuario == null){
-            JOptionPane.showMessageDialog(this,"El usuario es inválido","Error",JOptionPane.WARNING_MESSAGE);
-            nombre.selectAll();
-            nombre.requestFocus();
-        } else if(usuario.getClaveUsuario().equals(clave.getText())){
-            JOptionPane.showMessageDialog(this,"Bienvenido "+nombre.getText());
-            Pedidos page=new Pedidos();
-            page.setVisible(true);
-            setVisible(false); //you can't see me!
-            dispose(); //Destroy the JFrame object
-        } else {
-            JOptionPane.showMessageDialog(this,"El clave no es correcta","Error",JOptionPane.WARNING_MESSAGE);
-            clave.selectAll();
-            clave.requestFocus();
+        if(!nombre.getText().equals("") && !clave.getText().equals("")) {
+            try {
+                con = Conexion.obtener();
+            } catch (SQLException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                usuario = servicio.recuperarUsuario(con, nombre.getText());
+            } catch (SQLException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if(usuario == null){
+                JOptionPane.showMessageDialog(this,"El usuario es inválido","Error",JOptionPane.WARNING_MESSAGE);
+                nombre.selectAll();
+                nombre.requestFocus();
+            } else if(usuario.getClaveUsuario().equals(clave.getText())){
+                JOptionPane.showMessageDialog(this,"Bienvenido "+nombre.getText());
+                Pedidos page=new Pedidos();
+                page.setVisible(true);
+                setVisible(false); //you can't see me!
+                dispose(); //Destroy the JFrame object
+            } else {
+                JOptionPane.showMessageDialog(this,"El clave no es correcta","Error",JOptionPane.WARNING_MESSAGE);
+                clave.selectAll();
+                clave.requestFocus();
+            }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
