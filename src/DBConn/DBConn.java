@@ -18,22 +18,26 @@ public class DBConn{
         Statement stmt = null; 
         ResultSet rs = null;
        
-       // String query ="select count(*) from ABMPrueba.producto"; 
-        //try { 
-//getting database connection to MySQL server 
-dbCon = DriverManager.getConnection(dbURL, username, password); 
-//getting PreparedStatment to execute query 
-//stmt = dbCon.prepareStatement(query); 
-//Resultset returned by query 
+        try {
+            // String query ="select count(*) from ABMPrueba.producto";
+            //try {
+//getting database connection to MySQL server
+dbCon = DriverManager.getConnection(dbURL, username, password);
+//getting PreparedStatment to execute query
+//stmt = dbCon.prepareStatement(query);
+//Resultset returned by query
 //rs = stmt.executeQuery(query); while(rs.next())
-//{ int count = rs.getInt(1); 
+//{ int count = rs.getInt(1);
 //System.out.println("count of stock : " + count); 
+//}
+//       }
+//       catch (SQLException ex) {
+//           System.out.println("ERROR");
+// Logger.getLogger(CollectionTest.class.getName()).log(Level.SEVERE, null, ex);
 //} 
- //       } 
- //       catch (SQLException ex) { 
- //           System.out.println("ERROR");
-           // Logger.getLogger(CollectionTest.class.getName()).log(Level.SEVERE, null, ex);
-//} 
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConn.class.getName()).log(Level.SEVERE, null, ex);
+        }
 } 
 
 } 
