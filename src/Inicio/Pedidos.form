@@ -65,7 +65,7 @@
     <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
-    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,1,-37,0,0,2,72"/>
+    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,1,-5,0,0,2,102"/>
   </AuxValues>
 
   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignCardLayout"/>
@@ -85,7 +85,7 @@
                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
               </Group>
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="46" max="32767" attributes="0"/>
                   <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -295,6 +295,9 @@
             <TitledBorder title="Modificar Pedido"/>
           </Border>
         </Property>
+        <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[44, 25]"/>
+        </Property>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
@@ -305,46 +308,47 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Component id="jButtonCancelarPed" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                          <Component id="jButtonGuardarPed" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+              </Group>
               <Group type="102" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="jLabelNped" min="-2" pref="63" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
+                          <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="jLabelNped" min="-2" pref="63" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Component id="jScrollPane1" min="-2" pref="453" max="-2" attributes="0"/>
+                              <Group type="102" alignment="1" attributes="0">
                                   <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="jComboEmpleado1" min="-2" pref="254" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
-                          <EmptySpace min="0" pref="215" max="32767" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-                              <Group type="102" attributes="0">
-                                  <Component id="jButtonCancelarPed" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                                  <Component id="jButtonGuardarPed" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
+                                  <Component id="jButtonAddItem" min="-2" pref="44" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                                  <Component id="jButtonDeleteItem" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="442" max="-2" attributes="0"/>
+                          <Component id="jLabelTotal" min="-2" pref="66" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-              </Group>
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="1" attributes="0">
-                      <Component id="jLabelTotal" min="-2" pref="66" max="-2" attributes="0"/>
-                      <Component id="jButtonAddItem" min="-2" max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" min="-2" pref="453" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="96" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -360,11 +364,12 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jComboEmpleado1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButtonDeleteItem" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jButtonAddItem" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="jScrollPane1" min="-2" pref="262" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace pref="31" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabelTotal" alignment="3" min="-2" pref="15" max="-2" attributes="0"/>
@@ -374,7 +379,7 @@
                       <Component id="jButtonGuardarPed" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jButtonCancelarPed" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -437,14 +442,14 @@
                 </Property>
               </Properties>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="columnaProducto(jTableEditPed, jTableEditPed.getColumnModel().getColumn(0));&#xa;jTableEditPed.getModel().addTableModelListener(new TableModelListener(){&#xa;    public void tableChanged(TableModelEvent e){&#xa;    if(e.getType()== TableModelEvent.UPDATE)&#xa;    {&#xa;    int column = e.getColumn();&#xa;    if (column == 2)&#xa;    {&#xa;    int precio = (Integer)jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),1);&#xa;    int cant = (Integer) Integer.parseInt((String)jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),2));&#xa;    int tot = precio*cant;&#xa;    jTableEditPed.setValueAt(tot,jTableEditPed.getSelectedRow(),3);&#xa;    &#xa;    int total = 0;&#xa;    int parcial = 0;&#xa;    for(int i=0;i&lt;jTableEditPed.getRowCount();i++){&#xa;    parcial = (Integer) jTableEditPed.getValueAt(i,3);&#xa;    total=total+parcial;&#xa;    }&#xa;    jLabelTotal.setText(Integer.toString(total));&#xa;}&#xa;    &#xa;}&#xa;    }&#xa;});"/>
+                <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="columnaProducto(jTableEditPed, jTableEditPed.getColumnModel().getColumn(0));&#xa;jTableEditPed.getModel().addTableModelListener(new TableModelListener(){&#xa;    public void tableChanged(TableModelEvent e){&#xa;    if(e.getType()== TableModelEvent.UPDATE)&#xa;    {&#xa;    int column = e.getColumn();&#xa;    if (column == 2)&#xa;    {&#xa;    int precio = (Integer)jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),1);&#xa;    int cant = (Integer) Integer.parseInt((String)jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),2));&#xa;    int tot = precio*cant;&#xa;    jTableEditPed.setValueAt(tot,jTableEditPed.getSelectedRow(),3);&#xa;    &#xa;    recalculaTotal();&#xa;    /*int total = 0;&#xa;    int parcial = 0;&#xa;    for(int i=0;i&lt;jTableEditPed.getRowCount();i++){&#xa;    parcial = (Integer) jTableEditPed.getValueAt(i,3);&#xa;    total=total+parcial;&#xa;    }&#xa;    jLabelTotal.setText(Integer.toString(total));*/&#xa;}&#xa;    &#xa;}&#xa;    }&#xa;});"/>
               </AuxValues>
             </Component>
           </SubComponents>
         </Container>
         <Component class="javax.swing.JButton" name="jButtonAddItem">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Agregar item"/>
+            <Property name="text" type="java.lang.String" value="+"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAddItemActionPerformed"/>
@@ -456,6 +461,17 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabelTotal">
+        </Component>
+        <Component class="javax.swing.JButton" name="jButtonDeleteItem">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="-"/>
+            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[44, 25]"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonDeleteItemActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

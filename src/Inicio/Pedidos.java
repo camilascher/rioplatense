@@ -7,6 +7,7 @@ package Inicio;
 
 //import java.sql.Connection;
 
+import com.mysql.jdbc.StringUtils;
 import java.awt.Component;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -116,6 +117,7 @@ public class Pedidos extends javax.swing.JFrame {
         jButtonAddItem = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jLabelTotal = new javax.swing.JLabel();
+        jButtonDeleteItem = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -267,7 +269,7 @@ public class Pedidos extends javax.swing.JFrame {
                 .addComponent(jButtonNuevoPed)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBusqPedLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(46, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -284,6 +286,7 @@ public class Pedidos extends javax.swing.JFrame {
         getContentPane().add(jPanelBusqPed, "card2");
 
         jPanelModifPed.setBorder(javax.swing.BorderFactory.createTitledBorder("Modificar Pedido"));
+        jPanelModifPed.setMinimumSize(new java.awt.Dimension(44, 25));
 
         jButtonGuardarPed.setText("Guardar");
         jButtonGuardarPed.setName("jButtonGuardarPed"); // NOI18N
@@ -334,20 +337,21 @@ public class Pedidos extends javax.swing.JFrame {
                         int tot = precio*cant;
                         jTableEditPed.setValueAt(tot,jTableEditPed.getSelectedRow(),3);
 
-                        int total = 0;
+                        recalculaTotal();
+                        /*int total = 0;
                         int parcial = 0;
                         for(int i=0;i<jTableEditPed.getRowCount();i++){
                             parcial = (Integer) jTableEditPed.getValueAt(i,3);
                             total=total+parcial;
                         }
-                        jLabelTotal.setText(Integer.toString(total));
+                        jLabelTotal.setText(Integer.toString(total));*/
                     }
 
                 }
             }
         });
 
-        jButtonAddItem.setText("Agregar item");
+        jButtonAddItem.setText("+");
         jButtonAddItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonAddItemActionPerformed(evt);
@@ -356,40 +360,50 @@ public class Pedidos extends javax.swing.JFrame {
 
         jLabel6.setText("Total");
 
+        jButtonDeleteItem.setText("-");
+        jButtonDeleteItem.setMaximumSize(new java.awt.Dimension(44, 25));
+        jButtonDeleteItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonDeleteItemActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelModifPedLayout = new javax.swing.GroupLayout(jPanelModifPed);
         jPanelModifPed.setLayout(jPanelModifPedLayout);
         jPanelModifPedLayout.setHorizontalGroup(
             jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelModifPedLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6)
+                    .addGroup(jPanelModifPedLayout.createSequentialGroup()
+                        .addComponent(jButtonCancelarPed)
+                        .addGap(30, 30, 30)
+                        .addComponent(jButtonGuardarPed)))
+                .addGap(12, 12, 12))
             .addGroup(jPanelModifPedLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelModifPedLayout.createSequentialGroup()
-                        .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanelModifPedLayout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabelNped, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabelNped, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelModifPedLayout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanelModifPedLayout.createSequentialGroup()
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboEmpleado1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 215, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelModifPedLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
-                            .addGroup(jPanelModifPedLayout.createSequentialGroup()
-                                .addComponent(jButtonCancelarPed)
-                                .addGap(30, 30, 30)
-                                .addComponent(jButtonGuardarPed)))))
-                .addContainerGap())
-            .addGroup(jPanelModifPedLayout.createSequentialGroup()
-                .addGap(55, 55, 55)
-                .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabelTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonAddItem)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(jComboEmpleado1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(48, 48, 48)
+                                .addComponent(jButtonAddItem, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(12, 12, 12)
+                                .addComponent(jButtonDeleteItem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18))))
+                    .addGroup(jPanelModifPedLayout.createSequentialGroup()
+                        .addGap(442, 442, 442)
+                        .addComponent(jLabelTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(96, Short.MAX_VALUE))
         );
         jPanelModifPedLayout.setVerticalGroup(
             jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -402,10 +416,11 @@ public class Pedidos extends javax.swing.JFrame {
                 .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(jComboEmpleado1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonDeleteItem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonAddItem))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(jLabelTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -498,6 +513,7 @@ public class Pedidos extends javax.swing.JFrame {
             }
         }
         model.addRow(new Object[]{"","","",""});
+        jLabelTotal.setText(Integer.toString(0));
         jPanelBusqPed.setVisible(true);
         
     }//GEN-LAST:event_jButtonCancelarPedActionPerformed
@@ -506,7 +522,8 @@ public class Pedidos extends javax.swing.JFrame {
         // TODO add your handling code here:        
         jPanelModifPed.setVisible(true);
         jPanelBusqPed.setVisible(false);
-        jPanelModifPed.setBorder(javax.swing.BorderFactory.createTitledBorder("Nuevo Pedido"));
+        jPanelModifPed.setBorder(javax.swing.BorderFactory.createTitledBorder("Nuevo Pedido"));        
+        
         try{          
              Connection con = null;
              try{
@@ -523,11 +540,15 @@ public class Pedidos extends javax.swing.JFrame {
                  jComboEmpleado1.addItem(empleados.get(i).getNombreEmpleado());
                  
              }
-             jComboEmpleado1.insertItemAt("", 0);             
+             jComboEmpleado1.insertItemAt("", 0);      
+             String ped;
+             ped = Pedidos_servicio.recuperarIdNuevoPed(con);
+             jLabelNped.setText(ped);
              
         } catch (SQLException ex) {
             Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
         
     }//GEN-LAST:event_jButtonNuevoPedActionPerformed
 
@@ -540,7 +561,22 @@ public class Pedidos extends javax.swing.JFrame {
         model.addRow(new Object[]{"","","",""});
     }//GEN-LAST:event_jButtonAddItemActionPerformed
 
-    
+    private void jButtonDeleteItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteItemActionPerformed
+        ((DefaultTableModel)jTableEditPed.getModel()).removeRow(jTableEditPed.getSelectedRow());
+        recalculaTotal();
+    }//GEN-LAST:event_jButtonDeleteItemActionPerformed
+
+    private void recalculaTotal(){
+        int total = 0;
+        int parcial = 0;
+        for(int i=0;i<jTableEditPed.getRowCount();i++){
+            if(!StringUtils.isNullOrEmpty(jTableEditPed.getValueAt(i,3).toString())){
+            parcial = (Integer) jTableEditPed.getValueAt(i,3);
+            total=total+parcial;                 
+            }
+        }
+        jLabelTotal.setText(Integer.toString(total));
+    }
     
     /**
      * @param args the command line arguments
@@ -720,6 +756,7 @@ public void columnaProducto(JTable table,
                     Productos_servicio ps = new Productos_servicio();
                     Object selectedItem = e.getItem();
                     try {
+                        
                         prodSel = ps.recuperarPorDescripcion(Conexion.getConnection(),selectedItem.toString());
                     } catch (SQLException ex) {
                         Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
@@ -736,6 +773,7 @@ public void columnaProducto(JTable table,
     private javax.swing.JButton jButtonAddItem;
     private javax.swing.JButton jButtonBuscar;
     private javax.swing.JButton jButtonCancelarPed;
+    private javax.swing.JButton jButtonDeleteItem;
     private javax.swing.JButton jButtonGuardarPed;
     private javax.swing.JButton jButtonNuevoPed;
     private javax.swing.JComboBox<String> jComboEmpleado;

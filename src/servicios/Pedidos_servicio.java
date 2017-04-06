@@ -43,4 +43,20 @@ public class Pedidos_servicio {
         }
         return ped;
     }
+    
+    public static String recuperarIdNuevoPed(Connection conexion) throws SQLException{
+        String ped = "";
+        
+        try{
+            PreparedStatement consulta = conexion.prepareStatement("select ifnull(max(idpedido),0)+1 idpedido from ABMPrueba.pedido;");
+            ResultSet resultado = consulta.executeQuery();
+            while(resultado.next()){
+                ped = resultado.getString("idpedido");
+                
+            }
+        }catch(SQLException ex){
+            throw new SQLException(ex);
+        }
+        return ped;
+    }
 }
