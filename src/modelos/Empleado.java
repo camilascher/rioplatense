@@ -10,7 +10,7 @@ package modelos;
  * @author cami
  */
 public class Empleado {
-    private final Integer idEmpleado;
+    private Integer idEmpleado;
     private String nombre;
     
     public Empleado(){

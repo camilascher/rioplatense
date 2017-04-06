@@ -499,7 +499,36 @@ public class Pedidos extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonBuscarActionPerformed
 
     private void jButtonGuardarPedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarPedActionPerformed
-        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) jTableEditPed.getModel();
+        Connection cnx = null;
+        Producto prod = null;
+        Empleado emp = null;
+        Empleados_servicio es = new Empleados_servicio();
+        Productos_servicio ps = new Productos_servicio();
+        
+        try {
+            cnx = Conexion.obtener();
+        } catch (SQLException ex) {
+            Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        try {
+            emp = es.recuperarEmpPorDescripcion(cnx,jComboEmpleado1.getSelectedItem().toString());
+        } catch (SQLException ex) {
+            Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        for(int i=0;i<model.getRowCount();i++){            
+            try {             
+                prod = ps.recuperarPorDescripcion(cnx,(String)jTableEditPed.getValueAt(i,0));
+            } catch (SQLException ex) {
+                Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            Pedidos_servicio.guardarPedidoLinea(jLabelNped.getText(),emp.getIdEmpleado().toString(),prod.getIdProducto().toString(),prod.getPrecio().toString(),"1");
+        }
+        jButtonCancelarPedActionPerformed(evt);
     }//GEN-LAST:event_jButtonGuardarPedActionPerformed
 
     private void jButtonCancelarPedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarPedActionPerformed

@@ -33,6 +33,21 @@ public class Empleados_servicio {
         }
         return emp;
     }
+    
+    public Empleado recuperarEmpPorDescripcion(Connection conexion,String empleado) throws SQLException{
+        Empleado emp = null;
+        try{
+            PreparedStatement consulta = conexion.prepareStatement("SELECT idempleado,nombre from ABMPrueba."+this.tabla+" where nombre='"+empleado+"';");
+            ResultSet resultado = consulta.executeQuery();
+            while(resultado.next()){
+            emp = new Empleado(resultado.getInt("idempleado"), resultado.getString("nombre"));
+         }                          
+            
+        }catch(SQLException ex){
+            throw new SQLException(ex);
+        }
+        return emp;
+    }
             
     
 }

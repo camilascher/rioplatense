@@ -11,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import modelos.Pedido;
 
 /**
@@ -59,4 +61,16 @@ public class Pedidos_servicio {
         }
         return ped;
     }
+    
+    public static void guardarPedidoLinea(String idPedido,String idEmpleado,String idProducto,String precio, String idUsuario){
+        Connection conexion = Conexion.getConnection();
+        String a = "INSERT INTO ABMPrueba.pedido (idpedido, idempleado, idproducto, precio, fecha, usuarioid_creacion, fecha_creacion) VALUES ("+idPedido+","+idEmpleado+", "+idProducto+", "+precio+", curdate(), "+idUsuario+", sysdate());";
+        try {
+            PreparedStatement insert = conexion.prepareStatement(a);
+            insert.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(Pedidos_servicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+}
 }
