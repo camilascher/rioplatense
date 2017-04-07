@@ -14,14 +14,15 @@ CREATE TABLE `pedido` (
   `idproducto` int(11) NOT NULL,
   `precio` varchar(45) NOT NULL,
   `fecha` date NOT NULL,
-  `usuarioid_creacion` int(11) DEFAULT NULL,
-  `fecha_creacion` date DEFAULT NULL,
+  `usuarioid_creacion` int(11) NOT NULL,
+  `fecha_creacion` datetime NOT NULL,
   PRIMARY KEY (`idpedido`,`idproducto`),
   KEY `fk_prod_id` (`idproducto`),
   KEY `fk_emp_id` (`idempleado`),
   CONSTRAINT `fk_emp_id` FOREIGN KEY (`idempleado`) REFERENCES `empleado` (`idempleado`),
   CONSTRAINT `fk_prod_id` FOREIGN KEY (`idproducto`) REFERENCES `producto` (`idproducto`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 
 CREATE TABLE `producto` (
