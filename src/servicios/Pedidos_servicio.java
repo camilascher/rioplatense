@@ -5,7 +5,6 @@
  */
 package servicios;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,8 +19,20 @@ import modelos.Pedido;
  * @author cami
  */
 public class Pedidos_servicio {
-    private final String tabla = "pedido";
-    public List<Pedido> recuperarTodasEnc(Connection conexion,String pedido, String fecha, String empleado) throws SQLException{
+    private static Pedidos_servicio instance = null;
+    
+    protected Pedidos_servicio(){
+        //Evita que la clase se instancie
+    }
+    
+    public static Pedidos_servicio getInstance(){
+        if (instance == null){
+            instance = new Pedidos_servicio();
+        }
+        return instance;
+    }
+    
+    public List<Pedido> recuperarTodasEnc(String pedido, String fecha, String empleado) throws SQLException{
         List<Pedido> ped = new ArrayList<>();
         String where = "";
         if(!pedido.isEmpty()) {
@@ -34,7 +45,7 @@ public class Pedidos_servicio {
             where+=" and emp.nombre='"+empleado+"'";
         }
         try{
-            PreparedStatement consulta = conexion.prepareStatement("SELECT distinct ped.idpedido,ped.idempleado,emp.nombre,ped.fecha from ABMPrueba."+this.tabla+" ped, ABMPrueba.empleado emp where emp.idempleado = ped.idempleado "+where+" ORDER BY fecha desc");
+            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT distinct ped.idpedido,ped.idempleado,emp.nombre,ped.fecha from ABMPrueba.pedido ped, ABMPrueba.empleado emp where emp.idempleado = ped.idempleado "+where+" ORDER BY fecha desc");
             ResultSet resultado = consulta.executeQuery();
             while(resultado.next()){
                 ped.add(new Pedido(resultado.getInt("idpedido"),resultado.getInt("idempleado"),resultado.getString("nombre"),null,resultado.getString("fecha"),null,null));
@@ -46,11 +57,11 @@ public class Pedidos_servicio {
         return ped;
     }
     
-    public static String recuperarIdNuevoPed(Connection conexion) throws SQLException{
+    public String recuperarIdNuevoPed() throws SQLException{
         String ped = "";
         
         try{
-            PreparedStatement consulta = conexion.prepareStatement("select ifnull(max(idpedido),0)+1 idpedido from ABMPrueba.pedido;");
+            PreparedStatement consulta = Conexion.getConnection().prepareStatement("select ifnull(max(idpedido),0)+1 idpedido from ABMPrueba.pedido;");
             ResultSet resultado = consulta.executeQuery();
             while(resultado.next()){
                 ped = resultado.getString("idpedido");
@@ -62,15 +73,13 @@ public class Pedidos_servicio {
         return ped;
     }
     
-    public static void guardarPedidoLinea(String idPedido,String idEmpleado,String idProducto,String precio, String idUsuario){
-        Connection conexion = Conexion.getConnection();
+    public void guardarPedidoLinea(String idPedido,String idEmpleado,String idProducto,String precio, String idUsuario){
         String a = "INSERT INTO ABMPrueba.pedido (idpedido, idempleado, idproducto, precio, fecha, usuarioid_creacion, fecha_creacion) VALUES ("+idPedido+","+idEmpleado+", "+idProducto+", "+precio+", curdate(), "+idUsuario+", sysdate());";
         try {
-            PreparedStatement insert = conexion.prepareStatement(a);
+            PreparedStatement insert = Conexion.getConnection().prepareStatement(a);
             insert.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(Pedidos_servicio.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-}
+    }
 }
