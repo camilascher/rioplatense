@@ -18,23 +18,11 @@ import java.sql.ResultSet;
  * @author Nico
  */
 public class Usuarios_servicio {
-    private static Usuarios_servicio instance = null;
-    
-    protected Usuarios_servicio(){
-        //Evita que la clase se instancie
-    }
-    
-    public static Usuarios_servicio getInstance(){
-        if (instance == null){
-            instance = new Usuarios_servicio();
-        }
-        return instance;
-    }
-    
-    public List<Usuario> recuperarTodas() throws SQLException{
+    private final String tabla = "usuario";
+    public List<Usuario> recuperarTodas(Connection conexion) throws SQLException{
         List<Usuario> usuarios = new ArrayList<>();
         try{
-            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT idusuario,nombre,clave from ABMPrueba.usuario ORDER BY nombre");
+            PreparedStatement consulta = conexion.prepareStatement("SELECT idusuario,nombre,clave from ABMPrueba."+this.tabla+" ORDER BY nombre");
             ResultSet resultado = consulta.executeQuery();
             while(resultado.next()){
                 usuarios.add(new Usuario(resultado.getInt("idusuario"),resultado.getString("nombre"),resultado.getString("clave")));
@@ -46,10 +34,10 @@ public class Usuarios_servicio {
         return usuarios;
     }
             
-    public Usuario recuperarUsuario(String nombre) throws SQLException{
+    public Usuario recuperarUsuario(Connection conexion, String nombre) throws SQLException{
         Usuario usuario = null;
         try{
-            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT idusuario,nombre,clave from ABMPrueba.usuario WHERE nombre='"+nombre+"'");
+            PreparedStatement consulta = conexion.prepareStatement("SELECT idusuario,nombre,clave from ABMPrueba."+this.tabla+" WHERE nombre='"+nombre+"'");
             ResultSet resultado = consulta.executeQuery();
             while(resultado.next()){
                 usuario = new Usuario(resultado.getInt("idusuario"),resultado.getString("nombre"),resultado.getString("clave"));

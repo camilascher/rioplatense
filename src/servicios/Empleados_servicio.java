@@ -18,23 +18,11 @@ import java.sql.ResultSet;
  * @author cami
  */
 public class Empleados_servicio {
-    private static Empleados_servicio instance = null;
-    
-    protected Empleados_servicio(){
-        //Evita que la clase se instancie
-    }
-    
-    public static Empleados_servicio getInstance(){
-        if (instance == null){
-            instance = new Empleados_servicio();
-        }
-        return instance;
-    }
-    
-    public List<Empleado> recuperarTodas() throws SQLException{
+    private final String tabla = "empleado";
+    public List<Empleado> recuperarTodas(Connection conexion) throws SQLException{
         List<Empleado> emp = new ArrayList<>();
         try{
-            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT idempleado,nombre from ABMPrueba.empleado ORDER BY nombre");
+            PreparedStatement consulta = conexion.prepareStatement("SELECT idempleado,nombre from ABMPrueba."+this.tabla+" ORDER BY nombre");
             ResultSet resultado = consulta.executeQuery();
             while(resultado.next()){
                 emp.add(new Empleado(resultado.getInt("idEmpleado"),resultado.getString("nombre")));
@@ -46,10 +34,10 @@ public class Empleados_servicio {
         return emp;
     }
     
-    public Empleado recuperarEmpPorDescripcion(String empleado) throws SQLException{
+    public Empleado recuperarEmpPorDescripcion(Connection conexion,String empleado) throws SQLException{
         Empleado emp = null;
         try{
-            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT idempleado,nombre from ABMPrueba.empleado where nombre='"+empleado+"';");
+            PreparedStatement consulta = conexion.prepareStatement("SELECT idempleado,nombre from ABMPrueba."+this.tabla+" where nombre='"+empleado+"';");
             ResultSet resultado = consulta.executeQuery();
             while(resultado.next()){
             emp = new Empleado(resultado.getInt("idempleado"), resultado.getString("nombre"));
@@ -60,4 +48,6 @@ public class Empleados_servicio {
         }
         return emp;
     }
+            
+    
 }
