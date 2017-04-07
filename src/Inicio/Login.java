@@ -11,7 +11,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import modelos.Usuario;
-import servicios.Conexion;
 import servicios.Usuarios_servicio;
 import util.RequeridoListener;
 
@@ -126,19 +125,10 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Usuarios_servicio servicio = new Usuarios_servicio();
         Usuario usuario = null;
-        Connection con = null;
         if(!nombre.getText().equals("") && !clave.getText().equals("")) {
             try {
-                con = Conexion.obtener();
-            } catch (SQLException ex) {
-                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            try {
-                usuario = servicio.recuperarUsuario(con, nombre.getText());
+                usuario = Usuarios_servicio.getInstance().recuperarUsuario(nombre.getText());
             } catch (SQLException ex) {
                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
