@@ -14,6 +14,9 @@ public class Pedido {
     private final Integer idEmpleado;
     private final String nombreEmpleado;
     private final Integer idProducto;
+    private final String descProd;
+    private final Integer precio;
+    private final Integer cantidad;
     private final String fecha;
     private final Integer idUsuarioCreacion;
     private final String fechaCreacion;
@@ -23,16 +26,22 @@ public class Pedido {
         this.idEmpleado = null;
         this.nombreEmpleado=null;
         this.idProducto = null;
+        this.descProd = null;
+        this.precio=null;
+        this.cantidad=null;
         this.fecha = null;
         this.idUsuarioCreacion = null;
         this.fechaCreacion = null;
     }
     
-    public Pedido(Integer idPedido,Integer idEmpleado,String nombreEmpleado,Integer idProducto, String fecha, Integer idUsuarioCreacion, String fechaCreacion){
+    public Pedido(Integer idPedido,Integer idEmpleado,String nombreEmpleado,Integer idProducto, String descProd, Integer precio,Integer cantidad, String fecha, Integer idUsuarioCreacion, String fechaCreacion){
         this.idPedido = idPedido;
         this.idEmpleado = idEmpleado;
         this.nombreEmpleado = nombreEmpleado;
         this.idProducto = idProducto;
+        this.descProd = descProd;
+        this.precio = precio;
+        this.cantidad = cantidad;
         this.fecha = fecha;
         this.idUsuarioCreacion = idUsuarioCreacion;
         this.fechaCreacion = fechaCreacion;
@@ -64,6 +73,18 @@ public class Pedido {
     
     public Integer getIdUsuarioCreacion(){
         return idUsuarioCreacion;
+    }
+    
+    public Integer getPrecio(){
+        return precio;
+    }
+    
+    public Integer getCantidad(){
+        return cantidad;
+    }
+    
+    public String getDescProd(){
+        return descProd;
     }
     
 }

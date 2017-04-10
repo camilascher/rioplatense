@@ -19,6 +19,7 @@ import util.RequeridoListener;
  * @author Nico
  */
 public class Login extends javax.swing.JFrame {
+    public static String usr;
 
     /**
      * Creates new form Login
@@ -138,12 +139,13 @@ public class Login extends javax.swing.JFrame {
                 nombre.requestFocus();
             } else if(usuario.getClaveUsuario().equals(clave.getText())){
                 JOptionPane.showMessageDialog(this,"Bienvenido "+nombre.getText());
+                usr = usuario.getIdUsuario().toString();
                 Pedidos page=new Pedidos();
                 page.setVisible(true);
                 setVisible(false); //you can't see me!
                 dispose(); //Destroy the JFrame object
             } else {
-                JOptionPane.showMessageDialog(this,"El clave no es correcta","Error",JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this,"La clave no es correcta","Error",JOptionPane.WARNING_MESSAGE);
                 clave.selectAll();
                 clave.requestFocus();
             }
