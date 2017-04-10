@@ -448,7 +448,7 @@ public class Pedidos extends javax.swing.JFrame {
                 });
 
             }
-            jPanel2.setVisible(true);
+           
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
             JOptionPane.showMessageDialog(this, "Ha surgido un error y no se han podido recuperar los registros");
@@ -657,12 +657,15 @@ public class Pedidos extends javax.swing.JFrame {
 
         public Object getCellEditorValue() {
             if (isPushed) {
-                if(columna ==3){//modificar
+                if(columna == 3){//modificar
                 jPanelBusqPed.setVisible(false);
+                
                 jPanelModifPed.setVisible(true);
                 jPanelModifPed.setBorder(javax.swing.BorderFactory.createTitledBorder("Modificar Pedido"));
-                jTablePedidos.getSelectedRow();
-                
+                int fila = jTablePedidos.getSelectedRow();
+                jLabelNped.setText(jTablePedidos.getValueAt(fila,0).toString());
+                jComboEmpleado1.setSelectedItem(jTablePedidos.getValueAt(fila,1));
+                            
                 }
                 else
                 {//eliminar

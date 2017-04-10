@@ -13,6 +13,7 @@ CREATE TABLE `pedido` (
   `idempleado` int(11) NOT NULL,
   `idproducto` int(11) NOT NULL,
   `precio` varchar(45) NOT NULL,
+  `cantidad` int(11) NOT NULL,
   `fecha` date NOT NULL,
   `usuarioid_creacion` int(11) NOT NULL,
   `fecha_creacion` datetime NOT NULL,
