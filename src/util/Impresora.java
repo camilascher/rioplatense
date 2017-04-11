@@ -23,7 +23,7 @@ public class Impresora {
 
     public Impresora(String texto) {
         if (texto == null) {
-            dispositivo = "ticket.txt";
+            dispositivo = "pantalla.txt";
         } else {
             dispositivo = texto;
         }
@@ -132,7 +132,7 @@ public class Impresora {
         escribir("—————————————-");
     }
 
-    public void cerrarDispositivo() {
+    public void finalizar() {
         try {
             pw.close();
             if (this.dispositivo.trim().equals("pantalla.txt")) {

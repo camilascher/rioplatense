@@ -8,73 +8,90 @@ package servicios;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import modelos.DetallePedido;
+import modelos.Empleado;
 import modelos.Pedido;
+import modelos.Producto;
+import modelos.Usuario;
 
 /**
  *
  * @author cami
  */
 public class Pedidos_servicio {
+
     private static Pedidos_servicio instance = null;
-    
-    protected Pedidos_servicio(){
+
+    protected Pedidos_servicio() {
         //Evita que la clase se instancie
     }
-    
-    public static Pedidos_servicio getInstance(){
-        if (instance == null){
+
+    public static Pedidos_servicio getInstance() {
+        if (instance == null) {
             instance = new Pedidos_servicio();
         }
         return instance;
     }
-    
-    public List<Pedido> recuperarTodasEnc(String pedido, String fecha, String empleado) throws SQLException{
+
+    public List<Pedido> recuperarTodasEnc(String idPedido, String fecha, String empleado) throws SQLException {
         List<Pedido> ped = new ArrayList<>();
         String where = "";
-        if(!pedido.isEmpty()) {
-           where+=" and ped.idpedido="+pedido;
+        if (!idPedido.isEmpty()) {
+            where += "ped.idpedido=" + idPedido;
         }
-        if(!fecha.isEmpty()){
-            where+=" and str_to_date(fecha,'%Y-%m-%d')=str_to_date('"+fecha+"','%d/%m/%Y')";
+        if (!fecha.isEmpty()) {
+            where += (!where.isEmpty() ? " and " : "") + "str_to_date(fecha,'%Y-%m-%d')=str_to_date('" + fecha + "','%d/%m/%Y')";
         }
-        if(!empleado.isEmpty()){
-            where+=" and emp.nombre='"+empleado+"'";
+        if (!empleado.isEmpty()) {
+            where += (!where.isEmpty() ? " and " : "") + "emp.nombre='" + empleado + "'";
         }
-        try{
-            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT distinct ped.idpedido,ped.idempleado,emp.nombre,ped.fecha from ABMPrueba.pedido ped, ABMPrueba.empleado emp where emp.idempleado = ped.idempleado "+where+" ORDER BY idpedido desc");
+        if (!where.isEmpty()) {
+            where = " where " + where;
+        }
+        try {
+            int pedidoAnterior = 0;
+            Pedido pedido = null;
+            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT ped.idpedido,ped.idempleado,emp.nombre,ped.fecha,ped.usuarioid_creacion,usu.nombre,det.idproducto,prod.descripcion,det.precio,det.cantidad FROM ABMPrueba.pedido ped JOIN ABMPrueba.empleado emp ON emp.idempleado = ped.idempleado JOIN ABMPrueba.usuario usu ON usu.idusuario = ped.usuarioid_creacion LEFT JOIN (ABMPrueba.detalle_pedido det JOIN ABMPrueba.producto prod ON det.idproducto = prod.idproducto) ON ped.idpedido = det.idpedido" + where + ";");
             ResultSet resultado = consulta.executeQuery();
-            while(resultado.next()){
-                ped.add(new Pedido(resultado.getInt("idpedido"),resultado.getInt("idempleado"),resultado.getString("nombre"),null,null,null,null,resultado.getString("fecha"),null,null));
-                
+            while (resultado.next()) {
+                if (pedidoAnterior != resultado.getInt("idpedido")) {
+                    pedido = new Pedido(resultado.getInt("ped.idpedido"), new Empleado(resultado.getInt("ped.idempleado"), resultado.getString("emp.nombre")), new SimpleDateFormat("dd/MM/yyyy HH:mm").format(resultado.getDate("ped.fecha")), new Usuario(resultado.getInt("ped.usuarioid_creacion"), resultado.getString("usu.nombre"), null));
+                    ped.add(pedido);
+                    pedidoAnterior = resultado.getInt("ped.idpedido");
+                }
+                if (resultado.getString("prod.descripcion") != null) {
+                    pedido.getDetallesPedido().add(new DetallePedido(resultado.getInt("ped.idpedido"), new Producto(resultado.getInt("det.idproducto"), resultado.getString("prod.descripcion"), null), resultado.getInt("precio"), resultado.getInt("cantidad")));
+                }
             }
-        }catch(SQLException ex){
+        } catch (SQLException ex) {
             throw new SQLException(ex);
         }
         return ped;
     }
-    
-    public String recuperarIdNuevoPed() throws SQLException{
+
+    public String recuperarIdNuevoPed() throws SQLException {
         String ped = "";
-        
-        try{
+
+        try {
             PreparedStatement consulta = Conexion.getConnection().prepareStatement("select ifnull(max(idpedido),0)+1 idpedido from ABMPrueba.pedido;");
             ResultSet resultado = consulta.executeQuery();
-            while(resultado.next()){
+            while (resultado.next()) {
                 ped = resultado.getString("idpedido");
-                
+
             }
-        }catch(SQLException ex){
+        } catch (SQLException ex) {
             throw new SQLException(ex);
         }
         return ped;
     }
-    
-    public void guardarPedidoLinea(String idPedido,String idEmpleado,String idProducto,String precio,String cant, String idUsuario){
-        String a = "INSERT INTO ABMPrueba.pedido (idpedido, idempleado, idproducto, precio, cantidad, fecha, usuarioid_creacion, fecha_creacion) VALUES ("+idPedido+","+idEmpleado+", "+idProducto+", "+precio+","+cant+", curdate(), "+idUsuario+", sysdate());";
+
+    public void guardarPedidoLinea(String idPedido, String idEmpleado, String idProducto, String precio, String cant, String idUsuario) {
+        String a = "INSERT INTO ABMPrueba.pedido (idpedido, idempleado, idproducto, precio, cantidad, fecha, usuarioid_creacion, fecha_creacion) VALUES (" + idPedido + "," + idEmpleado + ", " + idProducto + ", " + precio + "," + cant + ", curdate(), " + idUsuario + ", sysdate());";
         try {
             PreparedStatement insert = Conexion.getConnection().prepareStatement(a);
             insert.executeUpdate();
@@ -82,19 +99,26 @@ public class Pedidos_servicio {
             Logger.getLogger(Pedidos_servicio.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public List<Pedido> recuperarPedidoCompleto(String pedido) throws SQLException{
+
+    public List<Pedido> recuperarPedidoCompleto(String idPedido) throws SQLException {
         List<Pedido> ped = new ArrayList<>();
-        String where="";
-        where +=" and ped.idpedido="+pedido;
-        try{
-            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT ped.idpedido,ped.idempleado,emp.nombre,ped.fecha,ped.idproducto,ped.precio,ped.cantidad,prod.descripcion,ped.usuarioid_creacion, ped.fecha_creacion from ABMPrueba.pedido ped, ABMPrueba.empleado emp, ABMPrueba.producto prod where emp.idempleado = ped.idempleado and ped.idproducto = prod.idproducto "+where+";");
+        String where = " where ped.idpedido=" + idPedido;
+        try {
+            Integer pedidoAnterior = null;
+            Pedido pedido = null;
+            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT ped.idpedido,ped.idempleado,emp.nombre,ped.fecha,ped.usuarioid_creacion,usu.nombre,det.idproducto,prod.descripcion,det.precio,det.cantidad FROM ABMPrueba.pedido ped JOIN ABMPrueba.empleado emp ON emp.idempleado = ped.idempleado JOIN ABMPrueba.usuario usu ON usu.idusuario = ped.usuarioid_creacion LEFT JOIN (ABMPrueba.detalle_pedido det JOIN ABMPrueba.producto prod ON det.idproducto = prod.idproducto) ON ped.idpedido = det.idpedido" + where + ";");
             ResultSet resultado = consulta.executeQuery();
-            while(resultado.next()){
-                ped.add(new Pedido(resultado.getInt("idpedido"),resultado.getInt("idempleado"),resultado.getString("nombre"),resultado.getInt("idproducto"),resultado.getString("descripcion"),resultado.getInt("precio"),resultado.getInt("cantidad"),resultado.getString("fecha"),resultado.getInt("usuarioid_creacion"),resultado.getString("fecha_creacion")));
-                
+            while (resultado.next()) {
+                if (pedidoAnterior != resultado.getInt("ped.idpedido")) {
+                    pedido = new Pedido(resultado.getInt("ped.idpedido"), new Empleado(resultado.getInt("ped.idempleado"), resultado.getString("emp.nombre")), new SimpleDateFormat("dd/MM/yyyy HH:mm").format(resultado.getDate("ped.fecha")), new Usuario(resultado.getInt("ped.usuarioid_creacion"), resultado.getString("usu.nombre"), null));
+                    ped.add(pedido);
+                    pedidoAnterior = resultado.getInt("ped.idpedido");
+                }
+                if (resultado.getString("prod.descripcion") != null) {
+                    pedido.getDetallesPedido().add(new DetallePedido(resultado.getInt("ped.idpedido"), new Producto(resultado.getInt("det.idproducto"), resultado.getString("prod.descripcion"), null), resultado.getInt("precio"), resultado.getInt("cantidad")));
+                }
             }
-        }catch(SQLException ex){
+        } catch (SQLException ex) {
             throw new SQLException(ex);
         }
         return ped;

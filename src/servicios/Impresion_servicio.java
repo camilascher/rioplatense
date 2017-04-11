@@ -5,14 +5,9 @@
  */
 package servicios;
 
-import java.sql.SQLException;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import modelos.DetallePedido;
 import modelos.Empleado;
 import modelos.Pedido;
-import servicios.Empleados_servicio;
-import servicios.Pedidos_servicio;
 import util.Impresora;
 
 /**
@@ -23,39 +18,27 @@ public class Impresion_servicio {
 
     static final String NOMBRE_EMPRESA = "EURO-CUCINE S.R.L.";
     
-    static void imprimirPedido(Pedido pedido) {
+    public static void imprimirPedido(Pedido pedido) {
         Impresora impresora = new Impresora(null);
-        List<Pedido> items = null;
-        Empleado empleado = null;
+        Empleado empleado = pedido.getEmpleado();
         Double total = 0.0;
         Double acumulado = 0.0;
-
-        try {
-            items = Pedidos_servicio.getInstance().recuperarPedidoCompleto(pedido.getIdPedido().toString());
-        } catch (SQLException ex) {
-            Logger.getLogger(Impresion_servicio.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            empleado = Empleados_servicio.getInstance().recuperarEmpPorDescripcion(pedido.getNombreEmpleado());
-        } catch (SQLException ex) {
-            Logger.getLogger(Impresion_servicio.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
         //Cabecera
         impresora.escribir(NOMBRE_EMPRESA);
         //String fecha = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(Calendar.getInstance().getTime());
-        impresora.escribir("Fecha     " + pedido.getFechaCreacion());
+        impresora.escribir("Fecha     " + pedido.getFecha());
         impresora.escribir("Ticket Nro " + pedido.getIdPedido());
         impresora.escribir(empleado.getNombreEmpleado().toUpperCase());
-        impresora.escribir(empleado.getIdEmpleado().toString());
+        impresora.escribir("Legoajo: " + empleado.getIdEmpleado().toString());
         //Items
         impresora.escribir("CNT Producto        Precio");
         impresora.escribir("* ADICIONALES       ******");
-        for (Pedido item : items) {
-            total += item.getCantidad() * item.getPrecio();
-            String precio = String.format("%5s", item.getPrecio().toString());
-            String cant = String.format("%3s", item.getCantidad().toString());
-            String desc = String.format("%-16s", item.getDescProd()).substring(0, 16);
+        for (DetallePedido detalle : pedido.getDetallesPedido()) {
+            total += detalle.getCantidad() * detalle.getPrecio();
+            String precio = String.format("%5s", detalle.getPrecio().toString());
+            String cant = String.format("%3s", detalle.getCantidad().toString());
+            String desc = String.format("%-16s", detalle.getProducto().getDescripcion()).substring(0, 16);
             String linea = cant + " " + desc + " " + precio;
             impresora.escribir(linea);
         }
@@ -70,6 +53,6 @@ public class Impresion_servicio {
         impresora.escribir("* Este comprobante no es *");
         impresora.escribir("* valido como factura    *");
         impresora.escribir("**************************");
-
+        impresora.finalizar();
     }
 }

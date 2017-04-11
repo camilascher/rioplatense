@@ -25,7 +25,6 @@ public class Producto {
         this.descripcion  = descripcion;
         this.precio = precio;
     }
-    
         
     public Integer getIdProducto(){
         return idProducto;

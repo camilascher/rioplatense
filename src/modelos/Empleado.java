@@ -10,8 +10,8 @@ package modelos;
  * @author cami
  */
 public class Empleado {
-    private Integer idEmpleado;
-    private String nombre;
+    private final Integer idEmpleado;
+    private final String nombre;
     
     public Empleado(){
         this.idEmpleado = null;
