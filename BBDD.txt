@@ -6,7 +6,24 @@ CREATE TABLE `empleado` (
   PRIMARY KEY (`idempleado`),
   UNIQUE KEY `nombre_UNIQUE` (`nombre`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-select max(ifnull(idpedido,0))+1 from ABMPrueba.pedido;
+
+
+CREATE TABLE `producto` (
+  `idproducto` int(11) NOT NULL,
+  `descripcion` varchar(45) NOT NULL,
+  `precio` int(11) NOT NULL,
+  PRIMARY KEY (`idproducto`),
+  UNIQUE KEY `idproducto_UNIQUE` (`idproducto`),
+  UNIQUE KEY `descripcion_UNIQUE` (`descripcion`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `usuario` (
+  `idusuario` int(11) NOT NULL,
+  `nombre` varchar(45) NOT NULL,
+  `clave` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`idusuario`),
+  UNIQUE KEY `nombre_UNIQUE` (`nombre`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `pedido` (
   `idpedido` int(11) NOT NULL,
@@ -28,21 +45,6 @@ CREATE TABLE `detalle_pedido` (
   CONSTRAINT `fk_prod_id` FOREIGN KEY (`idproducto`) REFERENCES `producto` (`idproducto`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE `producto` (
-  `idproducto` int(11) NOT NULL,
-  `descripcion` varchar(45) NOT NULL,
-  `precio` int(11) NOT NULL,
-  PRIMARY KEY (`idproducto`),
-  UNIQUE KEY `idproducto_UNIQUE` (`idproducto`),
-  UNIQUE KEY `descripcion_UNIQUE` (`descripcion`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE `usuario` (
-  `idusuario` int(11) NOT NULL,
-  `nombre` varchar(45) NOT NULL,
-  `clave` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`idusuario`),
-  UNIQUE KEY `nombre_UNIQUE` (`nombre`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
