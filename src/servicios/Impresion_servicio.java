@@ -36,7 +36,7 @@ public class Impresion_servicio {
         impresora.escribir("* ADICIONALES       ******");
         for (DetallePedido detalle : pedido.getDetallesPedido()) {
             total += detalle.getCantidad() * detalle.getPrecio();
-            String precio = String.format("%5s", detalle.getPrecio().toString());
+            String precio = String.format("%5s", String.valueOf(detalle.getCantidad() * detalle.getPrecio()));
             String cant = String.format("%3s", detalle.getCantidad().toString());
             String desc = String.format("%-16s", detalle.getProducto().getDescripcion()).substring(0, 16);
             String linea = cant + " " + desc + " " + precio;
