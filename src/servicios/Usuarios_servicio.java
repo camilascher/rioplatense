@@ -19,6 +19,7 @@ import java.sql.ResultSet;
  */
 public class Usuarios_servicio {
     private static Usuarios_servicio instance = null;
+    private String usuarioLogeado;
     
     protected Usuarios_servicio(){
         //Evita que la clase se instancie
@@ -58,5 +59,13 @@ public class Usuarios_servicio {
             throw new SQLException(ex);
         }
         return usuario;
+    }
+
+    public String getUsuarioLogeado() {
+        return usuarioLogeado;
+    }
+
+    public void setUsuarioLogeado(String usuarioLogeado) {
+        this.usuarioLogeado = usuarioLogeado;
     }
 }

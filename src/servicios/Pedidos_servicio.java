@@ -54,19 +54,12 @@ public class Pedidos_servicio {
             where = " where " + where;
         }
         try {
-            int pedidoAnterior = 0;
             Pedido pedido = null;
-            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT ped.idpedido,ped.idempleado,emp.nombre,ped.fecha,ped.usuarioid_creacion,usu.nombre,det.idproducto,prod.descripcion,det.precio,det.cantidad FROM ABMPrueba.pedido ped JOIN ABMPrueba.empleado emp ON emp.idempleado = ped.idempleado JOIN ABMPrueba.usuario usu ON usu.idusuario = ped.usuarioid_creacion LEFT JOIN (ABMPrueba.detalle_pedido det JOIN ABMPrueba.producto prod ON det.idproducto = prod.idproducto) ON ped.idpedido = det.idpedido" + where + ";");
+            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT ped.idpedido,ped.idempleado,emp.nombre,ped.fecha,ped.usuarioid_creacion,usu.nombre FROM ABMPrueba.pedido ped JOIN ABMPrueba.empleado emp ON emp.idempleado = ped.idempleado JOIN ABMPrueba.usuario usu ON usu.idusuario = ped.usuarioid_creacion" + where + ";");
             ResultSet resultado = consulta.executeQuery();
             while (resultado.next()) {
-                if (pedidoAnterior != resultado.getInt("idpedido")) {
-                    pedido = new Pedido(resultado.getInt("ped.idpedido"), new Empleado(resultado.getInt("ped.idempleado"), resultado.getString("emp.nombre")), new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(resultado.getTimestamp("ped.fecha")), new Usuario(resultado.getInt("ped.usuarioid_creacion"), resultado.getString("usu.nombre"), null));
-                    ped.add(pedido);
-                    pedidoAnterior = resultado.getInt("ped.idpedido");
-                }
-                if (resultado.getString("prod.descripcion") != null) {
-                    pedido.getDetallesPedido().add(new DetallePedido(resultado.getInt("ped.idpedido"), new Producto(resultado.getInt("det.idproducto"), resultado.getString("prod.descripcion"), null), resultado.getInt("precio"), resultado.getInt("cantidad")));
-                }
+                pedido = new Pedido(resultado.getInt("ped.idpedido"), new Empleado(resultado.getInt("ped.idempleado"), resultado.getString("emp.nombre")), new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(resultado.getTimestamp("ped.fecha")), new Usuario(resultado.getInt("ped.usuarioid_creacion"), resultado.getString("usu.nombre"), null));
+                ped.add(pedido);
             }
         } catch (SQLException ex) {
             throw new SQLException(ex);

@@ -40,6 +40,7 @@ import servicios.Conexion;
 import servicios.Empleados_servicio;
 import servicios.Pedidos_servicio;
 import servicios.Productos_servicio;
+import servicios.Usuarios_servicio;
 
 /**
  *
@@ -469,7 +470,7 @@ public class Pedidos extends javax.swing.JFrame {
             Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        Pedidos_servicio.getInstance().guardarPedidoCab(jLabelNped.getText(), emp.getIdEmpleado().toString(), usr);
+        Pedidos_servicio.getInstance().guardarPedidoCab(jLabelNped.getText(), emp.getIdEmpleado().toString(), Usuarios_servicio.usr);
 
         for (int i = 0; i < model.getRowCount(); i++) {
             try {

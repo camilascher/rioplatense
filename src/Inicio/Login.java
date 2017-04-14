@@ -5,7 +5,6 @@
  */
 package Inicio;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,7 +18,6 @@ import util.RequeridoListener;
  * @author Nico
  */
 public class Login extends javax.swing.JFrame {
-    public static String usr;
 
     /**
      * Creates new form Login
@@ -127,25 +125,25 @@ public class Login extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         Usuario usuario = null;
-        if(!nombre.getText().equals("") && !clave.getText().equals("")) {
+        if (!nombre.getText().equals("") && !clave.getText().equals("")) {
             try {
                 usuario = Usuarios_servicio.getInstance().recuperarUsuario(nombre.getText());
             } catch (SQLException ex) {
                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
-            if(usuario == null){
-                JOptionPane.showMessageDialog(this,"El usuario es inválido","Error",JOptionPane.WARNING_MESSAGE);
+            if (usuario == null) {
+                JOptionPane.showMessageDialog(this, "El usuario es inválido", "Error", JOptionPane.WARNING_MESSAGE);
                 nombre.selectAll();
                 nombre.requestFocus();
-            } else if(usuario.getClaveUsuario().equals(clave.getText())){
-                JOptionPane.showMessageDialog(this,"Bienvenido "+nombre.getText());
-                usr = usuario.getIdUsuario().toString();
-                Pedidos page=new Pedidos();
+            } else if (usuario.getClaveUsuario().equals(clave.getText())) {
+                JOptionPane.showMessageDialog(this, "Bienvenido " + nombre.getText());
+                Usuarios_servicio.getInstance().setUsuarioLogeado(usuario.getIdUsuario().toString());
+                Pedidos page = new Pedidos();
                 page.setVisible(true);
                 setVisible(false); //you can't see me!
                 dispose(); //Destroy the JFrame object
             } else {
-                JOptionPane.showMessageDialog(this,"La clave no es correcta","Error",JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "La clave no es correcta", "Error", JOptionPane.WARNING_MESSAGE);
                 clave.selectAll();
                 clave.requestFocus();
             }
