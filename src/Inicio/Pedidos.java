@@ -5,7 +5,6 @@
  */
 package Inicio;
 
-import static Inicio.Login.usr;
 import com.mysql.jdbc.StringUtils;
 import java.awt.Component;
 import java.awt.Image;
@@ -33,6 +32,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+import modelos.DetallePedido;
 import modelos.Empleado;
 import modelos.Pedido;
 import modelos.Producto;
@@ -451,7 +451,7 @@ public class Pedidos extends javax.swing.JFrame {
                 });
 
             }
-           
+
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
             JOptionPane.showMessageDialog(this, "Ha surgido un error y no se han podido recuperar los registros");
@@ -469,8 +469,8 @@ public class Pedidos extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        Pedidos_servicio.getInstance().guardarPedidoCab(jLabelNped.getText(), emp.getIdEmpleado().toString(), Usuarios_servicio.usr);
+
+        Pedidos_servicio.getInstance().guardarPedidoCab(jLabelNped.getText(), emp.getIdEmpleado().toString(), Usuarios_servicio.getInstance().getUsuarioLogeado());
 
         for (int i = 0; i < model.getRowCount(); i++) {
             try {
@@ -479,7 +479,7 @@ public class Pedidos extends javax.swing.JFrame {
                 Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
             }
             Pedidos_servicio.getInstance().guardarPedidoDet(jLabelNped.getText(), prod.getIdProducto().toString(), prod.getPrecio().toString(), (String) jTableEditPed.getValueAt(i, 2).toString());
-            
+
         }
         try {
             Conexion.getConnection().commit();
@@ -506,28 +506,17 @@ public class Pedidos extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCancelarPedActionPerformed
 
     private void jButtonNuevoPedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNuevoPedActionPerformed
-        // TODO add your handling code here:        
-        jPanelModifPed.setVisible(true);
+         jPanelModifPed.setVisible(true);
         jPanelBusqPed.setVisible(false);
         jPanelModifPed.setBorder(javax.swing.BorderFactory.createTitledBorder("Nuevo Pedido"));
-
+        String ped = "";
         try {
-            List<Empleado> empleados;
-            empleados = Empleados_servicio.getInstance().recuperarTodas();
-            for (int i = 0; i < empleados.size(); i++) {
-                jComboEmpleado1.addItem(empleados.get(i).getNombreEmpleado());
-
-            }
-            jComboEmpleado1.insertItemAt("", 0);
-            String ped;
             ped = Pedidos_servicio.getInstance().recuperarIdNuevoPed();
-            jLabelNped.setText(ped);
-
         } catch (SQLException ex) {
             Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-
+        jLabelNped.setText(ped);
+        cargarComboEmpleado(jComboEmpleado1);
     }//GEN-LAST:event_jButtonNuevoPedActionPerformed
 
     private void jComboEmpleado1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboEmpleado1ActionPerformed
@@ -543,17 +532,31 @@ public class Pedidos extends javax.swing.JFrame {
         ((DefaultTableModel) jTableEditPed.getModel()).removeRow(jTableEditPed.getSelectedRow());
         recalculaTotal();
     }//GEN-LAST:event_jButtonDeleteItemActionPerformed
+    private void cargarComboEmpleado(JComboBox combo) {
+        try {
+            List<Empleado> empleados;
+            empleados = Empleados_servicio.getInstance().recuperarTodas();
+            for (int i = 0; i < empleados.size(); i++) {
+                combo.addItem(empleados.get(i).getNombreEmpleado());
+
+            }
+            combo.insertItemAt("", 0);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     private void recalculaTotal() {
-        int total = 0;
-        int parcial = 0;
+        Double total = 0.0;
+        Double parcial = 0.0;
         for (int i = 0; i < jTableEditPed.getRowCount(); i++) {
             if (!StringUtils.isNullOrEmpty(jTableEditPed.getValueAt(i, 3).toString())) {
-                parcial = (Integer) jTableEditPed.getValueAt(i, 3);
+                parcial = Double.valueOf(jTableEditPed.getValueAt(i, 3).toString());
                 total = total + parcial;
             }
         }
-        jLabelTotal.setText(Integer.toString(total));
+        jLabelTotal.setText(Double.toString(total));
     }
 
     /**
@@ -630,7 +633,7 @@ public class Pedidos extends javax.swing.JFrame {
         private String label;
 
         private boolean isPushed;
-        
+
         private int columna;
 
         public ButtonEditor(JCheckBox checkBox) {
@@ -669,27 +672,33 @@ public class Pedidos extends javax.swing.JFrame {
 
         public Object getCellEditorValue() {
             if (isPushed) {
-                if(columna == 3){//modificar                
-                jPanelBusqPed.setVisible(false);                
-                jPanelModifPed.setVisible(true);
-                jPanelModifPed.setBorder(javax.swing.BorderFactory.createTitledBorder("Modificar Pedido"));
-                int fila = jTablePedidos.getSelectedRow();
-                Pedido ped = null;
+                if (columna == 3) {//modificar                
+                    jPanelBusqPed.setVisible(false);
+                    jPanelModifPed.setVisible(true);
+                    jPanelModifPed.setBorder(javax.swing.BorderFactory.createTitledBorder("Modificar Pedido"));
+                    int fila = jTablePedidos.getSelectedRow();
+                    Pedido ped = null;
                     try {
                         ped = Pedidos_servicio.getInstance().recuperarPedidoCompleto(jTablePedidos.getValueAt(fila, 0).toString());
                     } catch (SQLException ex) {
                         Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                jLabelNped.setText(ped.getIdPedido().toString());
-                jComboEmpleado1.setSelectedItem(ped.getEmpleado().getNombreEmpleado());
-                            
+                    cargarComboEmpleado(jComboEmpleado1);
+                    jLabelNped.setText(ped.getIdPedido().toString());
+                    jComboEmpleado1.setSelectedItem(ped.getEmpleado().getNombreEmpleado());
+                    DefaultTableModel model = (DefaultTableModel) jTableEditPed.getModel();
+                    model.removeRow(0);
+                    for (DetallePedido det : ped.getDetallesPedido()) {
+
+                        model.addRow(new Object[]{det.getProducto().getDescripcion(), det.getPrecio().toString(), det.getCantidad().toString(), String.valueOf(det.getCantidad() * det.getPrecio())});
+
+                    }
+                    recalculaTotal();
+
+                } else {//eliminar
+
                 }
-                else
-                {//eliminar
-                    
-                    
-                }
-                
+
             }
             isPushed = false;
             return new String(label);
