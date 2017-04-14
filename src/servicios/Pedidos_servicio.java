@@ -116,7 +116,7 @@ public class Pedidos_servicio {
         Pedido pedido = null;
         String where = " where ped.idpedido=" + idPedido;
         try {
-            Integer pedidoAnterior = null;
+            int pedidoAnterior = 0;
             
             PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT ped.idpedido,ped.idempleado,emp.nombre,ped.fecha,ped.usuarioid_creacion,usu.nombre,det.idproducto,prod.descripcion,det.precio,det.cantidad FROM ABMPrueba.pedido ped JOIN ABMPrueba.empleado emp ON emp.idempleado = ped.idempleado JOIN ABMPrueba.usuario usu ON usu.idusuario = ped.usuarioid_creacion LEFT JOIN (ABMPrueba.detalle_pedido det JOIN ABMPrueba.producto prod ON det.idproducto = prod.idproducto) ON ped.idpedido = det.idpedido" + where + ";");
             ResultSet resultado = consulta.executeQuery();
