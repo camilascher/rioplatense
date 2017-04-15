@@ -10,25 +10,31 @@ package modelos;
  * @author cami
  */
 public class Empleado {
+
     private final Integer idEmpleado;
     private final String nombre;
-    
-    public Empleado(){
+
+    public Empleado() {
         this.idEmpleado = null;
         this.nombre = null;
     }
-    
-    public Empleado(Integer idEmpleado, String nombre){
+
+    public Empleado(Integer idEmpleado, String nombre) {
         this.idEmpleado = idEmpleado;
-        this.nombre  = nombre;
+        this.nombre = nombre;
     }
-    
-    public Integer getIdEmpleado(){
+
+    public Integer getIdEmpleado() {
         return idEmpleado;
     }
-    
-    public String getNombreEmpleado(){
+
+    public String getNombreEmpleado() {
         return nombre;
     }
-    
+
+    @Override
+    public String toString() {
+        return nombre;
+    }
+
 }
