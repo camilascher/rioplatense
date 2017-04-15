@@ -15,6 +15,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -28,6 +30,7 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -66,11 +69,11 @@ public class Pedidos extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        comboProductos.addItem(null);
         for (int i = 0; i < productos.size(); i++) {
             comboProductos.addItem(productos.get(i));
 
-        }
+        }   
         initComponents();
         cargarComboEmpleado(jComboEmpleado);
     }
@@ -306,12 +309,14 @@ public class Pedidos extends javax.swing.JFrame {
                     int column = e.getColumn();
                     if (column == 2)
                     {
-                        int precio = (Integer)jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),1);
-                        int cant = (Integer) Integer.parseInt((String)jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),2));
-                        int tot = precio*cant;
-                        jTableEditPed.setValueAt(tot,jTableEditPed.getSelectedRow(),3);
 
-                        recalculaTotal();
+                        if(jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),1)!= null && !"".equals(jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),1)) ){
+                            int precio = Integer.valueOf(jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),1).toString());
+                            int cant =  Integer.valueOf(jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),2).toString());
+                            int tot = precio*cant;
+                            jTableEditPed.setValueAt(tot,jTableEditPed.getSelectedRow(),3);
+
+                            recalculaTotal();}
                     }
 
                 }
@@ -441,7 +446,7 @@ public class Pedidos extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jButtonBuscarActionPerformed
 
-    private void cargarPedidos()  {
+    private void cargarPedidos() {
         List<Pedido> ped;
         try {
             ped = Pedidos_servicio.getInstance().recuperarTodasEnc(this.jTextNroPedido.getText(), this.jTextFecha.getText(), (String) this.jComboEmpleado.getSelectedItem());
@@ -452,11 +457,11 @@ public class Pedidos extends javax.swing.JFrame {
                     ped.get(i).getIdPedido(),
                     ped.get(i).getFecha(),
                     ped.get(i).getEmpleado().getNombreEmpleado()
-                        
+
                 });
-                
+
             }
-            
+
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
             JOptionPane.showMessageDialog(this, "Ha surgido un error y no se han podido recuperar los registros");
@@ -682,7 +687,7 @@ public class Pedidos extends javax.swing.JFrame {
         public Object getCellEditorValue() {
             if (isPushed) {
                 ped = null;
-                int fila = jTablePedidos.getSelectedRow();
+                final int fila = jTablePedidos.getSelectedRow();
                 try {
                     ped = Pedidos_servicio.getInstance().recuperarPedidoCompleto(jTablePedidos.getValueAt(fila, 0).toString());
                 } catch (SQLException ex) {
@@ -707,25 +712,42 @@ public class Pedidos extends javax.swing.JFrame {
                     recalculaTotal();
 
                 } else {
-                    try {
-                        //eliminar
-                        Conexion.getConnection().setAutoCommit(false);
-                    } catch (SQLException ex) {
-                        Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    Pedidos_servicio.getInstance().borrarPedidoDet(String.valueOf(ped.getIdPedido()));
-                    Pedidos_servicio.getInstance().borrarPedidoCab(String.valueOf(ped.getIdPedido()));
-                    cargarPedidos();
-                    
-                    try {
-                        Conexion.getConnection().commit();
-                    } catch (SQLException ex) {
-                        Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
+
+                    int n = JOptionPane.showConfirmDialog(jPanelBusqPed, "Seguro?", "Borrar pedido", JOptionPane.YES_NO_OPTION);
+                    if (n == JOptionPane.YES_OPTION) {
+                        try {
+                            //eliminar
+                            Conexion.getConnection().setAutoCommit(false);
+                        } catch (SQLException ex) {
+                            Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        Pedidos_servicio.getInstance().borrarPedidoDet(String.valueOf(ped.getIdPedido()));
+                        Pedidos_servicio.getInstance().borrarPedidoCab(String.valueOf(ped.getIdPedido()));
+                        try {
+                            Conexion.getConnection().commit();
+                        } catch (SQLException ex) {
+                            Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
+                        final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
+                        executor.schedule(new Runnable() {
+                            @Override
+                            public void run() {
+                                borrarPedido(fila);
+                            }
+                        }, 1, TimeUnit.SECONDS);
+
+                        JOptionPane.showMessageDialog(jPanelBusqPed, "Se ha eliminado el pedido con éxito");
+
+                    } else if (n == JOptionPane.NO_OPTION) {
+
+                    } else {
                     }
                 }
 
             }
             isPushed = false;
+
             return new String(label);
         }
 
@@ -736,6 +758,10 @@ public class Pedidos extends javax.swing.JFrame {
 
         protected void fireEditingStopped() {
             super.fireEditingStopped();
+        }
+
+        private void borrarPedido(int fila) {
+            ((DefaultTableModel) jTablePedidos.getModel()).removeRow(fila);
         }
     }
 
