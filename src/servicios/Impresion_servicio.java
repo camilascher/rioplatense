@@ -9,6 +9,8 @@ import modelos.DetallePedido;
 import modelos.Empleado;
 import modelos.Pedido;
 import util.Impresora;
+import util.Impresora1;
+import util.Impresora2;
 
 /**
  *
@@ -16,10 +18,30 @@ import util.Impresora;
  */
 public class Impresion_servicio {
 
-    static final String NOMBRE_EMPRESA = "EURO-CUCINE S.R.L.";
-    
-    public static void imprimirPedido(Pedido pedido) {
-        Impresora impresora = new Impresora(null);
+    private static final String NOMBRE_EMPRESA = "EURO-CUCINE S.R.L.";
+    private static Impresion_servicio instance = null;
+    private final int tipoImpresora;
+
+    protected Impresion_servicio(int tipoImpresora) {
+        this.tipoImpresora = tipoImpresora;
+    }
+
+    public static Impresion_servicio getInstance() {
+        if (instance == null) {
+            instance = new Impresion_servicio(1);
+        }
+        return instance;
+    }
+
+    private Impresora getImpresora() {
+        if(tipoImpresora == 1)
+            return new Impresora1(null);
+        else
+            return new Impresora2(null);
+    }
+
+    public void imprimirPedido(Pedido pedido) {
+        Impresora impresora = getImpresora();
         Empleado empleado = pedido.getEmpleado();
         Double total = 0.0;
         Double acumulado = 0.0;
