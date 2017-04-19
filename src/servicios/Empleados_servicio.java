@@ -60,4 +60,19 @@ public class Empleados_servicio {
         }
         return emp;
     }
+    
+    public Empleado recuperarEmpPorId(String id) throws SQLException {
+        Empleado emp = null;
+        try {
+            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT idempleado,nombre from ABMPrueba.empleado where idempleado='" + id + "';");
+            ResultSet resultado = consulta.executeQuery();
+            while (resultado.next()) {
+                emp = new Empleado(resultado.getInt("idempleado"), resultado.getString("nombre"));
+            }
+
+        } catch (SQLException ex) {
+            throw new SQLException(ex);
+        }
+        return emp;
+    }
 }

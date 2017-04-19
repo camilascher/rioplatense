@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -56,7 +57,7 @@ public class Pedidos extends javax.swing.JFrame {
 
     private Pedido ped = null;
     private JComboBox comboProductos = null;
-    private JComboBox comboEmpleados = null;
+    //private JComboBox comboEmpleados = null;
 
     /**
      * Creates new form Inicio
@@ -73,9 +74,11 @@ public class Pedidos extends javax.swing.JFrame {
         for (int i = 0; i < productos.size(); i++) {
             comboProductos.addItem(productos.get(i));
 
-        }   
+        }
         initComponents();
         cargarComboEmpleado(jComboEmpleado);
+        cargarPantallaNuevoPed();
+
     }
 
     /**
@@ -105,13 +108,14 @@ public class Pedidos extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabelNped = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jComboEmpleado1 = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableEditPed = new javax.swing.JTable();
         jButtonAddItem = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jLabelTotal = new javax.swing.JLabel();
         jButtonDeleteItem = new javax.swing.JButton();
+        jTextEmpleadoLeg = new javax.swing.JTextField();
+        jLabelEmpleadoNombre = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -284,39 +288,39 @@ public class Pedidos extends javax.swing.JFrame {
 
         jLabel5.setText("Empleado");
 
-        jComboEmpleado1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { }));
-        jComboEmpleado1.setName(""); // NOI18N
-        jComboEmpleado1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboEmpleado1ActionPerformed(evt);
-            }
-        });
-
         jTableEditPed.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null}
+                {null,null, null, null, null}
             },
             new String [] {
-                "Producto", "Precio", "Cantidad", "Total"
+                "Código","Producto", "Precio", "Cantidad", "Total"
             }
         ));
         jScrollPane1.setViewportView(jTableEditPed);
-        columnaProducto(jTableEditPed, jTableEditPed.getColumnModel().getColumn(0));
+        //columnaProducto(jTableEditPed, jTableEditPed.getColumnModel().getColumn(0));
         jTableEditPed.getModel().addTableModelListener(new TableModelListener(){
             public void tableChanged(TableModelEvent e){
                 if(e.getType()== TableModelEvent.UPDATE)
                 {
                     int column = e.getColumn();
-                    if (column == 2)
+                    if (column == 0){
+                        completarProducto();
+                    }
+                    else if (column == 3)
                     {
 
-                        if(jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),1)!= null && !"".equals(jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),1)) ){
-                            int precio = Integer.valueOf(jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),1).toString());
-                            int cant =  Integer.valueOf(jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),2).toString());
+                        if(jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),2)!= null && !"".equals(jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),2)) ){
+                            int precio = Integer.valueOf(jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),2).toString());
+                            int cant =  Integer.valueOf(jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),3).toString());
                             int tot = precio*cant;
-                            jTableEditPed.setValueAt(tot,jTableEditPed.getSelectedRow(),3);
+                            jTableEditPed.setValueAt(tot,jTableEditPed.getSelectedRow(),4);
 
-                            recalculaTotal();}
+                            recalculaTotal();
+                            agregarFila();
+                            jTableEditPed.setCellSelectionEnabled(true);
+                            jTableEditPed.changeSelection(jTableEditPed.getSelectedRow()+1, 0, false, false);
+                            jTableEditPed.requestFocus();
+                        }
                     }
 
                 }
@@ -340,42 +344,53 @@ public class Pedidos extends javax.swing.JFrame {
             }
         });
 
+        jTextEmpleadoLeg.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextEmpleadoLegKeyPressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelModifPedLayout = new javax.swing.GroupLayout(jPanelModifPed);
         jPanelModifPed.setLayout(jPanelModifPedLayout);
         jPanelModifPedLayout.setHorizontalGroup(
             jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelModifPedLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanelModifPedLayout.createSequentialGroup()
-                        .addComponent(jButtonCancelarPed)
-                        .addGap(30, 30, 30)
-                        .addComponent(jButtonGuardarPed)
-                        .addGap(12, 12, 12))
-                    .addGroup(jPanelModifPedLayout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabelTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(22, 22, 22))))
             .addGroup(jPanelModifPedLayout.createSequentialGroup()
-                .addComponent(jLabel4)
+                .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelModifPedLayout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jTextEmpleadoLeg))
+                    .addGroup(jPanelModifPedLayout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabelNped, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabelNped, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelModifPedLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
-            .addGroup(jPanelModifPedLayout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboEmpleado1, javax.swing.GroupLayout.PREFERRED_SIZE, 407, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 245, Short.MAX_VALUE)
+                .addComponent(jLabelEmpleadoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButtonAddItem, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonDeleteItem, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(23, 23, 23))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelModifPedLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelModifPedLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanelModifPedLayout.createSequentialGroup()
+                                .addComponent(jButtonCancelarPed)
+                                .addGap(30, 30, 30)
+                                .addComponent(jButtonGuardarPed)
+                                .addGap(12, 12, 12))
+                            .addGroup(jPanelModifPedLayout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabelTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(22, 22, 22))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelModifPedLayout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 850, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
         jPanelModifPedLayout.setVerticalGroup(
             jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -387,9 +402,10 @@ public class Pedidos extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jComboEmpleado1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonDeleteItem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonAddItem))
+                    .addComponent(jButtonAddItem)
+                    .addComponent(jTextEmpleadoLeg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelEmpleadoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, Short.MAX_VALUE)
@@ -468,6 +484,21 @@ public class Pedidos extends javax.swing.JFrame {
         }
     }
 
+    private void completarProducto() {
+        String prod = jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(), 0).toString();
+        Producto p = null;
+        try {
+            p = Productos_servicio.getInstance().recuperarPorId(Integer.valueOf(prod));
+        } catch (SQLException ex) {
+            Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        jTableEditPed.setValueAt(p.getDescripcion(), jTableEditPed.getSelectedRow(), 1);
+        jTableEditPed.setValueAt(p.getPrecio(),jTableEditPed.getSelectedRow(),2);
+        jTableEditPed.setCellSelectionEnabled(true);
+        jTableEditPed.changeSelection(jTableEditPed.getSelectedRow(), 3, false, false);
+        jTableEditPed.requestFocus();
+    }
+
     private void jButtonGuardarPedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarPedActionPerformed
         DefaultTableModel model = (DefaultTableModel) jTableEditPed.getModel();
         Producto prod = null;
@@ -479,7 +510,7 @@ public class Pedidos extends javax.swing.JFrame {
         }
         if (ped == null) {
             try {
-                emp = Empleados_servicio.getInstance().recuperarEmpPorDescripcion(jComboEmpleado1.getSelectedItem().toString());
+                emp = Empleados_servicio.getInstance().recuperarEmpPorId(jTextEmpleadoLeg.getText());
             } catch (SQLException ex) {
                 Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -490,22 +521,34 @@ public class Pedidos extends javax.swing.JFrame {
             Pedidos_servicio.getInstance().borrarPedidoDet(jLabelNped.getText());
         }
         for (int i = 0; i < model.getRowCount(); i++) {
-            prod = (Producto) jTableEditPed.getValueAt(i, 0);
-            Pedidos_servicio.getInstance().guardarPedidoDet(jLabelNped.getText(), prod.getIdProducto().toString(), prod.getPrecio().toString(), (String) jTableEditPed.getValueAt(i, 2).toString());
-
+            if(jTableEditPed.getValueAt(i, 0)!= null &&  jTableEditPed.getValueAt(i, 0).toString() != ""){
+            try {
+                prod = (Producto) Productos_servicio.getInstance().recuperarPorId(Integer.valueOf(jTableEditPed.getValueAt(i, 0).toString()));
+            } catch (SQLException ex) {
+                Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            Pedidos_servicio.getInstance().guardarPedidoDet(jLabelNped.getText(), prod.getIdProducto().toString(), prod.getPrecio().toString(), (String) jTableEditPed.getValueAt(i, 3).toString());
+            }
         }
         try {
             Conexion.getConnection().commit();
         } catch (SQLException ex) {
             Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
         }
-        jButtonCancelarPedActionPerformed(evt);
+        limpiarPantallaNuevoPed();
+        cargarPantallaNuevoPed();
+
     }//GEN-LAST:event_jButtonGuardarPedActionPerformed
 
     private void jButtonCancelarPedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarPedActionPerformed
+        limpiarPantallaNuevoPed();
+
+    }//GEN-LAST:event_jButtonCancelarPedActionPerformed
+
+    private void limpiarPantallaNuevoPed() {
         jPanelModifPed.setVisible(false);
-        jComboEmpleado1.setSelectedIndex(0); //ok pero limpiar el combo 
-        jComboEmpleado1.removeAllItems();
+        jTextEmpleadoLeg.setText("");;//Limpio legajo y nombre del empleado
+        jLabelEmpleadoNombre.setText("");
         DefaultTableModel model = (DefaultTableModel) jTableEditPed.getModel();
         while (model.getRowCount() > 0) {
             for (int i = 0; i < model.getRowCount(); i++) {
@@ -515,10 +558,13 @@ public class Pedidos extends javax.swing.JFrame {
         model.addRow(new Object[]{"", "", "", ""});
         jLabelTotal.setText(Integer.toString(0));
         jPanelBusqPed.setVisible(true);
-
-    }//GEN-LAST:event_jButtonCancelarPedActionPerformed
+    }
 
     private void jButtonNuevoPedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNuevoPedActionPerformed
+        cargarPantallaNuevoPed();
+    }//GEN-LAST:event_jButtonNuevoPedActionPerformed
+
+    private void cargarPantallaNuevoPed() {
         jPanelModifPed.setVisible(true);
         jPanelBusqPed.setVisible(false);
         jPanelModifPed.setBorder(javax.swing.BorderFactory.createTitledBorder("Nuevo Pedido"));
@@ -529,22 +575,39 @@ public class Pedidos extends javax.swing.JFrame {
             Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
         }
         jLabelNped.setText(ped);
-        cargarComboEmpleado(jComboEmpleado1);
-    }//GEN-LAST:event_jButtonNuevoPedActionPerformed
 
-    private void jComboEmpleado1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboEmpleado1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboEmpleado1ActionPerformed
+    }
 
     private void jButtonAddItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddItemActionPerformed
-        DefaultTableModel model = (DefaultTableModel) jTableEditPed.getModel();
-        model.addRow(new Object[]{"", "", "", ""});
+        agregarFila();
     }//GEN-LAST:event_jButtonAddItemActionPerformed
+
+    private void agregarFila() {
+        DefaultTableModel model = (DefaultTableModel) jTableEditPed.getModel();
+        model.addRow(new Object[]{"", "", "", "",""});
+    }
 
     private void jButtonDeleteItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteItemActionPerformed
         ((DefaultTableModel) jTableEditPed.getModel()).removeRow(jTableEditPed.getSelectedRow());
         recalculaTotal();
     }//GEN-LAST:event_jButtonDeleteItemActionPerformed
+
+    private void jTextEmpleadoLegKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextEmpleadoLegKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            Empleado emp = null;
+            try {
+                emp = Empleados_servicio.getInstance().recuperarEmpPorId(jTextEmpleadoLeg.getText());
+            } catch (SQLException ex) {
+                Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (emp != null) {
+                jLabelEmpleadoNombre.setText(emp.getNombreEmpleado());
+            } else {
+                JOptionPane.showMessageDialog(jPanelModifPed, "No se ha encontrado el legajo ingresado");
+                jTextEmpleadoLeg.setText("");
+            }
+        }
+    }//GEN-LAST:event_jTextEmpleadoLegKeyPressed
     private void cargarComboEmpleado(JComboBox combo) {
         try {
             List<Empleado> empleados;
@@ -565,8 +628,8 @@ public class Pedidos extends javax.swing.JFrame {
         Double total = 0.0;
         Double parcial = 0.0;
         for (int i = 0; i < jTableEditPed.getRowCount(); i++) {
-            if (!StringUtils.isNullOrEmpty(jTableEditPed.getValueAt(i, 3).toString())) {
-                parcial = Double.valueOf(jTableEditPed.getValueAt(i, 3).toString());
+            if (!StringUtils.isNullOrEmpty(jTableEditPed.getValueAt(i, 4).toString())) {
+                parcial = Double.valueOf(jTableEditPed.getValueAt(i, 4).toString());
                 total = total + parcial;
             }
         }
@@ -696,12 +759,11 @@ public class Pedidos extends javax.swing.JFrame {
                 if (columna == 3) {//modificar                
                     jPanelBusqPed.setVisible(false);
                     jPanelModifPed.setVisible(true);
-                    jComboEmpleado1.setEnabled(false);
+
                     jPanelModifPed.setBorder(javax.swing.BorderFactory.createTitledBorder("Modificar Pedido"));
 
-                    cargarComboEmpleado(jComboEmpleado1);
                     jLabelNped.setText(ped.getIdPedido().toString());
-                    jComboEmpleado1.setSelectedItem(ped.getEmpleado().getNombreEmpleado());
+                    //setear el legajo y el nombre del empleado OJO! que el textbox no sea editable tampoco
                     DefaultTableModel model = (DefaultTableModel) jTableEditPed.getModel();
                     model.removeRow(0);
                     for (DetallePedido det : ped.getDetallesPedido()) {
@@ -765,29 +827,29 @@ public class Pedidos extends javax.swing.JFrame {
         }
     }
 
-    public void columnaProducto(JTable table,
-            TableColumn colProd) {
-        //Set up the editor for the sport cells.
-
-        colProd.setCellEditor(new DefaultCellEditor(comboProductos));
-
-        //Set up tool tips for the sport cells.
-        DefaultTableCellRenderer renderer
-                = new DefaultTableCellRenderer();
-        renderer.setToolTipText("Click para obtener productos");
-        colProd.setCellRenderer(renderer);
-        //relleno el resto de la fila 
-        comboProductos.addItemListener(new ItemListener() {
-
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    Producto prodSel = (Producto) e.getItem();
-                    jTableEditPed.setValueAt(prodSel.getPrecio(), jTableEditPed.getSelectedRow(), 1);
-
-                }
-            }
-        });
-    }
+//    public void columnaProducto(JTable table,
+//            TableColumn colProd) {
+//        //Set up the editor for the sport cells.
+//
+//        colProd.setCellEditor(new DefaultCellEditor(comboProductos));
+//
+//        //Set up tool tips for the sport cells.
+//        DefaultTableCellRenderer renderer
+//                = new DefaultTableCellRenderer();
+//        renderer.setToolTipText("Click para obtener productos");
+//        colProd.setCellRenderer(renderer);
+//        //relleno el resto de la fila 
+//        comboProductos.addItemListener(new ItemListener() {
+//
+//            public void itemStateChanged(ItemEvent e) {
+//                if (e.getStateChange() == ItemEvent.SELECTED) {
+//                    Producto prodSel = (Producto) e.getItem();
+//                    jTableEditPed.setValueAt(prodSel.getPrecio(), jTableEditPed.getSelectedRow(), 2);
+//
+//                }
+//            }
+//        });
+//    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -798,13 +860,13 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JButton jButtonGuardarPed;
     private javax.swing.JButton jButtonNuevoPed;
     private javax.swing.JComboBox<String> jComboEmpleado;
-    private javax.swing.JComboBox<String> jComboEmpleado1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabelEmpleadoNombre;
     private javax.swing.JLabel jLabelNped;
     private javax.swing.JLabel jLabelTotal;
     private javax.swing.JMenu jMenu1;
@@ -820,6 +882,7 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTableEditPed;
     private javax.swing.JTable jTablePedidos;
+    private javax.swing.JTextField jTextEmpleadoLeg;
     private javax.swing.JFormattedTextField jTextFecha;
     private javax.swing.JTextField jTextNroPedido;
     // End of variables declaration//GEN-END:variables
