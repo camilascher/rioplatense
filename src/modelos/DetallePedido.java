@@ -12,17 +12,17 @@ package modelos;
 public class DetallePedido {
     private final Integer idPedido;
     private final Producto producto;
-    private final Integer precio;
+    private final Double precio;
     private final Integer cantidad;
     
     public DetallePedido(){
         this.idPedido = null;
         this.producto = null;
-        this.precio=null;
+        this.precio=0.0;
         this.cantidad=null;
     }
     
-    public DetallePedido(Integer idPedido,Producto producto, Integer precio,Integer cantidad){
+    public DetallePedido(Integer idPedido,Producto producto, Double precio,Integer cantidad){
         this.idPedido = idPedido;
         this.producto = producto;
         this.precio = precio;
@@ -37,7 +37,7 @@ public class DetallePedido {
         return producto;
     }
     
-    public Integer getPrecio(){
+    public Double getPrecio(){
         return precio;
     }
     

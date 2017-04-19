@@ -52,7 +52,7 @@ public class Productos_servicio {
             consulta.setInt(1, id_prod);
             ResultSet resultado = consulta.executeQuery();
             while (resultado.next()) {
-                prod = new Producto(id_prod, resultado.getString("descripcion"), resultado.getInt("precio"));
+                prod = new Producto(id_prod, resultado.getString("descripcion"), resultado.getDouble("precio"));
             }
         } catch (SQLException ex) {
             throw new SQLException(ex);
@@ -67,7 +67,7 @@ public class Productos_servicio {
             consulta.setString(1, desc);
             ResultSet resultado = consulta.executeQuery();
             while (resultado.next()) {
-                prod = new Producto(resultado.getInt("idproducto"), resultado.getString("descripcion"), resultado.getInt("precio"));
+                prod = new Producto(resultado.getInt("idproducto"), resultado.getString("descripcion"), resultado.getDouble("precio"));
             }
         } catch (SQLException ex) {
             throw new SQLException(ex);
@@ -90,7 +90,7 @@ public class Productos_servicio {
             PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT idproducto, descripcion, precio FROM producto ORDER BY idproducto");
             ResultSet resultado = consulta.executeQuery();
             while (resultado.next()) {
-                prods.add(new Producto(resultado.getInt("idproducto"), resultado.getString("descripcion"), resultado.getInt("precio")));
+                prods.add(new Producto(resultado.getInt("idproducto"), resultado.getString("descripcion"), resultado.getDouble("precio")));
             }
         } catch (SQLException ex) {
             throw new SQLException(ex);

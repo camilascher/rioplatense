@@ -29,6 +29,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
@@ -116,6 +117,7 @@ public class Pedidos extends javax.swing.JFrame {
         jButtonDeleteItem = new javax.swing.JButton();
         jTextEmpleadoLeg = new javax.swing.JTextField();
         jLabelEmpleadoNombre = new javax.swing.JLabel();
+        jPanelEmpleados = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -297,7 +299,6 @@ public class Pedidos extends javax.swing.JFrame {
             }
         ));
         jScrollPane1.setViewportView(jTableEditPed);
-        //columnaProducto(jTableEditPed, jTableEditPed.getColumnModel().getColumn(0));
         jTableEditPed.getModel().addTableModelListener(new TableModelListener(){
             public void tableChanged(TableModelEvent e){
                 if(e.getType()== TableModelEvent.UPDATE)
@@ -310,9 +311,9 @@ public class Pedidos extends javax.swing.JFrame {
                     {
 
                         if(jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),2)!= null && !"".equals(jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),2)) ){
-                            int precio = Integer.valueOf(jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),2).toString());
+                            Double precio = Double.valueOf(jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),2).toString());
                             int cant =  Integer.valueOf(jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),3).toString());
-                            int tot = precio*cant;
+                            Double tot = precio*cant;
                             jTableEditPed.setValueAt(tot,jTableEditPed.getSelectedRow(),4);
 
                             recalculaTotal();
@@ -377,17 +378,17 @@ public class Pedidos extends javax.swing.JFrame {
                 .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelModifPedLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanelModifPedLayout.createSequentialGroup()
-                                .addComponent(jButtonCancelarPed)
-                                .addGap(30, 30, 30)
-                                .addComponent(jButtonGuardarPed)
-                                .addGap(12, 12, 12))
+                        .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanelModifPedLayout.createSequentialGroup()
                                 .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(106, 106, 106)
                                 .addComponent(jLabelTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(22, 22, 22))))
+                                .addGap(22, 22, 22))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelModifPedLayout.createSequentialGroup()
+                                .addComponent(jButtonGuardarPed)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButtonCancelarPed)
+                                .addContainerGap())))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelModifPedLayout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 850, Short.MAX_VALUE)
                         .addContainerGap())))
@@ -400,12 +401,13 @@ public class Pedidos extends javax.swing.JFrame {
                     .addComponent(jLabelNped, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jButtonDeleteItem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonAddItem)
-                    .addComponent(jTextEmpleadoLeg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelEmpleadoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelEmpleadoNombre, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel5)
+                        .addComponent(jButtonDeleteItem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButtonAddItem)
+                        .addComponent(jTextEmpleadoLeg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, Short.MAX_VALUE)
@@ -421,6 +423,19 @@ public class Pedidos extends javax.swing.JFrame {
 
         getContentPane().add(jPanelModifPed, "card3");
 
+        javax.swing.GroupLayout jPanelEmpleadosLayout = new javax.swing.GroupLayout(jPanelEmpleados);
+        jPanelEmpleados.setLayout(jPanelEmpleadosLayout);
+        jPanelEmpleadosLayout.setHorizontalGroup(
+            jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 884, Short.MAX_VALUE)
+        );
+        jPanelEmpleadosLayout.setVerticalGroup(
+            jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 461, Short.MAX_VALUE)
+        );
+
+        getContentPane().add(jPanelEmpleados, "card4");
+
         jMenu1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jMenu1.setForeground(new java.awt.Color(153, 153, 153));
         jMenu1.setText("Pedidos");
@@ -430,6 +445,16 @@ public class Pedidos extends javax.swing.JFrame {
         jMenuBar1.add(jMenu2);
 
         jMenu3.setText("Empleados");
+        jMenu3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu3MouseClicked(evt);
+            }
+        });
+        jMenu3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu3ActionPerformed(evt);
+            }
+        });
         jMenuBar1.add(jMenu3);
 
         jMenu4.setText("Reportes");
@@ -493,7 +518,7 @@ public class Pedidos extends javax.swing.JFrame {
             Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
         }
         jTableEditPed.setValueAt(p.getDescripcion(), jTableEditPed.getSelectedRow(), 1);
-        jTableEditPed.setValueAt(p.getPrecio(),jTableEditPed.getSelectedRow(),2);
+        jTableEditPed.setValueAt(p.getPrecio(), jTableEditPed.getSelectedRow(), 2);
         jTableEditPed.setCellSelectionEnabled(true);
         jTableEditPed.changeSelection(jTableEditPed.getSelectedRow(), 3, false, false);
         jTableEditPed.requestFocus();
@@ -510,7 +535,7 @@ public class Pedidos extends javax.swing.JFrame {
         }
         if (ped == null) {
             try {
-                emp = Empleados_servicio.getInstance().recuperarEmpPorId(jTextEmpleadoLeg.getText());
+                emp = Empleados_servicio.getInstance().recuperarEmpPorIdTarj(jTextEmpleadoLeg.getText());
             } catch (SQLException ex) {
                 Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -521,13 +546,13 @@ public class Pedidos extends javax.swing.JFrame {
             Pedidos_servicio.getInstance().borrarPedidoDet(jLabelNped.getText());
         }
         for (int i = 0; i < model.getRowCount(); i++) {
-            if(jTableEditPed.getValueAt(i, 0)!= null &&  jTableEditPed.getValueAt(i, 0).toString() != ""){
-            try {
-                prod = (Producto) Productos_servicio.getInstance().recuperarPorId(Integer.valueOf(jTableEditPed.getValueAt(i, 0).toString()));
-            } catch (SQLException ex) {
-                Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            Pedidos_servicio.getInstance().guardarPedidoDet(jLabelNped.getText(), prod.getIdProducto().toString(), prod.getPrecio().toString(), (String) jTableEditPed.getValueAt(i, 3).toString());
+            if (jTableEditPed.getValueAt(i, 0) != null && jTableEditPed.getValueAt(i, 0).toString() != "") {
+                try {
+                    prod = (Producto) Productos_servicio.getInstance().recuperarPorId(Integer.valueOf(jTableEditPed.getValueAt(i, 0).toString()));
+                } catch (SQLException ex) {
+                    Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                Pedidos_servicio.getInstance().guardarPedidoDet(jLabelNped.getText(), prod.getIdProducto().toString(), prod.getPrecio().toString(), (String) jTableEditPed.getValueAt(i, 3).toString());
             }
         }
         try {
@@ -546,7 +571,8 @@ public class Pedidos extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCancelarPedActionPerformed
 
     private void limpiarPantallaNuevoPed() {
-        jPanelModifPed.setVisible(false);
+        //jPanelModifPed.setVisible(false);
+        mostrarPanel(jPanelBusqPed);
         jTextEmpleadoLeg.setText("");;//Limpio legajo y nombre del empleado
         jLabelEmpleadoNombre.setText("");
         DefaultTableModel model = (DefaultTableModel) jTableEditPed.getModel();
@@ -557,7 +583,7 @@ public class Pedidos extends javax.swing.JFrame {
         }
         model.addRow(new Object[]{"", "", "", ""});
         jLabelTotal.setText(Integer.toString(0));
-        jPanelBusqPed.setVisible(true);
+        //jPanelBusqPed.setVisible(true);
     }
 
     private void jButtonNuevoPedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNuevoPedActionPerformed
@@ -565,8 +591,7 @@ public class Pedidos extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonNuevoPedActionPerformed
 
     private void cargarPantallaNuevoPed() {
-        jPanelModifPed.setVisible(true);
-        jPanelBusqPed.setVisible(false);
+        mostrarPanel(jPanelModifPed);
         jPanelModifPed.setBorder(javax.swing.BorderFactory.createTitledBorder("Nuevo Pedido"));
         String ped = "";
         try {
@@ -584,7 +609,7 @@ public class Pedidos extends javax.swing.JFrame {
 
     private void agregarFila() {
         DefaultTableModel model = (DefaultTableModel) jTableEditPed.getModel();
-        model.addRow(new Object[]{"", "", "", "",""});
+        model.addRow(new Object[]{"", "", "", "", ""});
     }
 
     private void jButtonDeleteItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteItemActionPerformed
@@ -596,18 +621,38 @@ public class Pedidos extends javax.swing.JFrame {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             Empleado emp = null;
             try {
-                emp = Empleados_servicio.getInstance().recuperarEmpPorId(jTextEmpleadoLeg.getText());
+                emp = Empleados_servicio.getInstance().recuperarEmpPorIdTarj(jTextEmpleadoLeg.getText());
             } catch (SQLException ex) {
                 Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
             }
             if (emp != null) {
                 jLabelEmpleadoNombre.setText(emp.getNombreEmpleado());
+                jTableEditPed.setCellSelectionEnabled(true);
+                jTableEditPed.changeSelection(0, 0, false, false);
+                jTableEditPed.requestFocus();
             } else {
                 JOptionPane.showMessageDialog(jPanelModifPed, "No se ha encontrado el legajo ingresado");
                 jTextEmpleadoLeg.setText("");
             }
         }
     }//GEN-LAST:event_jTextEmpleadoLegKeyPressed
+
+    private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu3ActionPerformed
+
+    }//GEN-LAST:event_jMenu3ActionPerformed
+
+    private void jMenu3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu3MouseClicked
+        mostrarPanel(jPanelEmpleados);
+    }//GEN-LAST:event_jMenu3MouseClicked
+
+    private void mostrarPanel(JPanel panel) {
+        jPanelEmpleados.setVisible(true);
+        jPanelBusqPed.setVisible(false);
+        jPanelModifPed.setVisible(false);
+        panel.setVisible(true);
+
+    }
+
     private void cargarComboEmpleado(JComboBox combo) {
         try {
             List<Empleado> empleados;
@@ -757,9 +802,7 @@ public class Pedidos extends javax.swing.JFrame {
                     Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 if (columna == 3) {//modificar                
-                    jPanelBusqPed.setVisible(false);
-                    jPanelModifPed.setVisible(true);
-
+                    mostrarPanel(jPanelModifPed);
                     jPanelModifPed.setBorder(javax.swing.BorderFactory.createTitledBorder("Modificar Pedido"));
 
                     jLabelNped.setText(ped.getIdPedido().toString());
@@ -771,7 +814,7 @@ public class Pedidos extends javax.swing.JFrame {
                     model.removeRow(0);
                     for (DetallePedido det : ped.getDetallesPedido()) {
 
-                        model.addRow(new Object[]{det.getProducto().getIdProducto(),det.getProducto().getDescripcion(), det.getPrecio().toString(), det.getCantidad().toString(), String.valueOf(det.getCantidad() * det.getPrecio())});
+                        model.addRow(new Object[]{det.getProducto().getIdProducto(), det.getProducto().getDescripcion(), det.getPrecio().toString(), det.getCantidad().toString(), String.valueOf(det.getCantidad() * det.getPrecio())});
 
                     }
                     recalculaTotal();
@@ -854,7 +897,6 @@ public class Pedidos extends javax.swing.JFrame {
 //        });
 //    }
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAddItem;
     private javax.swing.JButton jButtonBuscar;
@@ -880,6 +922,7 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanelBusqPed;
+    private javax.swing.JPanel jPanelEmpleados;
     private javax.swing.JPanel jPanelModifPed;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

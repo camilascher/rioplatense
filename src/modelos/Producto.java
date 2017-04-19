@@ -12,15 +12,15 @@ package modelos;
 public class Producto {
     private final Integer idProducto;
     private String descripcion;
-    private final Integer precio;
+    private final Double precio;
     
     public Producto(){
         this.idProducto = null;
         this.descripcion = null;
-        this.precio = null;
+        this.precio = 0.0;
     }
     
-    public Producto(Integer idProducto, String descripcion, Integer precio){
+    public Producto(Integer idProducto, String descripcion, Double precio){
         this.idProducto = idProducto;
         this.descripcion  = descripcion;
         this.precio = precio;
@@ -34,7 +34,7 @@ public class Producto {
         return descripcion;
     }
     
-    public Integer getPrecio(){
+    public Double getPrecio(){
         return precio;
     }
     

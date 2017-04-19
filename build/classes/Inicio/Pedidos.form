@@ -26,6 +26,10 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Empleados"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jMenu3MouseClicked"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenu3ActionPerformed"/>
+          </Events>
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu4">
           <Properties>
@@ -306,18 +310,18 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="jButtonCancelarPed" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                                  <Component id="jButtonGuardarPed" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
                                   <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="32767" attributes="0"/>
+                                  <EmptySpace min="-2" pref="106" max="-2" attributes="0"/>
                                   <Component id="jLabelTotal" min="-2" pref="66" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="jButtonGuardarPed" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="jButtonCancelarPed" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -338,12 +342,14 @@
                       <Component id="jLabel4" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jButtonDeleteItem" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jButtonAddItem" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jTextEmpleadoLeg" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jLabelEmpleadoNombre" alignment="1" min="-2" pref="17" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButtonDeleteItem" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButtonAddItem" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jTextEmpleadoLeg" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="jScrollPane1" min="-2" pref="250" max="-2" attributes="0"/>
@@ -406,7 +412,7 @@
                 </Property>
               </Properties>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="//columnaProducto(jTableEditPed, jTableEditPed.getColumnModel().getColumn(0));&#xa;jTableEditPed.getModel().addTableModelListener(new TableModelListener(){&#xa;    public void tableChanged(TableModelEvent e){&#xa;    if(e.getType()== TableModelEvent.UPDATE)&#xa;    {&#xa;    int column = e.getColumn();&#xa;    if (column == 0){&#xa;    completarProducto();&#xa;}&#xa;else if (column == 3)&#xa;    {&#xa;    &#xa;    if(jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),2)!= null &amp;&amp; !&quot;&quot;.equals(jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),2)) ){&#xa;    int precio = Integer.valueOf(jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),2).toString());&#xa;    int cant =  Integer.valueOf(jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),3).toString());&#xa;    int tot = precio*cant;&#xa;    jTableEditPed.setValueAt(tot,jTableEditPed.getSelectedRow(),4);&#xa;    &#xa;    recalculaTotal();&#xa;    agregarFila();&#xa;    jTableEditPed.setCellSelectionEnabled(true);&#xa;        jTableEditPed.changeSelection(jTableEditPed.getSelectedRow()+1, 0, false, false);&#xa;        jTableEditPed.requestFocus();&#xa;}&#xa;}&#xa;    &#xa;}&#xa;    }&#xa;});"/>
+                <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="jTableEditPed.getModel().addTableModelListener(new TableModelListener(){&#xa;    public void tableChanged(TableModelEvent e){&#xa;    if(e.getType()== TableModelEvent.UPDATE)&#xa;    {&#xa;    int column = e.getColumn();&#xa;    if (column == 0){&#xa;    completarProducto();&#xa;}&#xa;else if (column == 3)&#xa;    {&#xa;    &#xa;    if(jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),2)!= null &amp;&amp; !&quot;&quot;.equals(jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),2)) ){&#xa;    Double precio = Double.valueOf(jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),2).toString());&#xa;    int cant =  Integer.valueOf(jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),3).toString());&#xa;    Double tot = precio*cant;&#xa;    jTableEditPed.setValueAt(tot,jTableEditPed.getSelectedRow(),4);&#xa;    &#xa;    recalculaTotal();&#xa;    agregarFila();&#xa;    jTableEditPed.setCellSelectionEnabled(true);&#xa;        jTableEditPed.changeSelection(jTableEditPed.getSelectedRow()+1, 0, false, false);&#xa;        jTableEditPed.requestFocus();&#xa;}&#xa;}&#xa;    &#xa;}&#xa;    }&#xa;});"/>
               </AuxValues>
             </Component>
           </SubComponents>
@@ -445,6 +451,26 @@
         <Component class="javax.swing.JLabel" name="jLabelEmpleadoNombre">
         </Component>
       </SubComponents>
+    </Container>
+    <Container class="javax.swing.JPanel" name="jPanelEmpleados">
+      <Constraints>
+        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
+          <CardConstraints cardName="card4"/>
+        </Constraint>
+      </Constraints>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <EmptySpace min="0" pref="884" max="32767" attributes="0"/>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <EmptySpace min="0" pref="461" max="32767" attributes="0"/>
+          </Group>
+        </DimensionLayout>
+      </Layout>
     </Container>
   </SubComponents>
 </Form>
