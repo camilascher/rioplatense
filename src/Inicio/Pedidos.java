@@ -764,11 +764,14 @@ public class Pedidos extends javax.swing.JFrame {
 
                     jLabelNped.setText(ped.getIdPedido().toString());
                     //setear el legajo y el nombre del empleado OJO! que el textbox no sea editable tampoco
+                    jTextEmpleadoLeg.setText(String.valueOf(ped.getEmpleado().getIdEmpleado()));
+                    jTextEmpleadoLeg.setEditable(false);
+                    jLabelEmpleadoNombre.setText(ped.getEmpleado().getNombreEmpleado());
                     DefaultTableModel model = (DefaultTableModel) jTableEditPed.getModel();
                     model.removeRow(0);
                     for (DetallePedido det : ped.getDetallesPedido()) {
 
-                        model.addRow(new Object[]{det.getProducto(), det.getPrecio().toString(), det.getCantidad().toString(), String.valueOf(det.getCantidad() * det.getPrecio())});
+                        model.addRow(new Object[]{det.getProducto().getIdProducto(),det.getProducto().getDescripcion(), det.getPrecio().toString(), det.getCantidad().toString(), String.valueOf(det.getCantidad() * det.getPrecio())});
 
                     }
                     recalculaTotal();
@@ -797,7 +800,7 @@ public class Pedidos extends javax.swing.JFrame {
                             public void run() {
                                 borrarPedido(fila);
                             }
-                        }, 1, TimeUnit.SECONDS);
+                        }, 2, TimeUnit.SECONDS);
 
                         JOptionPane.showMessageDialog(jPanelBusqPed, "Se ha eliminado el pedido con éxito");
 

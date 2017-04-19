@@ -3,11 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/cami/NetBeansProjects/ABM%20Prueba/src/modelos/Empleado.java</file>
-            <file>file:/home/cami/NetBeansProjects/ABM%20Prueba/src/modelos/Pedido.java</file>
             <file>file:/home/cami/NetBeansProjects/ABM%20Prueba/src/Inicio/Pedidos.java</file>
-            <file>file:/home/cami/NetBeansProjects/ABM%20Prueba/src/servicios/Pedidos_servicio.java</file>
-            <file>file:/home/cami/NetBeansProjects/ABM%20Prueba/src/modelos/Producto.java</file>
+            <file>file:/home/cami/NetBeansProjects/ABM%20Prueba/src/servicios/Productos_servicio.java</file>
         </group>
     </open-files>
 </project-private>
