@@ -117,6 +117,17 @@ public class Pedidos extends javax.swing.JFrame {
         jButtonDeleteItem = new javax.swing.JButton();
         jTextEmpleadoLeg = new javax.swing.JTextField();
         jLabelEmpleadoNombre = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabelBonifMonto = new javax.swing.JLabel();
+        jLabelBonificado = new javax.swing.JLabel();
+        jLabelTotalFinal = new javax.swing.JLabel();
+        jLabelSaldoQuincena = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabelTopeDiario = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabelSaldo = new javax.swing.JLabel();
         jPanelEmpleados = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -335,7 +346,7 @@ public class Pedidos extends javax.swing.JFrame {
             }
         });
 
-        jLabel6.setText("Total");
+        jLabel6.setText("Subtotal   $");
 
         jButtonDeleteItem.setText("-");
         jButtonDeleteItem.setMaximumSize(new java.awt.Dimension(44, 25));
@@ -350,6 +361,16 @@ public class Pedidos extends javax.swing.JFrame {
                 jTextEmpleadoLegKeyPressed(evt);
             }
         });
+
+        jLabel7.setText("Bonificado $");
+
+        jLabel8.setText("Total $");
+
+        jLabel9.setText("Saldo quincena $");
+
+        jLabel10.setText("Tope diario bonificado $");
+
+        jLabel11.setText("Saldo restante $");
 
         javax.swing.GroupLayout jPanelModifPedLayout = new javax.swing.GroupLayout(jPanelModifPed);
         jPanelModifPed.setLayout(jPanelModifPedLayout);
@@ -376,27 +397,49 @@ public class Pedidos extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelModifPedLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 850, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelModifPedLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanelModifPedLayout.createSequentialGroup()
+                                .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(jPanelModifPedLayout.createSequentialGroup()
+                                        .addGap(0, 0, Short.MAX_VALUE)
+                                        .addComponent(jLabel9))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelModifPedLayout.createSequentialGroup()
+                                        .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addGroup(jPanelModifPedLayout.createSequentialGroup()
+                                                .addComponent(jLabel11)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jLabelSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(jPanelModifPedLayout.createSequentialGroup()
+                                                .addComponent(jLabel10)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jLabelTopeDiario, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING))))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabelTotal, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE)
+                                    .addComponent(jLabelBonifMonto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabelTotalFinal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabelSaldoQuincena, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jButtonGuardarPed))
                         .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanelModifPedLayout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addGap(106, 106, 106)
-                                .addComponent(jLabelTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(22, 22, 22))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelModifPedLayout.createSequentialGroup()
-                                .addComponent(jButtonGuardarPed)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButtonCancelarPed)
-                                .addContainerGap())))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelModifPedLayout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 850, Short.MAX_VALUE)
-                        .addContainerGap())))
+                                .addComponent(jButtonCancelarPed))
+                            .addGroup(jPanelModifPedLayout.createSequentialGroup()
+                                .addGap(26, 26, 26)
+                                .addComponent(jLabelBonificado, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap())
         );
         jPanelModifPedLayout.setVerticalGroup(
             jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelModifPedLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(18, 18, 18)
                 .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabelNped, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -410,11 +453,33 @@ public class Pedidos extends javax.swing.JFrame {
                         .addComponent(jTextEmpleadoLeg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabelTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
-                .addGap(49, 49, 49)
+                    .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel6)
+                        .addComponent(jLabel10)
+                        .addComponent(jLabelTopeDiario, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelModifPedLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabelBonifMonto, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelModifPedLayout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(jLabelBonificado, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(7, 7, 7)
+                .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabelTotalFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11)
+                    .addComponent(jLabelSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(jLabelSaldoQuincena, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                 .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonGuardarPed)
                     .addComponent(jButtonCancelarPed))
@@ -906,14 +971,25 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JButton jButtonNuevoPed;
     private javax.swing.JComboBox<String> jComboEmpleado;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabelBonifMonto;
+    private javax.swing.JLabel jLabelBonificado;
     private javax.swing.JLabel jLabelEmpleadoNombre;
     private javax.swing.JLabel jLabelNped;
+    private javax.swing.JLabel jLabelSaldo;
+    private javax.swing.JLabel jLabelSaldoQuincena;
+    private javax.swing.JLabel jLabelTopeDiario;
     private javax.swing.JLabel jLabelTotal;
+    private javax.swing.JLabel jLabelTotalFinal;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
