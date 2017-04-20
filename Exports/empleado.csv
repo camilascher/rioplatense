@@ -1,5 +1,4 @@
-idempleado,nombre
-4,"Camila Scherneski"
-1,"Juan, Perez"
-3,"Julian Scherneski"
-2,"Maria Perez"
+idempleado,nombre,dni,tarjeta,bonificado,bonif_tope
+245674,"Pedro García",16777888,1,100,999999
+346665,"Juan Perez",17888555,2,0,0
+436546,"María Muñoz",11222333,3,100,150
