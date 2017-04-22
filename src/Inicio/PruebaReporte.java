@@ -22,10 +22,10 @@ import servicios.Conexion;
 public class PruebaReporte {
 
     public PruebaReporte() {
-        URL in = this.getClass().getResource("report1.jasper");
+        URL in = this.getClass().getResource("report2.jasper");
         JasperReport reporte;
         try {
-            reporte = (JasperReport) JRLoader.loadObjectFromFile("/home/cami/NetBeansProjects/ABM Prueba/src/Inicio/report2.jasper");
+            reporte = (JasperReport) JRLoader.loadObjectFromFile("C:\\Users\\Cami\\Documents\\ABM Prueba\\src\\Inicio\\report2.jasper");
             JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, null, Conexion.getConnection());
             JasperViewer.viewReport(jasperPrint);
         } catch (Exception ex) {

@@ -83,8 +83,8 @@ public class Pedidos_servicio {
         return ped;
     }
 
-    public void guardarPedidoCab(String idPedido, String idEmpleado, String idUsuario) {
-        String a = "INSERT INTO ABMPrueba.pedido (idpedido, idempleado, fecha, usuarioid_creacion) VALUES (" + idPedido + "," + idEmpleado + ", sysdate(), " + idUsuario + ");";
+    public void guardarPedidoCab(String idPedido, String idEmpleado,String bonificacion,String total,String idUsuario) {
+        String a = "INSERT INTO ABMPrueba.pedido (idpedido, idempleado, fecha,bonificacion,total, usuarioid_creacion) VALUES (" + idPedido + "," + idEmpleado + ", sysdate(), "+bonificacion+","+total+"," + idUsuario + ");";
 
         try {
             PreparedStatement insert = Conexion.getConnection().prepareStatement(a);
@@ -151,13 +151,20 @@ public class Pedidos_servicio {
     public Double recuperarTotalEmpleado(Integer emp, String fecha, Pedido ped) { //pasar fecha null para traer saldo del día solamente y ped null para nuevo pedido o ped con datos para modificación
         ResultSet resultado = null;
         Double tot = 0.0;
-        String where = " ped.idempleado=" + emp.toString()+" and str_to_date(fecha,'%Y-%m-%d')>=str_to_date('" + fecha + "','%d/%m/%Y')";
-        if (ped != null) { //Si el pedido no es nulo, está modificando, se usa la fecha del día
+        if (fecha==null){
+            fecha = " sysdate(),'%Y-%m-%d' ";
+        }
+        else{
+            fecha = fecha + ",'%Y/%m/%d'";
+        }
+        String where = " ped.idempleado=" + emp.toString()+" and str_to_date(fecha,'%Y-%m-%d')>=str_to_date(" + fecha + ")";
+        if (ped != null) { //Si el pedido no es nulo, está modificando, se usa la fecha del día del pedido
             where += " and ped.idpedido<>" + ped.getIdPedido().toString(); //agrego el <> del id de pedido modificado para que no lotenga en cuenta en el cálculo del total
         } 
         try {
-            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT sum(ped.total) as Total FROM ABMPrueba.pedido ped where" + where + ";");
+            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT ifnull(sum(ped.total),0) as Total FROM ABMPrueba.pedido ped where" + where + ";");
             resultado = consulta.executeQuery();
+            resultado.next();
             tot = resultado.getDouble("Total");
         } catch (SQLException ex) {
             Logger.getLogger(Pedidos_servicio.class.getName()).log(Level.SEVERE, null, ex);

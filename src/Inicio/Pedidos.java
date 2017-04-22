@@ -7,12 +7,9 @@ package Inicio;
 
 import com.mysql.jdbc.StringUtils;
 import java.awt.Component;
-import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.util.List;
@@ -22,30 +19,26 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultCellEditor;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
 import modelos.DetallePedido;
 import modelos.Empleado;
 import modelos.Pedido;
 import modelos.Producto;
 import servicios.Conexion;
 import servicios.Empleados_servicio;
+import servicios.Parametros_servicio;
 import servicios.Pedidos_servicio;
 import servicios.Productos_servicio;
 import servicios.Usuarios_servicio;
@@ -58,7 +51,6 @@ public class Pedidos extends javax.swing.JFrame {
 
     private Pedido ped = null;
     private JComboBox comboProductos = null;
-    //private JComboBox comboEmpleados = null;
 
     /**
      * Creates new form Inicio
@@ -79,7 +71,8 @@ public class Pedidos extends javax.swing.JFrame {
         initComponents();
         cargarComboEmpleado(jComboEmpleado);
         cargarPantallaNuevoPed();
-        new PruebaReporte();
+        jButtonGuardarPed.setEnabled(false);
+       // new PruebaReporte();
 
     }
 
@@ -535,15 +528,14 @@ public class Pedidos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_formComponentResized
 
     private void jTextFechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFechaActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_jTextFechaActionPerformed
 
     private void jComboEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboEmpleadoActionPerformed
-        // TODO add your handling code here:
 
 
     }//GEN-LAST:event_jComboEmpleadoActionPerformed
@@ -606,7 +598,7 @@ public class Pedidos extends javax.swing.JFrame {
                 Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            Pedidos_servicio.getInstance().guardarPedidoCab(jLabelNped.getText(), emp.getIdEmpleado().toString(), Usuarios_servicio.getInstance().getUsuarioLogeado());
+            Pedidos_servicio.getInstance().guardarPedidoCab(jLabelNped.getText(), emp.getIdEmpleado().toString(), jLabelBonifMonto.getText(), jLabelTotalFinal.getText(), Usuarios_servicio.getInstance().getUsuarioLogeado());
 
         } else {
             Pedidos_servicio.getInstance().borrarPedidoDet(jLabelNped.getText());
@@ -648,6 +640,12 @@ public class Pedidos extends javax.swing.JFrame {
         }
         model.addRow(new Object[]{"", "", "", ""});
         jLabelTotal.setText(Integer.toString(0));
+        jLabelBonifMonto.setText("");
+        jLabelBonificado.setText("");
+        jLabelSaldo.setText("");
+        jLabelSaldoQuincena.setText("");
+        jLabelTopeDiario.setText("");
+        jLabelTotalFinal.setText("");
 
     }
 
@@ -694,14 +692,18 @@ public class Pedidos extends javax.swing.JFrame {
             }
             if (emp != null) {
                 jLabelEmpleadoNombre.setText(emp.getNombreEmpleado());
-                jTextEmpleadoLeg.setText(emp.getIdEmpleado());
+                jTextEmpleadoLeg.setText(String.valueOf(emp.getIdEmpleado()));
                 jLabelBonificado.setText(String.valueOf(emp.getBonificacion()));
                 jLabelTopeDiario.setText(String.valueOf(emp.getBonifTope()) + "%");
-                saldo = Double.valueOf(emp.getBonifTope()) - Pedidos_servicio.getInstance().recuperarTotalEmpleado(emp.getIdEmpleado(),null,ped);
+                saldo = Double.valueOf(emp.getBonifTope()) - Pedidos_servicio.getInstance().recuperarTotalEmpleado(emp.getIdEmpleado(), null, ped);
                 jLabelSaldo.setText(String.valueOf(saldo));
+                jLabelBonifMonto.setText("");
+                jLabelTotalFinal.setText("");
+                jLabelSaldoQuincena.setText("");
                 jTableEditPed.setCellSelectionEnabled(true);
                 jTableEditPed.changeSelection(0, 0, false, false);
                 jTableEditPed.requestFocus();
+                recalculaTotal();
             } else {
                 JOptionPane.showMessageDialog(jPanelModifPed, "No se ha encontrado el legajo ingresado");
                 jTextEmpleadoLeg.setText("");
@@ -745,24 +747,28 @@ public class Pedidos extends javax.swing.JFrame {
     private void recalculaTotal() {
         Double total = 0.0;
         Double parcial = 0.0;
-        for (int i = 0; i < jTableEditPed.getRowCount(); i++) {
-            if (!StringUtils.isNullOrEmpty(jTableEditPed.getValueAt(i, 4).toString())) {
-                parcial = Double.valueOf(jTableEditPed.getValueAt(i, 4).toString());
-                total = total + parcial;
+        if (jTableEditPed.getValueAt(0, 0)!=null) { //primero chequeo que haya filas con datos en la tabla de productos
+            for (int i = 0; i < jTableEditPed.getRowCount(); i++) {
+                if (jTableEditPed.getValueAt(i, 4)!=null) {
+                    parcial = Double.valueOf(jTableEditPed.getValueAt(i, 4).toString());
+                    total = total + parcial;
+                }
             }
-        }
+        
         jLabelTotal.setText(Double.toString(total));
-        Double bonif = Double.valueOf(jLabelTotal.getText())*(100.00 -Double.valueOf(jLabelBonificado.getText()));
-        if(bonif > Double.valueOf(jLabelSaldo.getText())){
+        Double bonif = Double.valueOf(jLabelTotal.getText()) * (Double.valueOf(jLabelBonificado.getText()))/100.00;
+        if (bonif > Double.valueOf(jLabelSaldo.getText())) {
             bonif = Double.valueOf(jLabelSaldo.getText());
         }
         jLabelBonifMonto.setText(String.valueOf(bonif));
         Double totF = total - bonif;
         jLabelTotalFinal.setText(String.valueOf(totF));
-        //armar modelo de parametros y recuperar la fecha de corte
-        Double saldo = Pedidos_servicio.getIntance().recuperarTotalEmpleado(Integer.valueOf(jTextEmpleadoLeg.getText()),/*fecha de corte*/,null)+totF;
+        String fechaCorte = Parametros_servicio.getInstance().recuperarValorPorCodigo("quincena");
+        Double saldo = Pedidos_servicio.getInstance().recuperarTotalEmpleado(Integer.valueOf(jTextEmpleadoLeg.getText()), fechaCorte, null) + totF;
         jLabelSaldoQuincena.setText(String.valueOf(saldo));
-        
+        jButtonGuardarPed.setEnabled(true);
+        }
+
     }
 
     /**
@@ -954,30 +960,6 @@ public class Pedidos extends javax.swing.JFrame {
             ((DefaultTableModel) jTablePedidos.getModel()).removeRow(fila);
         }
     }
-
-//    public void columnaProducto(JTable table,
-//            TableColumn colProd) {
-//        //Set up the editor for the sport cells.
-//
-//        colProd.setCellEditor(new DefaultCellEditor(comboProductos));
-//
-//        //Set up tool tips for the sport cells.
-//        DefaultTableCellRenderer renderer
-//                = new DefaultTableCellRenderer();
-//        renderer.setToolTipText("Click para obtener productos");
-//        colProd.setCellRenderer(renderer);
-//        //relleno el resto de la fila 
-//        comboProductos.addItemListener(new ItemListener() {
-//
-//            public void itemStateChanged(ItemEvent e) {
-//                if (e.getStateChange() == ItemEvent.SELECTED) {
-//                    Producto prodSel = (Producto) e.getItem();
-//                    jTableEditPed.setValueAt(prodSel.getPrecio(), jTableEditPed.getSelectedRow(), 2);
-//
-//                }
-//            }
-//        });
-//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAddItem;
