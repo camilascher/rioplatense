@@ -25,7 +25,7 @@ public class PruebaReporte {
         URL in = this.getClass().getResource("report1.jasper");
         JasperReport reporte;
         try {
-            reporte = (JasperReport) JRLoader.loadObjectFromFile("C:\\Users\\Nico\\Documents\\NetBeansProjects2\\ciaber\\src\\Inicio\\report1.jasper");
+            reporte = (JasperReport) JRLoader.loadObjectFromFile("/home/cami/NetBeansProjects/ABM Prueba/src/Inicio/report2.jasper");
             JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, null, Conexion.getConnection());
             JasperViewer.viewReport(jasperPrint);
         } catch (Exception ex) {

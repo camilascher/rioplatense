@@ -79,6 +79,7 @@ public class Pedidos extends javax.swing.JFrame {
         initComponents();
         cargarComboEmpleado(jComboEmpleado);
         cargarPantallaNuevoPed();
+        new PruebaReporte();
 
     }
 
@@ -251,7 +252,7 @@ public class Pedidos extends javax.swing.JFrame {
                         .addComponent(jButtonBuscar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(71, Short.MAX_VALUE))
         );
 
         jComboEmpleado.getAccessibleContext().setAccessibleName("\"\"");
@@ -479,7 +480,7 @@ public class Pedidos extends javax.swing.JFrame {
                 .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(jLabelSaldoQuincena, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonGuardarPed)
                     .addComponent(jButtonCancelarPed))
@@ -496,7 +497,7 @@ public class Pedidos extends javax.swing.JFrame {
         );
         jPanelEmpleadosLayout.setVerticalGroup(
             jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 461, Short.MAX_VALUE)
+            .addGap(0, 516, Short.MAX_VALUE)
         );
 
         getContentPane().add(jPanelEmpleados, "card4");
@@ -636,7 +637,6 @@ public class Pedidos extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCancelarPedActionPerformed
 
     private void limpiarPantallaNuevoPed() {
-        //jPanelModifPed.setVisible(false);
         mostrarPanel(jPanelBusqPed);
         jTextEmpleadoLeg.setText("");;//Limpio legajo y nombre del empleado
         jLabelEmpleadoNombre.setText("");
@@ -648,7 +648,7 @@ public class Pedidos extends javax.swing.JFrame {
         }
         model.addRow(new Object[]{"", "", "", ""});
         jLabelTotal.setText(Integer.toString(0));
-        //jPanelBusqPed.setVisible(true);
+
     }
 
     private void jButtonNuevoPedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNuevoPedActionPerformed
@@ -657,6 +657,7 @@ public class Pedidos extends javax.swing.JFrame {
 
     private void cargarPantallaNuevoPed() {
         mostrarPanel(jPanelModifPed);
+        ped = null;
         jPanelModifPed.setBorder(javax.swing.BorderFactory.createTitledBorder("Nuevo Pedido"));
         String ped = "";
         try {
@@ -685,6 +686,7 @@ public class Pedidos extends javax.swing.JFrame {
     private void jTextEmpleadoLegKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextEmpleadoLegKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             Empleado emp = null;
+            Double saldo = 0.0;
             try {
                 emp = Empleados_servicio.getInstance().recuperarEmpPorIdTarj(jTextEmpleadoLeg.getText());
             } catch (SQLException ex) {
@@ -692,12 +694,18 @@ public class Pedidos extends javax.swing.JFrame {
             }
             if (emp != null) {
                 jLabelEmpleadoNombre.setText(emp.getNombreEmpleado());
+                jTextEmpleadoLeg.setText(emp.getIdEmpleado());
+                jLabelBonificado.setText(String.valueOf(emp.getBonificacion()));
+                jLabelTopeDiario.setText(String.valueOf(emp.getBonifTope()) + "%");
+                saldo = Double.valueOf(emp.getBonifTope()) - Pedidos_servicio.getInstance().recuperarTotalEmpleado(emp.getIdEmpleado(),null,ped);
+                jLabelSaldo.setText(String.valueOf(saldo));
                 jTableEditPed.setCellSelectionEnabled(true);
                 jTableEditPed.changeSelection(0, 0, false, false);
                 jTableEditPed.requestFocus();
             } else {
                 JOptionPane.showMessageDialog(jPanelModifPed, "No se ha encontrado el legajo ingresado");
                 jTextEmpleadoLeg.setText("");
+                jLabelEmpleadoNombre.setText("");
             }
         }
     }//GEN-LAST:event_jTextEmpleadoLegKeyPressed
@@ -744,6 +752,17 @@ public class Pedidos extends javax.swing.JFrame {
             }
         }
         jLabelTotal.setText(Double.toString(total));
+        Double bonif = Double.valueOf(jLabelTotal.getText())*(100.00 -Double.valueOf(jLabelBonificado.getText()));
+        if(bonif > Double.valueOf(jLabelSaldo.getText())){
+            bonif = Double.valueOf(jLabelSaldo.getText());
+        }
+        jLabelBonifMonto.setText(String.valueOf(bonif));
+        Double totF = total - bonif;
+        jLabelTotalFinal.setText(String.valueOf(totF));
+        //armar modelo de parametros y recuperar la fecha de corte
+        Double saldo = Pedidos_servicio.getIntance().recuperarTotalEmpleado(Integer.valueOf(jTextEmpleadoLeg.getText()),/*fecha de corte*/,null)+totF;
+        jLabelSaldoQuincena.setText(String.valueOf(saldo));
+        
     }
 
     /**
@@ -869,9 +888,7 @@ public class Pedidos extends javax.swing.JFrame {
                 if (columna == 3) {//modificar                
                     mostrarPanel(jPanelModifPed);
                     jPanelModifPed.setBorder(javax.swing.BorderFactory.createTitledBorder("Modificar Pedido"));
-
                     jLabelNped.setText(ped.getIdPedido().toString());
-                    //setear el legajo y el nombre del empleado OJO! que el textbox no sea editable tampoco
                     jTextEmpleadoLeg.setText(String.valueOf(ped.getEmpleado().getIdEmpleado()));
                     jTextEmpleadoLeg.setEditable(false);
                     jLabelEmpleadoNombre.setText(ped.getEmpleado().getNombreEmpleado());

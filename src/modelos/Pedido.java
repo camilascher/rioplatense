@@ -16,6 +16,7 @@ public class Pedido {
     private final Integer idPedido;
     private final Empleado empleado;
     private final String fecha;
+    private final Double total;
     private final Usuario usuarioCreacion;
     private List<DetallePedido> detallesPedido;
     
@@ -23,13 +24,15 @@ public class Pedido {
         this.idPedido = null;
         this.empleado = null;
         this.fecha = null;
+        this.total = null;
         this.usuarioCreacion = null;
     }
     
-    public Pedido(Integer idPedido,Empleado empleado, String fecha, Usuario usuarioCreacion){
+    public Pedido(Integer idPedido,Empleado empleado, String fecha, Double total, Usuario usuarioCreacion){
         this.idPedido = idPedido;
         this.empleado = empleado;
         this.fecha = fecha;
+        this.total = total;
         this.usuarioCreacion = usuarioCreacion;
         this.detallesPedido = new ArrayList<>();
     }
@@ -52,6 +55,10 @@ public class Pedido {
 
     public List<DetallePedido> getDetallesPedido() {
         return detallesPedido;
+    }
+    
+    public Double getTotal(){
+        return total;
     }
 
     public void setDetallesPedido(List<DetallePedido> detallesPedido) {

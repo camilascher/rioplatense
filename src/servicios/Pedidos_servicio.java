@@ -55,10 +55,10 @@ public class Pedidos_servicio {
         }
         try {
             Pedido pedido = null;
-            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT ped.idpedido,ped.idempleado,emp.nombre,emp.dni,emp.tarjeta,emp.bonificado,emp.bonif_tope,ped.fecha,ped.usuarioid_creacion,usu.nombre FROM ABMPrueba.pedido ped JOIN ABMPrueba.empleado emp ON emp.idempleado = ped.idempleado JOIN ABMPrueba.usuario usu ON usu.idusuario = ped.usuarioid_creacion" + where + ";");
+            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT ped.idpedido,ped.idempleado,emp.nombre,emp.dni,emp.tarjeta,emp.bonificado,emp.bonif_tope,ped.fecha,ped.total,ped.usuarioid_creacion,usu.nombre FROM ABMPrueba.pedido ped JOIN ABMPrueba.empleado emp ON emp.idempleado = ped.idempleado JOIN ABMPrueba.usuario usu ON usu.idusuario = ped.usuarioid_creacion" + where + ";");
             ResultSet resultado = consulta.executeQuery();
             while (resultado.next()) {
-                pedido = new Pedido(resultado.getInt("ped.idpedido"), new Empleado(resultado.getInt("ped.idempleado"), resultado.getString("emp.nombre"),resultado.getInt("emp.dni"),resultado.getString("emp.tarjeta"),resultado.getDouble("emp.bonificado"),resultado.getInt("emp.bonif_tope")), new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(resultado.getTimestamp("ped.fecha")), new Usuario(resultado.getInt("ped.usuarioid_creacion"), resultado.getString("usu.nombre"), null));
+                pedido = new Pedido(resultado.getInt("ped.idpedido"), new Empleado(resultado.getInt("ped.idempleado"), resultado.getString("emp.nombre"), resultado.getInt("emp.dni"), resultado.getString("emp.tarjeta"), resultado.getDouble("emp.bonificado"), resultado.getInt("emp.bonif_tope")), new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(resultado.getTimestamp("ped.fecha")), resultado.getDouble("ped.total"), new Usuario(resultado.getInt("ped.usuarioid_creacion"), resultado.getString("usu.nombre"), null));
                 ped.add(pedido);
             }
         } catch (SQLException ex) {
@@ -125,18 +125,17 @@ public class Pedidos_servicio {
     }
 
     public Pedido recuperarPedidoCompleto(String idPedido) throws SQLException {
-        //List<Pedido> ped = new ArrayList<>();
         Pedido pedido = null;
         String where = " where ped.idpedido=" + idPedido;
         try {
             int pedidoAnterior = 0;
 
-            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT ped.idpedido,ped.idempleado,emp.nombre,emp.nombre,emp.dni,emp.tarjeta,emp.bonificado,emp.bonif_tope,ped.fecha,ped.usuarioid_creacion,usu.nombre,det.idproducto,prod.descripcion,det.precio,det.cantidad FROM ABMPrueba.pedido ped JOIN ABMPrueba.empleado emp ON emp.idempleado = ped.idempleado JOIN ABMPrueba.usuario usu ON usu.idusuario = ped.usuarioid_creacion LEFT JOIN (ABMPrueba.detalle_pedido det JOIN ABMPrueba.producto prod ON det.idproducto = prod.idproducto) ON ped.idpedido = det.idpedido" + where + ";");
+            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT ped.idpedido,ped.idempleado,emp.nombre,emp.nombre,emp.dni,emp.tarjeta,emp.bonificado,emp.bonif_tope,ped.fecha,ped.total,ped.usuarioid_creacion,usu.nombre,det.idproducto,prod.descripcion,det.precio,det.cantidad FROM ABMPrueba.pedido ped JOIN ABMPrueba.empleado emp ON emp.idempleado = ped.idempleado JOIN ABMPrueba.usuario usu ON usu.idusuario = ped.usuarioid_creacion LEFT JOIN (ABMPrueba.detalle_pedido det JOIN ABMPrueba.producto prod ON det.idproducto = prod.idproducto) ON ped.idpedido = det.idpedido" + where + ";");
             ResultSet resultado = consulta.executeQuery();
             while (resultado.next()) {
                 if (pedidoAnterior != resultado.getInt("ped.idpedido")) {
-                    pedido = new Pedido(resultado.getInt("ped.idpedido"), new Empleado(resultado.getInt("ped.idempleado"), resultado.getString("emp.nombre"),resultado.getInt("emp.dni"),resultado.getString("emp.tarjeta"),resultado.getDouble("emp.bonificado"),resultado.getInt("emp.bonif_tope")), new SimpleDateFormat("dd/MM/yyyy HH:mm").format(resultado.getDate("ped.fecha")), new Usuario(resultado.getInt("ped.usuarioid_creacion"), resultado.getString("usu.nombre"), null));
-                    // ped.add(pedido);
+                    pedido = new Pedido(resultado.getInt("ped.idpedido"), new Empleado(resultado.getInt("ped.idempleado"), resultado.getString("emp.nombre"), resultado.getInt("emp.dni"), resultado.getString("emp.tarjeta"), resultado.getDouble("emp.bonificado"), resultado.getInt("emp.bonif_tope")), new SimpleDateFormat("dd/MM/yyyy HH:mm").format(resultado.getDate("ped.fecha")), resultado.getDouble("ped.total"), new Usuario(resultado.getInt("ped.usuarioid_creacion"), resultado.getString("usu.nombre"), null));
+
                     pedidoAnterior = resultado.getInt("ped.idpedido");
                 }
                 if (resultado.getString("prod.descripcion") != null) {
@@ -147,5 +146,23 @@ public class Pedidos_servicio {
             throw new SQLException(ex);
         }
         return pedido;
+    }
+
+    public Double recuperarTotalEmpleado(Integer emp, String fecha, Pedido ped) { //pasar fecha null para traer saldo del día solamente y ped null para nuevo pedido o ped con datos para modificación
+        ResultSet resultado = null;
+        Double tot = 0.0;
+        String where = " ped.idempleado=" + emp.toString()+" and str_to_date(fecha,'%Y-%m-%d')>=str_to_date('" + fecha + "','%d/%m/%Y')";
+        if (ped != null) { //Si el pedido no es nulo, está modificando, se usa la fecha del día
+            where += " and ped.idpedido<>" + ped.getIdPedido().toString(); //agrego el <> del id de pedido modificado para que no lotenga en cuenta en el cálculo del total
+        } 
+        try {
+            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT sum(ped.total) as Total FROM ABMPrueba.pedido ped where" + where + ";");
+            resultado = consulta.executeQuery();
+            tot = resultado.getDouble("Total");
+        } catch (SQLException ex) {
+            Logger.getLogger(Pedidos_servicio.class.getName()).log(Level.SEVERE, null, ex);
+            
+        }
+        return tot;
     }
 }
