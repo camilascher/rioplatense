@@ -6,6 +6,7 @@
 package Inicio;
 
 import com.mysql.jdbc.StringUtils;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -23,6 +24,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -40,6 +42,7 @@ import servicios.Conexion;
 import servicios.Empleados_servicio;
 import servicios.Parametros_servicio;
 import servicios.Pedidos_servicio;
+import static servicios.Pedidos_servicio.getInstance;
 import servicios.Productos_servicio;
 import servicios.Usuarios_servicio;
 
@@ -72,7 +75,7 @@ public class Pedidos extends javax.swing.JFrame {
         cargarComboEmpleado(jComboEmpleado);
         cargarPantallaNuevoPed();
         jButtonGuardarPed.setEnabled(false);
-       // new PruebaReporte();
+        // new PruebaReporte();
 
     }
 
@@ -123,10 +126,25 @@ public class Pedidos extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         jLabelSaldo = new javax.swing.JLabel();
         jPanelEmpleados = new javax.swing.JPanel();
+        jTextEmpleadoId = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jTextEmpleadoDNI = new javax.swing.JTextField();
+        jLabel14 = new javax.swing.JLabel();
+        jTextEmpleadoNombre = new javax.swing.JTextField();
+        jLabel15 = new javax.swing.JLabel();
+        jTextEmpleadoTarjeta = new javax.swing.JTextField();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        jTextEmpleadoBonPorc = new javax.swing.JTextField();
+        jLabel18 = new javax.swing.JLabel();
+        jTextEmpleadoBon = new javax.swing.JTextField();
+        jButtonCrearEmpleado = new javax.swing.JButton();
+        jButtonCancelarEmpleado = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        jMenuPedidos = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
-        jMenu3 = new javax.swing.JMenu();
+        jMenuEmpleados = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
         jMenu5 = new javax.swing.JMenu();
 
@@ -482,39 +500,147 @@ public class Pedidos extends javax.swing.JFrame {
 
         getContentPane().add(jPanelModifPed, "card3");
 
+        jPanelEmpleados.setBorder(javax.swing.BorderFactory.createTitledBorder("Crear Empleado"));
+        jPanelEmpleados.setToolTipText("");
+
+        jTextEmpleadoId.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextEmpleadoIdActionPerformed(evt);
+            }
+        });
+
+        jLabel12.setText("Número de legajo");
+
+        jLabel13.setText("Número de documento");
+
+        jTextEmpleadoDNI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextEmpleadoDNIActionPerformed(evt);
+            }
+        });
+
+        jLabel14.setText("Apellido y nombre");
+
+        jLabel15.setText("Nro. Tarjeta");
+
+        jLabel16.setText("Porcentaje de bonificación");
+
+        jLabel18.setText("Tope de bonificación diario");
+
+        jButtonCrearEmpleado.setText("Crear");
+        jButtonCrearEmpleado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCrearEmpleadoActionPerformed(evt);
+            }
+        });
+
+        jButtonCancelarEmpleado.setText("Cancelar");
+        jButtonCancelarEmpleado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCancelarEmpleadoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelEmpleadosLayout = new javax.swing.GroupLayout(jPanelEmpleados);
         jPanelEmpleados.setLayout(jPanelEmpleadosLayout);
         jPanelEmpleadosLayout.setHorizontalGroup(
             jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 884, Short.MAX_VALUE)
+            .addGroup(jPanelEmpleadosLayout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addGroup(jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel13)
+                    .addComponent(jLabel12)
+                    .addComponent(jLabel14)
+                    .addComponent(jLabel15)
+                    .addComponent(jLabel16)
+                    .addComponent(jLabel18))
+                .addGap(45, 45, 45)
+                .addGroup(jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelEmpleadosLayout.createSequentialGroup()
+                        .addGroup(jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jTextEmpleadoId, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
+                                .addComponent(jTextEmpleadoDNI))
+                            .addComponent(jTextEmpleadoTarjeta, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextEmpleadoNombre))
+                        .addGap(516, 516, 516))
+                    .addGroup(jPanelEmpleadosLayout.createSequentialGroup()
+                        .addGroup(jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextEmpleadoBonPorc, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE)
+                            .addComponent(jTextEmpleadoBon))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelEmpleadosLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonCrearEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33)
+                .addComponent(jButtonCancelarEmpleado)
+                .addContainerGap())
         );
         jPanelEmpleadosLayout.setVerticalGroup(
             jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 516, Short.MAX_VALUE)
+            .addGroup(jPanelEmpleadosLayout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addGroup(jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextEmpleadoId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12))
+                .addGap(23, 23, 23)
+                .addGroup(jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel13)
+                    .addComponent(jTextEmpleadoDNI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextEmpleadoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel14))
+                .addGap(18, 18, 18)
+                .addGroup(jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel15)
+                    .addComponent(jTextEmpleadoTarjeta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel16)
+                    .addComponent(jLabel17)
+                    .addComponent(jTextEmpleadoBonPorc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel18)
+                    .addComponent(jTextEmpleadoBon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 214, Short.MAX_VALUE)
+                .addGroup(jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonCrearEmpleado)
+                    .addComponent(jButtonCancelarEmpleado))
+                .addContainerGap())
         );
 
         getContentPane().add(jPanelEmpleados, "card4");
+        jPanelEmpleados.getAccessibleContext().setAccessibleName("Crear Empleado");
 
-        jMenu1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jMenu1.setForeground(new java.awt.Color(153, 153, 153));
-        jMenu1.setText("Pedidos");
-        jMenuBar1.add(jMenu1);
+        jMenuPedidos.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jMenuPedidos.setForeground(new java.awt.Color(153, 153, 153));
+        jMenuPedidos.setText("Pedidos");
+        jMenuPedidos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenuPedidosMouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(jMenuPedidos);
 
         jMenu2.setText("Productos");
         jMenuBar1.add(jMenu2);
 
-        jMenu3.setText("Empleados");
-        jMenu3.addMouseListener(new java.awt.event.MouseAdapter() {
+        jMenuEmpleados.setText("Empleados");
+        jMenuEmpleados.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenu3MouseClicked(evt);
+                jMenuEmpleadosMouseClicked(evt);
             }
         });
-        jMenu3.addActionListener(new java.awt.event.ActionListener() {
+        jMenuEmpleados.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenu3ActionPerformed(evt);
+                jMenuEmpleadosActionPerformed(evt);
             }
         });
-        jMenuBar1.add(jMenu3);
+        jMenuBar1.add(jMenuEmpleados);
 
         jMenu4.setText("Reportes");
         jMenuBar1.add(jMenu4);
@@ -629,7 +755,7 @@ public class Pedidos extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCancelarPedActionPerformed
 
     private void limpiarPantallaNuevoPed() {
-        mostrarPanel(jPanelBusqPed);
+        mostrarPanel(jPanelBusqPed, jMenuPedidos);
         jTextEmpleadoLeg.setText("");;//Limpio legajo y nombre del empleado
         jLabelEmpleadoNombre.setText("");
         DefaultTableModel model = (DefaultTableModel) jTableEditPed.getModel();
@@ -654,7 +780,7 @@ public class Pedidos extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonNuevoPedActionPerformed
 
     private void cargarPantallaNuevoPed() {
-        mostrarPanel(jPanelModifPed);
+        mostrarPanel(jPanelModifPed, jMenuPedidos);
         ped = null;
         jPanelModifPed.setBorder(javax.swing.BorderFactory.createTitledBorder("Nuevo Pedido"));
         String ped = "";
@@ -682,7 +808,7 @@ public class Pedidos extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonDeleteItemActionPerformed
 
     private void jTextEmpleadoLegKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextEmpleadoLegKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER && !StringUtils.isNullOrEmpty(jTextEmpleadoLeg.getText())) {
             Empleado emp = null;
             Double saldo = 0.0;
             try {
@@ -691,19 +817,7 @@ public class Pedidos extends javax.swing.JFrame {
                 Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
             }
             if (emp != null) {
-                jLabelEmpleadoNombre.setText(emp.getNombreEmpleado());
-                jTextEmpleadoLeg.setText(String.valueOf(emp.getIdEmpleado()));
-                jLabelBonificado.setText(String.valueOf(emp.getBonificacion()));
-                jLabelTopeDiario.setText(String.valueOf(emp.getBonifTope()) + "%");
-                saldo = Double.valueOf(emp.getBonifTope()) - Pedidos_servicio.getInstance().recuperarTotalEmpleado(emp.getIdEmpleado(), null, ped);
-                jLabelSaldo.setText(String.valueOf(saldo));
-                jLabelBonifMonto.setText("");
-                jLabelTotalFinal.setText("");
-                jLabelSaldoQuincena.setText("");
-                jTableEditPed.setCellSelectionEnabled(true);
-                jTableEditPed.changeSelection(0, 0, false, false);
-                jTableEditPed.requestFocus();
-                recalculaTotal();
+                completaValoresEmpleado(emp);
             } else {
                 JOptionPane.showMessageDialog(jPanelModifPed, "No se ha encontrado el legajo ingresado");
                 jTextEmpleadoLeg.setText("");
@@ -712,19 +826,84 @@ public class Pedidos extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTextEmpleadoLegKeyPressed
 
-    private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu3ActionPerformed
+    private void completaValoresEmpleado(Empleado emp) {
+        Double saldo;
+        jLabelEmpleadoNombre.setText(emp.getNombreEmpleado());
+        jTextEmpleadoLeg.setText(String.valueOf(emp.getIdEmpleado()));
+        jLabelBonificado.setText(String.valueOf(emp.getBonificacion()));
+        jLabelTopeDiario.setText(String.valueOf(emp.getBonifTope()) + "%");
+        saldo = Double.valueOf(emp.getBonifTope()) - Pedidos_servicio.getInstance().recuperarTotalEmpleado(emp.getIdEmpleado(), null, ped);
+        jLabelSaldo.setText(String.valueOf(saldo));
+        jLabelBonifMonto.setText("");
+        jLabelTotalFinal.setText("");
+        jLabelSaldoQuincena.setText("");
+        jTableEditPed.setCellSelectionEnabled(true);
+        jTableEditPed.changeSelection(0, 0, false, false);
+        jTableEditPed.requestFocus();
+        recalculaTotal();
+    }
 
-    }//GEN-LAST:event_jMenu3ActionPerformed
+    private void jMenuEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuEmpleadosActionPerformed
 
-    private void jMenu3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu3MouseClicked
-        mostrarPanel(jPanelEmpleados);
-    }//GEN-LAST:event_jMenu3MouseClicked
+    }//GEN-LAST:event_jMenuEmpleadosActionPerformed
 
-    private void mostrarPanel(JPanel panel) {
-        jPanelEmpleados.setVisible(true);
+    private void jMenuEmpleadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuEmpleadosMouseClicked
+        mostrarPanel(jPanelEmpleados, jMenuEmpleados);
+
+    }//GEN-LAST:event_jMenuEmpleadosMouseClicked
+
+    private void jMenuPedidosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuPedidosMouseClicked
+        mostrarPanel(jPanelModifPed, jMenuPedidos);
+    }//GEN-LAST:event_jMenuPedidosMouseClicked
+
+    private void jTextEmpleadoIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextEmpleadoIdActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextEmpleadoIdActionPerformed
+
+    private void jTextEmpleadoDNIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextEmpleadoDNIActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextEmpleadoDNIActionPerformed
+
+    private void jButtonCrearEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCrearEmpleadoActionPerformed
+        String tar = null;        
+        if(isNumeric(jTextEmpleadoId.getText()) && isNumeric(jTextEmpleadoBonPorc.getText()) && isNumeric(jTextEmpleadoBon.getText()) && isNumeric(jTextEmpleadoDNI.getText())){
+        if(jTextEmpleadoTarjeta.getText()!=""){
+            tar = jTextEmpleadoTarjeta.getText();
+        }
+        Empleados_servicio.getInstance().guardarEmpleado(Integer.valueOf(jTextEmpleadoId.getText()), jTextEmpleadoNombre.getText(), Integer.valueOf(jTextEmpleadoDNI.getText()), tar,Double.valueOf(jTextEmpleadoBonPorc.getText()), Double.valueOf(jTextEmpleadoBon.getText()));
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Verifique los datos ingresados", "Error", JOptionPane.WARNING_MESSAGE);
+        }
+        limpiarPantallaEmpleado();
+    }//GEN-LAST:event_jButtonCrearEmpleadoActionPerformed
+
+    private void jButtonCancelarEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarEmpleadoActionPerformed
+        limpiarPantallaEmpleado();
+    }//GEN-LAST:event_jButtonCancelarEmpleadoActionPerformed
+
+    public static boolean isNumeric(String str) {
+        return str.matches("-?\\d+(\\.\\d+)?");  //match a number with optional '-' and decimal.
+    }
+    
+    public void limpiarPantallaEmpleado(){
+        jTextEmpleadoId.setText("");
+        jTextEmpleadoBon.setText("");
+        jTextEmpleadoBonPorc.setText("");
+        jTextEmpleadoDNI.setText("");
+        jTextEmpleadoLeg.setText("");
+        jTextEmpleadoNombre.setText("");
+        jTextEmpleadoTarjeta.setText("");
+    }
+    private void mostrarPanel(JPanel panel, JMenu menu) {
+        jPanelEmpleados.setVisible(false);
         jPanelBusqPed.setVisible(false);
         jPanelModifPed.setVisible(false);
+        jMenuEmpleados.setForeground(Color.BLACK);
+        jMenuPedidos.setForeground(Color.BLACK);
         panel.setVisible(true);
+        menu.setForeground(Color.GRAY);
 
     }
 
@@ -747,26 +926,26 @@ public class Pedidos extends javax.swing.JFrame {
     private void recalculaTotal() {
         Double total = 0.0;
         Double parcial = 0.0;
-        if (jTableEditPed.getValueAt(0, 0)!=null) { //primero chequeo que haya filas con datos en la tabla de productos
+        if (jTableEditPed.getValueAt(0, 0) != null) { //primero chequeo que haya filas con datos en la tabla de productos
             for (int i = 0; i < jTableEditPed.getRowCount(); i++) {
-                if (jTableEditPed.getValueAt(i, 4)!=null) {
+                if (jTableEditPed.getValueAt(i, 4) != null) {
                     parcial = Double.valueOf(jTableEditPed.getValueAt(i, 4).toString());
                     total = total + parcial;
                 }
             }
-        
-        jLabelTotal.setText(Double.toString(total));
-        Double bonif = Double.valueOf(jLabelTotal.getText()) * (Double.valueOf(jLabelBonificado.getText()))/100.00;
-        if (bonif > Double.valueOf(jLabelSaldo.getText())) {
-            bonif = Double.valueOf(jLabelSaldo.getText());
-        }
-        jLabelBonifMonto.setText(String.valueOf(bonif));
-        Double totF = total - bonif;
-        jLabelTotalFinal.setText(String.valueOf(totF));
-        String fechaCorte = Parametros_servicio.getInstance().recuperarValorPorCodigo("quincena");
-        Double saldo = Pedidos_servicio.getInstance().recuperarTotalEmpleado(Integer.valueOf(jTextEmpleadoLeg.getText()), fechaCorte, null) + totF;
-        jLabelSaldoQuincena.setText(String.valueOf(saldo));
-        jButtonGuardarPed.setEnabled(true);
+
+            jLabelTotal.setText(Double.toString(total));
+            Double bonif = Double.valueOf(jLabelTotal.getText()) * (Double.valueOf(jLabelBonificado.getText())) / 100.00;
+            if (bonif > Double.valueOf(jLabelSaldo.getText())) {
+                bonif = Double.valueOf(jLabelSaldo.getText());
+            }
+            jLabelBonifMonto.setText(String.valueOf(bonif));
+            Double totF = total - bonif;
+            jLabelTotalFinal.setText(String.valueOf(totF));
+            String fechaCorte = Parametros_servicio.getInstance().recuperarValorPorCodigo("quincena");
+            Double saldo = Pedidos_servicio.getInstance().recuperarTotalEmpleado(Integer.valueOf(jTextEmpleadoLeg.getText()), fechaCorte, null) + totF;
+            jLabelSaldoQuincena.setText(String.valueOf(saldo));
+            jButtonGuardarPed.setEnabled(true);
         }
 
     }
@@ -892,7 +1071,7 @@ public class Pedidos extends javax.swing.JFrame {
                     Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 if (columna == 3) {//modificar                
-                    mostrarPanel(jPanelModifPed);
+                    mostrarPanel(jPanelModifPed, jMenuPedidos);
                     jPanelModifPed.setBorder(javax.swing.BorderFactory.createTitledBorder("Modificar Pedido"));
                     jLabelNped.setText(ped.getIdPedido().toString());
                     jTextEmpleadoLeg.setText(String.valueOf(ped.getEmpleado().getIdEmpleado()));
@@ -905,6 +1084,7 @@ public class Pedidos extends javax.swing.JFrame {
                         model.addRow(new Object[]{det.getProducto().getIdProducto(), det.getProducto().getDescripcion(), det.getPrecio().toString(), det.getCantidad().toString(), String.valueOf(det.getCantidad() * det.getPrecio())});
 
                     }
+                    completaValoresEmpleado(ped.getEmpleado());
                     recalculaTotal();
 
                 } else {
@@ -964,7 +1144,9 @@ public class Pedidos extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAddItem;
     private javax.swing.JButton jButtonBuscar;
+    private javax.swing.JButton jButtonCancelarEmpleado;
     private javax.swing.JButton jButtonCancelarPed;
+    private javax.swing.JButton jButtonCrearEmpleado;
     private javax.swing.JButton jButtonDeleteItem;
     private javax.swing.JButton jButtonGuardarPed;
     private javax.swing.JButton jButtonNuevoPed;
@@ -972,6 +1154,13 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -989,12 +1178,12 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelTopeDiario;
     private javax.swing.JLabel jLabelTotal;
     private javax.swing.JLabel jLabelTotalFinal;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenu jMenuEmpleados;
+    private javax.swing.JMenu jMenuPedidos;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanelBusqPed;
     private javax.swing.JPanel jPanelEmpleados;
@@ -1003,7 +1192,13 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTableEditPed;
     private javax.swing.JTable jTablePedidos;
+    private javax.swing.JTextField jTextEmpleadoBon;
+    private javax.swing.JTextField jTextEmpleadoBonPorc;
+    private javax.swing.JTextField jTextEmpleadoDNI;
+    private javax.swing.JTextField jTextEmpleadoId;
     private javax.swing.JTextField jTextEmpleadoLeg;
+    private javax.swing.JTextField jTextEmpleadoNombre;
+    private javax.swing.JTextField jTextEmpleadoTarjeta;
     private javax.swing.JFormattedTextField jTextFecha;
     private javax.swing.JTextField jTextNroPedido;
     // End of variables declaration//GEN-END:variables

@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import modelos.Empleado;
 
 /**
@@ -37,7 +39,7 @@ public class Empleados_servicio {
             PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT idempleado,nombre,dni,tarjeta,bonificado,bonif_tope from ABMPrueba.empleado ORDER BY nombre");
             ResultSet resultado = consulta.executeQuery();
             while (resultado.next()) {
-                emp.add(new Empleado(resultado.getInt("idEmpleado"), resultado.getString("nombre"),resultado.getInt("dni"),resultado.getString("tarjeta"),resultado.getDouble("bonificado"),resultado.getInt("bonif_tope")));
+                emp.add(new Empleado(resultado.getInt("idEmpleado"), resultado.getString("nombre"), resultado.getInt("dni"), resultado.getString("tarjeta"), resultado.getDouble("bonificado"), resultado.getInt("bonif_tope")));
 
             }
         } catch (SQLException ex) {
@@ -52,7 +54,7 @@ public class Empleados_servicio {
             PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT idempleado,nombre,dni,tarjeta,bonificado,bonif_tope from ABMPrueba.empleado where nombre='" + empleado + "';");
             ResultSet resultado = consulta.executeQuery();
             while (resultado.next()) {
-                emp = new Empleado(resultado.getInt("idempleado"), resultado.getString("nombre"),resultado.getInt("dni"),resultado.getString("tarjeta"),resultado.getDouble("bonificado"),resultado.getInt("bonif_tope"));
+                emp = new Empleado(resultado.getInt("idempleado"), resultado.getString("nombre"), resultado.getInt("dni"), resultado.getString("tarjeta"), resultado.getDouble("bonificado"), resultado.getInt("bonif_tope"));
             }
 
         } catch (SQLException ex) {
@@ -60,14 +62,14 @@ public class Empleados_servicio {
         }
         return emp;
     }
-    
+
     public Empleado recuperarEmpPorId(String id) throws SQLException {
         Empleado emp = null;
         try {
             PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT idempleado,nombre,dni,tarjeta,bonificado,bonif_tope from ABMPrueba.empleado where idempleado='" + id + "';");
             ResultSet resultado = consulta.executeQuery();
             while (resultado.next()) {
-                emp = new Empleado(resultado.getInt("idempleado"), resultado.getString("nombre"),resultado.getInt("dni"),resultado.getString("tarjeta"),resultado.getDouble("bonificado"),resultado.getInt("bonif_tope"));
+                emp = new Empleado(resultado.getInt("idempleado"), resultado.getString("nombre"), resultado.getInt("dni"), resultado.getString("tarjeta"), resultado.getDouble("bonificado"), resultado.getInt("bonif_tope"));
             }
 
         } catch (SQLException ex) {
@@ -75,19 +77,34 @@ public class Empleados_servicio {
         }
         return emp;
     }
-    
+
     public Empleado recuperarEmpPorIdTarj(String id) throws SQLException {
         Empleado emp = null;
         try {
-            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT idempleado,nombre,dni,tarjeta,bonificado,bonif_tope from ABMPrueba.empleado where idempleado='" + id + "' or tarjeta='"+id+"';");
+            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT idempleado,nombre,dni,tarjeta,bonificado,bonif_tope from ABMPrueba.empleado where idempleado='" + id + "' or tarjeta='" + id + "';");
             ResultSet resultado = consulta.executeQuery();
             while (resultado.next()) {
-                emp = new Empleado(resultado.getInt("idempleado"), resultado.getString("nombre"),resultado.getInt("dni"),resultado.getString("tarjeta"),resultado.getDouble("bonificado"),resultado.getInt("bonif_tope"));
+                emp = new Empleado(resultado.getInt("idempleado"), resultado.getString("nombre"), resultado.getInt("dni"), resultado.getString("tarjeta"), resultado.getDouble("bonificado"), resultado.getInt("bonif_tope"));
             }
 
         } catch (SQLException ex) {
             throw new SQLException(ex);
         }
         return emp;
+    }
+
+    public void guardarEmpleado(Integer id, String nombre, Integer dni, String tarj, Double bonificado, Double bonif_tope) {
+        String tar = null;
+        if (tarj != null) {
+            tar = "'" + tar + "'";
+        }
+        String a = "INSERT INTO ABMPrueba.empleado (idempleado, nombre, dni,tarjeta,bonificado, bonif_tope) VALUES (" + id + ",'" + nombre + "'," + dni + ", " + tar + "," + bonificado + "," + bonif_tope + ");";
+
+        try {
+            PreparedStatement insert = Conexion.getConnection().prepareStatement(a);
+            insert.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(Pedidos_servicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
