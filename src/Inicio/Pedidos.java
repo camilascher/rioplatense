@@ -40,6 +40,7 @@ import modelos.Pedido;
 import modelos.Producto;
 import servicios.Conexion;
 import servicios.Empleados_servicio;
+import servicios.Impresion_servicio;
 import servicios.Parametros_servicio;
 import servicios.Pedidos_servicio;
 import static servicios.Pedidos_servicio.getInstance;
@@ -717,6 +718,7 @@ public class Pedidos extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
         }
+        String idPedido = jLabelNped.getText();
         if (ped == null) {
             try {
                 emp = Empleados_servicio.getInstance().recuperarEmpPorIdTarj(jTextEmpleadoLeg.getText());
@@ -724,10 +726,10 @@ public class Pedidos extends javax.swing.JFrame {
                 Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            Pedidos_servicio.getInstance().guardarPedidoCab(jLabelNped.getText(), emp.getIdEmpleado().toString(), jLabelBonifMonto.getText(), jLabelTotalFinal.getText(), Usuarios_servicio.getInstance().getUsuarioLogeado());
+            Pedidos_servicio.getInstance().guardarPedidoCab(idPedido, emp.getIdEmpleado().toString(), jLabelBonifMonto.getText(), jLabelTotalFinal.getText(), Usuarios_servicio.getInstance().getUsuarioLogeado());
 
         } else {
-            Pedidos_servicio.getInstance().borrarPedidoDet(jLabelNped.getText());
+            Pedidos_servicio.getInstance().borrarPedidoDet(idPedido);
         }
         for (int i = 0; i < model.getRowCount(); i++) {
             if (jTableEditPed.getValueAt(i, 0) != null && jTableEditPed.getValueAt(i, 0).toString() != "") {
@@ -736,11 +738,18 @@ public class Pedidos extends javax.swing.JFrame {
                 } catch (SQLException ex) {
                     Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                Pedidos_servicio.getInstance().guardarPedidoDet(jLabelNped.getText(), prod.getIdProducto().toString(), prod.getPrecio().toString(), (String) jTableEditPed.getValueAt(i, 3).toString());
+                Pedidos_servicio.getInstance().guardarPedidoDet(idPedido, prod.getIdProducto().toString(), prod.getPrecio().toString(), (String) jTableEditPed.getValueAt(i, 3).toString());
             }
         }
         try {
             Conexion.getConnection().commit();
+        } catch (SQLException ex) {
+            Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Pedido pedido;
+        try {
+            pedido = Pedidos_servicio.getInstance().recuperarPedidoCompleto(idPedido);
+            Impresion_servicio.getInstance().imprimirPedido(pedido);
         } catch (SQLException ex) {
             Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
         }
