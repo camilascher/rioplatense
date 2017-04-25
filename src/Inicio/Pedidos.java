@@ -75,7 +75,7 @@ public class Pedidos extends javax.swing.JFrame {
         cargarComboEmpleado(jComboEmpleado);
         cargarPantallaNuevoPed();
         jButtonGuardarPed.setEnabled(false);
-        // new PruebaReporte();
+         new PruebaReporte();
 
     }
 
