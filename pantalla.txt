@@ -1,0 +1,17 @@
+Bridar Alimentacion Integral
+Fecha     25/04/2017 00:00
+Ticket Nro 3
+JUAN PEREZ
+Legoajo: 346665
+CNT Producto        Precio
+* ADICIONALES       ******
+  2 Hamburguesa       20.0
+* SALDOS            ******
+   Total Ticket:      20.0
+  Acum. del Mes:       0.0
+
+**************************
+*       USO INTERNO      *
+* Este comprobante no es *
+* valido como factura    *
+**************************

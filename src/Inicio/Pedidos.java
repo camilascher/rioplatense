@@ -76,7 +76,7 @@ public class Pedidos extends javax.swing.JFrame {
         cargarComboEmpleado(jComboEmpleado);
         cargarPantallaNuevoPed();
         jButtonGuardarPed.setEnabled(false);
-         new PruebaReporte();
+        //new PruebaReporte();
 
     }
 
@@ -126,6 +126,7 @@ public class Pedidos extends javax.swing.JFrame {
         jLabelTopeDiario = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabelSaldo = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
         jPanelEmpleados = new javax.swing.JPanel();
         jTextEmpleadoId = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
@@ -385,6 +386,8 @@ public class Pedidos extends javax.swing.JFrame {
 
         jLabel11.setText("Saldo restante $");
 
+        jLabel19.setText("%");
+
         javax.swing.GroupLayout jPanelModifPedLayout = new javax.swing.GroupLayout(jPanelModifPed);
         jPanelModifPed.setLayout(jPanelModifPedLayout);
         jPanelModifPedLayout.setHorizontalGroup(
@@ -410,7 +413,7 @@ public class Pedidos extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelModifPedLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 850, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 847, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelModifPedLayout.createSequentialGroup()
                         .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanelModifPedLayout.createSequentialGroup()
@@ -440,48 +443,52 @@ public class Pedidos extends javax.swing.JFrame {
                                     .addComponent(jLabelTotalFinal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabelSaldoQuincena, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addComponent(jButtonGuardarPed))
+                        .addGap(18, 18, 18)
                         .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanelModifPedLayout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(jButtonCancelarPed))
-                            .addGroup(jPanelModifPedLayout.createSequentialGroup()
-                                .addGap(26, 26, 26)
-                                .addComponent(jLabelBonificado, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap())
+                            .addComponent(jButtonCancelarPed)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelModifPedLayout.createSequentialGroup()
+                                .addComponent(jLabelBonificado, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel19)))
+                        .addGap(5, 5, 5)))
+                .addGap(15, 15, 15))
         );
         jPanelModifPedLayout.setVerticalGroup(
             jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelModifPedLayout.createSequentialGroup()
+            .addGroup(jPanelModifPedLayout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabelNped, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelEmpleadoNombre, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel5)
-                        .addComponent(jButtonDeleteItem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButtonAddItem)
-                        .addComponent(jTextEmpleadoLeg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel6)
-                        .addComponent(jLabel10)
-                        .addComponent(jLabelTopeDiario, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel19)
                     .addGroup(jPanelModifPedLayout.createSequentialGroup()
+                        .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabelNped, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabelBonifMonto, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelModifPedLayout.createSequentialGroup()
-                        .addGap(3, 3, 3)
-                        .addComponent(jLabelBonificado, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabelEmpleadoNombre, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel5)
+                                .addComponent(jButtonDeleteItem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jButtonAddItem)
+                                .addComponent(jTextEmpleadoLeg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabelTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel6)
+                                .addComponent(jLabel10)
+                                .addComponent(jLabelTopeDiario, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanelModifPedLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel7)
+                                    .addComponent(jLabelBonifMonto, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelModifPedLayout.createSequentialGroup()
+                                .addGap(3, 3, 3)
+                                .addComponent(jLabelBonificado, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(7, 7, 7)
                 .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
@@ -492,7 +499,7 @@ public class Pedidos extends javax.swing.JFrame {
                 .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(jLabelSaldoQuincena, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                 .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonGuardarPed)
                     .addComponent(jButtonCancelarPed))
@@ -615,7 +622,6 @@ public class Pedidos extends javax.swing.JFrame {
         );
 
         getContentPane().add(jPanelEmpleados, "card4");
-        jPanelEmpleados.getAccessibleContext().setAccessibleName("Crear Empleado");
 
         jMenuPedidos.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jMenuPedidos.setForeground(new java.awt.Color(153, 153, 153));
@@ -720,16 +726,19 @@ public class Pedidos extends javax.swing.JFrame {
         }
         String idPedido = jLabelNped.getText();
         if (ped == null) {
+            /****************NUEVO*************/
             try {
                 emp = Empleados_servicio.getInstance().recuperarEmpPorIdTarj(jTextEmpleadoLeg.getText());
             } catch (SQLException ex) {
                 Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            Pedidos_servicio.getInstance().guardarPedidoCab(idPedido, emp.getIdEmpleado().toString(), jLabelBonifMonto.getText(), jLabelTotalFinal.getText(), Usuarios_servicio.getInstance().getUsuarioLogeado());
+            Pedidos_servicio.getInstance().guardarPedidoCab(idPedido, emp.getIdEmpleado().toString(), jLabelBonifMonto.getText(), jLabelTotalFinal.getText(), 0,Usuarios_servicio.getInstance().getUsuarioLogeado());
 
         } else {
+           /****************MODIFICACION*************/
             Pedidos_servicio.getInstance().borrarPedidoDet(idPedido);
+            Pedidos_servicio.getInstance().actualizarTotalBonif(ped.getIdPedido(),Double.valueOf(jLabelTotal.getText()),Double.valueOf(jLabelBonifMonto.getText()));
         }
         for (int i = 0; i < model.getRowCount(); i++) {
             if (jTableEditPed.getValueAt(i, 0) != null && jTableEditPed.getValueAt(i, 0).toString() != "") {
@@ -765,7 +774,7 @@ public class Pedidos extends javax.swing.JFrame {
 
     private void limpiarPantallaNuevoPed() {
         mostrarPanel(jPanelBusqPed, jMenuPedidos);
-        jTextEmpleadoLeg.setText("");;//Limpio legajo y nombre del empleado
+        jTextEmpleadoLeg.setText("");//Limpio legajo y nombre del empleado
         jLabelEmpleadoNombre.setText("");
         DefaultTableModel model = (DefaultTableModel) jTableEditPed.getModel();
         while (model.getRowCount() > 0) {
@@ -799,6 +808,7 @@ public class Pedidos extends javax.swing.JFrame {
             Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
         }
         jLabelNped.setText(ped);
+        jTextEmpleadoLeg.setEditable(true);
 
     }
 
@@ -840,8 +850,11 @@ public class Pedidos extends javax.swing.JFrame {
         jLabelEmpleadoNombre.setText(emp.getNombreEmpleado());
         jTextEmpleadoLeg.setText(String.valueOf(emp.getIdEmpleado()));
         jLabelBonificado.setText(String.valueOf(emp.getBonificacion()));
-        jLabelTopeDiario.setText(String.valueOf(emp.getBonifTope()) + "%");
+        jLabelTopeDiario.setText(String.valueOf(emp.getBonifTope()));
         saldo = Double.valueOf(emp.getBonifTope()) - Pedidos_servicio.getInstance().recuperarTotalEmpleado(emp.getIdEmpleado(), null, ped);
+        if(saldo<0.0){
+            saldo = 0.0;
+        }
         jLabelSaldo.setText(String.valueOf(saldo));
         jLabelBonifMonto.setText("");
         jLabelTotalFinal.setText("");
@@ -874,15 +887,13 @@ public class Pedidos extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextEmpleadoDNIActionPerformed
 
     private void jButtonCrearEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCrearEmpleadoActionPerformed
-        String tar = null;        
-        if(isNumeric(jTextEmpleadoId.getText()) && isNumeric(jTextEmpleadoBonPorc.getText()) && isNumeric(jTextEmpleadoBon.getText()) && isNumeric(jTextEmpleadoDNI.getText())){
-        if(jTextEmpleadoTarjeta.getText()!=""){
-            tar = jTextEmpleadoTarjeta.getText();
-        }
-        Empleados_servicio.getInstance().guardarEmpleado(Integer.valueOf(jTextEmpleadoId.getText()), jTextEmpleadoNombre.getText(), Integer.valueOf(jTextEmpleadoDNI.getText()), tar,Double.valueOf(jTextEmpleadoBonPorc.getText()), Double.valueOf(jTextEmpleadoBon.getText()));
-        }
-        else
-        {
+        String tar = null;
+        if (isNumeric(jTextEmpleadoId.getText()) && isNumeric(jTextEmpleadoBonPorc.getText()) && isNumeric(jTextEmpleadoBon.getText()) && isNumeric(jTextEmpleadoDNI.getText())) {
+            if (jTextEmpleadoTarjeta.getText() != "") {
+                tar = jTextEmpleadoTarjeta.getText();
+            }
+            Empleados_servicio.getInstance().guardarEmpleado(Integer.valueOf(jTextEmpleadoId.getText()), jTextEmpleadoNombre.getText(), Integer.valueOf(jTextEmpleadoDNI.getText()), tar, Double.valueOf(jTextEmpleadoBonPorc.getText()), Double.valueOf(jTextEmpleadoBon.getText()));
+        } else {
             JOptionPane.showMessageDialog(this, "Verifique los datos ingresados", "Error", JOptionPane.WARNING_MESSAGE);
         }
         limpiarPantallaEmpleado();
@@ -895,8 +906,8 @@ public class Pedidos extends javax.swing.JFrame {
     public static boolean isNumeric(String str) {
         return str.matches("-?\\d+(\\.\\d+)?");  //match a number with optional '-' and decimal.
     }
-    
-    public void limpiarPantallaEmpleado(){
+
+    public void limpiarPantallaEmpleado() {
         jTextEmpleadoId.setText("");
         jTextEmpleadoBon.setText("");
         jTextEmpleadoBonPorc.setText("");
@@ -905,6 +916,7 @@ public class Pedidos extends javax.swing.JFrame {
         jTextEmpleadoNombre.setText("");
         jTextEmpleadoTarjeta.setText("");
     }
+
     private void mostrarPanel(JPanel panel, JMenu menu) {
         jPanelEmpleados.setVisible(false);
         jPanelBusqPed.setVisible(false);
@@ -1079,7 +1091,10 @@ public class Pedidos extends javax.swing.JFrame {
                 } catch (SQLException ex) {
                     Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                if (columna == 3) {//modificar                
+                if (columna == 3) {
+                    /*++++++++++++++++++++++++++++++++++++++++++++++++
+                    ++++++++++++++++++MODIFICAR PEDIDO++++++++++++++++
+                    ++++++++++++++++++++++++++++++++++++++++++++++++*/
                     mostrarPanel(jPanelModifPed, jMenuPedidos);
                     jPanelModifPed.setBorder(javax.swing.BorderFactory.createTitledBorder("Modificar Pedido"));
                     jLabelNped.setText(ped.getIdPedido().toString());
@@ -1101,12 +1116,14 @@ public class Pedidos extends javax.swing.JFrame {
                     int n = JOptionPane.showConfirmDialog(jPanelBusqPed, "Seguro?", "Borrar pedido", JOptionPane.YES_NO_OPTION);
                     if (n == JOptionPane.YES_OPTION) {
                         try {
-                            //eliminar
+                            /*++++++++++++++++++++++++++++++++++++++++++++++++
+                            ++++++++++++++++++ELIMINAR PEDIDO++++++++++++++++
+                            ++++++++++++++++++++++++++++++++++++++++++++++++*/
                             Conexion.getConnection().setAutoCommit(false);
                         } catch (SQLException ex) {
                             Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        Pedidos_servicio.getInstance().borrarPedidoDet(String.valueOf(ped.getIdPedido()));
+                       
                         Pedidos_servicio.getInstance().borrarPedidoCab(String.valueOf(ped.getIdPedido()));
                         try {
                             Conexion.getConnection().commit();
@@ -1170,6 +1187,7 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

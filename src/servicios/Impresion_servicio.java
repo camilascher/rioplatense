@@ -18,7 +18,7 @@ import util.Impresora2;
  */
 public class Impresion_servicio {
 
-    private static final String NOMBRE_EMPRESA = "EURO-CUCINE S.R.L.";
+    private static final String NOMBRE_EMPRESA = "Bridar Alimentacion Integral";
     private static Impresion_servicio instance = null;
     private final int tipoImpresora;
 
