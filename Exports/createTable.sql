@@ -7,9 +7,9 @@ CREATE TABLE `empleado` (
   `bonif_tope` int(11) DEFAULT NULL,
   PRIMARY KEY (`idempleado`),
   UNIQUE KEY `idempleado_UNIQUE` (`idempleado`),
-  UNIQUE KEY `tarjeta_UNIQUE` (`tarjeta`),
   UNIQUE KEY `dni_UNIQUE` (`dni`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 
 CREATE TABLE `parametros` (

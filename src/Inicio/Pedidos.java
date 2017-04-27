@@ -38,6 +38,7 @@ import modelos.DetallePedido;
 import modelos.Empleado;
 import modelos.Pedido;
 import modelos.Producto;
+import modelos.Usuario;
 import servicios.Conexion;
 import servicios.Empleados_servicio;
 import servicios.Impresion_servicio;
@@ -76,7 +77,6 @@ public class Pedidos extends javax.swing.JFrame {
         cargarComboEmpleado(jComboEmpleado);
         cargarPantallaNuevoPed();
         jButtonGuardarPed.setEnabled(false);
-        //new PruebaReporte();
 
     }
 
@@ -89,6 +89,10 @@ public class Pedidos extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenu3 = new javax.swing.JMenu();
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        jPopupMenu2 = new javax.swing.JPopupMenu();
+        jPopupMenu3 = new javax.swing.JPopupMenu();
         jPanelBusqPed = new javax.swing.JPanel();
         jButtonNuevoPed = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
@@ -143,12 +147,37 @@ public class Pedidos extends javax.swing.JFrame {
         jTextEmpleadoBon = new javax.swing.JTextField();
         jButtonCrearEmpleado = new javax.swing.JButton();
         jButtonCancelarEmpleado = new javax.swing.JButton();
+        jPanelReporteVentasProd = new javax.swing.JPanel();
+        jRVPTextFechaDesde = new javax.swing.JFormattedTextField();
+        jLabel20 = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        jRVPTextFechaHasta = new javax.swing.JFormattedTextField();
+        jLabel22 = new javax.swing.JLabel();
+        jRVPComboTurno = new javax.swing.JComboBox<>();
+        jButtonGenerarReporteVentasProd = new javax.swing.JButton();
+        jPanelReporteVentaDia = new javax.swing.JPanel();
+        jRVDTextFechaD = new javax.swing.JTextField();
+        jRVDTextFechaH = new javax.swing.JTextField();
+        jLabel23 = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
+        jButtonGenerarRVD = new javax.swing.JButton();
+        jPanelReporteTXT = new javax.swing.JPanel();
+        jLabel25 = new javax.swing.JLabel();
+        jLabel26 = new javax.swing.JLabel();
+        jRTXTFd = new javax.swing.JTextField();
+        jRTXTFh = new javax.swing.JTextField();
+        jButtonGenerarRTXT = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuPedidos = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
         jMenuEmpleados = new javax.swing.JMenu();
-        jMenu4 = new javax.swing.JMenu();
+        jMenuReportes = new javax.swing.JMenu();
+        jMenuRVP = new javax.swing.JMenuItem();
+        jMenuRVD = new javax.swing.JMenuItem();
+        jMenuRTXT = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
+
+        jMenu3.setText("jMenu3");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Aplicación Pedidos");
@@ -623,6 +652,199 @@ public class Pedidos extends javax.swing.JFrame {
 
         getContentPane().add(jPanelEmpleados, "card4");
 
+        jRVPTextFechaDesde.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRVPTextFechaDesdeActionPerformed(evt);
+            }
+        });
+
+        jLabel20.setText("Fecha desde");
+
+        jLabel21.setText("Fecha hasta");
+
+        jRVPTextFechaHasta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRVPTextFechaHastaActionPerformed(evt);
+            }
+        });
+
+        jLabel22.setText("Turno");
+
+        jRVPComboTurno.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { }));
+        jRVPComboTurno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRVPComboTurnoActionPerformed(evt);
+            }
+        });
+
+        jButtonGenerarReporteVentasProd.setText("Generar");
+        jButtonGenerarReporteVentasProd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonGenerarReporteVentasProdActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanelReporteVentasProdLayout = new javax.swing.GroupLayout(jPanelReporteVentasProd);
+        jPanelReporteVentasProd.setLayout(jPanelReporteVentasProdLayout);
+        jPanelReporteVentasProdLayout.setHorizontalGroup(
+            jPanelReporteVentasProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelReporteVentasProdLayout.createSequentialGroup()
+                .addGroup(jPanelReporteVentasProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelReporteVentasProdLayout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addGroup(jPanelReporteVentasProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel20)
+                            .addComponent(jLabel21)
+                            .addComponent(jLabel22))
+                        .addGap(50, 50, 50)
+                        .addGroup(jPanelReporteVentasProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jRVPTextFechaDesde)
+                            .addComponent(jRVPTextFechaHasta)
+                            .addComponent(jRVPComboTurno, 0, 85, Short.MAX_VALUE)))
+                    .addGroup(jPanelReporteVentasProdLayout.createSequentialGroup()
+                        .addGap(311, 311, 311)
+                        .addComponent(jButtonGenerarReporteVentasProd)))
+                .addContainerGap(502, Short.MAX_VALUE))
+        );
+        jPanelReporteVentasProdLayout.setVerticalGroup(
+            jPanelReporteVentasProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelReporteVentasProdLayout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addGroup(jPanelReporteVentasProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jRVPTextFechaDesde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel20))
+                .addGap(18, 18, 18)
+                .addGroup(jPanelReporteVentasProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel21)
+                    .addComponent(jRVPTextFechaHasta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanelReporteVentasProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel22)
+                    .addComponent(jRVPComboTurno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jButtonGenerarReporteVentasProd)
+                .addContainerGap(347, Short.MAX_VALUE))
+        );
+
+        getContentPane().add(jPanelReporteVentasProd, "card6");
+
+        jPanelReporteVentaDia.setBorder(javax.swing.BorderFactory.createTitledBorder("Reporte de total de ventas por día"));
+
+        jRVDTextFechaD.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRVDTextFechaDActionPerformed(evt);
+            }
+        });
+
+        jRVDTextFechaH.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRVDTextFechaHActionPerformed(evt);
+            }
+        });
+
+        jLabel23.setText("Fecha desde");
+
+        jLabel24.setText("Fecha Hasta");
+
+        jButtonGenerarRVD.setText("Generar");
+        jButtonGenerarRVD.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonGenerarRVDActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanelReporteVentaDiaLayout = new javax.swing.GroupLayout(jPanelReporteVentaDia);
+        jPanelReporteVentaDia.setLayout(jPanelReporteVentaDiaLayout);
+        jPanelReporteVentaDiaLayout.setHorizontalGroup(
+            jPanelReporteVentaDiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelReporteVentaDiaLayout.createSequentialGroup()
+                .addGroup(jPanelReporteVentaDiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelReporteVentaDiaLayout.createSequentialGroup()
+                        .addGap(53, 53, 53)
+                        .addGroup(jPanelReporteVentaDiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelReporteVentaDiaLayout.createSequentialGroup()
+                                .addComponent(jLabel24)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(jPanelReporteVentaDiaLayout.createSequentialGroup()
+                                .addComponent(jLabel23)
+                                .addGap(3, 3, 3)))
+                        .addGroup(jPanelReporteVentaDiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jRVDTextFechaD, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
+                            .addComponent(jRVDTextFechaH)))
+                    .addGroup(jPanelReporteVentaDiaLayout.createSequentialGroup()
+                        .addGap(245, 245, 245)
+                        .addComponent(jButtonGenerarRVD)))
+                .addContainerGap(556, Short.MAX_VALUE))
+        );
+        jPanelReporteVentaDiaLayout.setVerticalGroup(
+            jPanelReporteVentaDiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelReporteVentaDiaLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(jPanelReporteVentaDiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jRVDTextFechaD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel23))
+                .addGap(18, 18, 18)
+                .addGroup(jPanelReporteVentaDiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jRVDTextFechaH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel24))
+                .addGap(28, 28, 28)
+                .addComponent(jButtonGenerarRVD)
+                .addContainerGap(363, Short.MAX_VALUE))
+        );
+
+        getContentPane().add(jPanelReporteVentaDia, "card7");
+
+        jPanelReporteTXT.setBorder(javax.swing.BorderFactory.createTitledBorder("Reporte para txt"));
+
+        jLabel25.setText("Fecha desde");
+
+        jLabel26.setText("Fecha hasta");
+
+        jButtonGenerarRTXT.setText("Generar");
+        jButtonGenerarRTXT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonGenerarRTXTActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanelReporteTXTLayout = new javax.swing.GroupLayout(jPanelReporteTXT);
+        jPanelReporteTXT.setLayout(jPanelReporteTXTLayout);
+        jPanelReporteTXTLayout.setHorizontalGroup(
+            jPanelReporteTXTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelReporteTXTLayout.createSequentialGroup()
+                .addGroup(jPanelReporteTXTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelReporteTXTLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanelReporteTXTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel25)
+                            .addComponent(jLabel26))
+                        .addGap(37, 37, 37)
+                        .addGroup(jPanelReporteTXTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jRTXTFd)
+                            .addComponent(jRTXTFh, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)))
+                    .addGroup(jPanelReporteTXTLayout.createSequentialGroup()
+                        .addGap(249, 249, 249)
+                        .addComponent(jButtonGenerarRTXT)))
+                .addContainerGap(552, Short.MAX_VALUE))
+        );
+        jPanelReporteTXTLayout.setVerticalGroup(
+            jPanelReporteTXTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelReporteTXTLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelReporteTXTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel25)
+                    .addComponent(jRTXTFd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanelReporteTXTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel26)
+                    .addComponent(jRTXTFh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(54, 54, 54)
+                .addComponent(jButtonGenerarRTXT)
+                .addContainerGap(346, Short.MAX_VALUE))
+        );
+
+        getContentPane().add(jPanelReporteTXT, "card7");
+
         jMenuPedidos.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jMenuPedidos.setForeground(new java.awt.Color(153, 153, 153));
         jMenuPedidos.setText("Pedidos");
@@ -649,10 +871,33 @@ public class Pedidos extends javax.swing.JFrame {
         });
         jMenuBar1.add(jMenuEmpleados);
 
-        jMenu4.setText("Reportes");
-        jMenuBar1.add(jMenu4);
+        jMenuReportes.setText("Reportes");
 
-        jMenu5.setText("Salir");
+        jMenuRVP.setText("Reporte de ventas por producto");
+        jMenuRVP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuRVPActionPerformed(evt);
+            }
+        });
+        jMenuReportes.add(jMenuRVP);
+
+        jMenuRVD.setText("Reporte de ventas por día");
+        jMenuRVD.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuRVDActionPerformed(evt);
+            }
+        });
+        jMenuReportes.add(jMenuRVD);
+
+        jMenuRTXT.setText("Reporte de ventas para TXT");
+        jMenuRTXT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuRTXTActionPerformed(evt);
+            }
+        });
+        jMenuReportes.add(jMenuRTXT);
+
+        jMenuBar1.add(jMenuReportes);
         jMenuBar1.add(jMenu5);
 
         setJMenuBar(jMenuBar1);
@@ -704,7 +949,7 @@ public class Pedidos extends javax.swing.JFrame {
         String prod = jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(), 0).toString();
         Producto p = null;
         try {
-            if (p == null && prod!="") {
+            if (p == null && prod.length() > 0) {
                 if (isNumeric(prod)) {//compruebo si es numérico para ver si busco por id o descripción
                     p = Productos_servicio.getInstance().recuperarPorId(Integer.valueOf(prod));
                     if (p == null) {
@@ -732,8 +977,8 @@ public class Pedidos extends javax.swing.JFrame {
             jTableEditPed.setCellSelectionEnabled(true);
             jTableEditPed.changeSelection(jTableEditPed.getSelectedRow(), 3, false, false);
             jTableEditPed.requestFocus();
-            
-        } 
+
+        }
 
     }
 
@@ -767,7 +1012,7 @@ public class Pedidos extends javax.swing.JFrame {
             Pedidos_servicio.getInstance().actualizarTotalBonif(ped.getIdPedido(), Double.valueOf(jLabelTotal.getText()), Double.valueOf(jLabelBonifMonto.getText()));
         }
         for (int i = 0; i < model.getRowCount(); i++) {
-            if (jTableEditPed.getValueAt(i, 0) != null && jTableEditPed.getValueAt(i, 0).toString() != "") {
+            if (jTableEditPed.getValueAt(i, 0).toString().length() > 0 && jTableEditPed.getValueAt(i, 0) != null && jTableEditPed.getValueAt(i, 0).toString() != "") {
                 try {
                     prod = (Producto) Productos_servicio.getInstance().recuperarPorId(Integer.valueOf(jTableEditPed.getValueAt(i, 0).toString()));
                 } catch (SQLException ex) {
@@ -929,6 +1174,77 @@ public class Pedidos extends javax.swing.JFrame {
         limpiarPantallaEmpleado();
     }//GEN-LAST:event_jButtonCancelarEmpleadoActionPerformed
 
+    private void jRVPTextFechaDesdeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRVPTextFechaDesdeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRVPTextFechaDesdeActionPerformed
+
+    private void jRVPTextFechaHastaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRVPTextFechaHastaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRVPTextFechaHastaActionPerformed
+
+    private void jButtonGenerarReporteVentasProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGenerarReporteVentasProdActionPerformed
+        String[] param = new String[3];
+        param[0] = jRVPTextFechaDesde.getText();
+        param[1] = jRVPTextFechaHasta.getText();
+        param[2] = jRVPComboTurno.getSelectedItem().toString();
+        new Reportes("ReporteVentasProducto", param);
+    }//GEN-LAST:event_jButtonGenerarReporteVentasProdActionPerformed
+
+    private void jRVPComboTurnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRVPComboTurnoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRVPComboTurnoActionPerformed
+
+    private void jRVDTextFechaDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRVDTextFechaDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRVDTextFechaDActionPerformed
+
+    private void jRVDTextFechaHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRVDTextFechaHActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRVDTextFechaHActionPerformed
+
+    private void jButtonGenerarRVDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGenerarRVDActionPerformed
+        String[] param = new String[2];
+        param[0] = jRVDTextFechaD.getText();
+        param[1] = jRVDTextFechaH.getText();
+        new Reportes("ReporteVentasDia", param);
+    }//GEN-LAST:event_jButtonGenerarRVDActionPerformed
+
+    private void jMenuRVDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuRVDActionPerformed
+        mostrarPanel(jPanelReporteVentaDia, jMenuReportes);
+    }//GEN-LAST:event_jMenuRVDActionPerformed
+
+    private void jMenuRVPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuRVPActionPerformed
+        mostrarPanel(jPanelReporteVentasProd, jMenuReportes);
+        cargarComboUsuario(jRVPComboTurno);
+    }//GEN-LAST:event_jMenuRVPActionPerformed
+
+    private void jMenuRTXTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuRTXTActionPerformed
+        mostrarPanel(jPanelReporteTXT, jMenuReportes);
+    }//GEN-LAST:event_jMenuRTXTActionPerformed
+
+    private void jButtonGenerarRTXTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGenerarRTXTActionPerformed
+        String[] param = new String[2];
+        param[0] = jRTXTFd.getText();
+        param[1] = jRTXTFh.getText();
+        new Reportes("ReporteTXT", param);
+    }//GEN-LAST:event_jButtonGenerarRTXTActionPerformed
+    private void cargarComboUsuario(JComboBox combo) {
+        List<Usuario> usr = null;
+        combo.removeAllItems();
+        try {
+            usr = Usuarios_servicio.getInstance().recuperarTodas();
+        } catch (SQLException ex) {
+            Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        for (Usuario usu : usr) {
+            combo.addItem(usu.getNombreUsuario());
+
+        }
+        combo.insertItemAt("", 0);
+        combo.setSelectedIndex(0);
+
+    }
+
     public static boolean isNumeric(String str) {
         return str.matches("-?\\d+(\\.\\d+)?");  //match a number with optional '-' and decimal.
     }
@@ -947,8 +1263,12 @@ public class Pedidos extends javax.swing.JFrame {
         jPanelEmpleados.setVisible(false);
         jPanelBusqPed.setVisible(false);
         jPanelModifPed.setVisible(false);
+        jPanelReporteVentaDia.setVisible(false);
+        jPanelReporteVentasProd.setVisible(false);
+        jPanelReporteTXT.setVisible(false);
         jMenuEmpleados.setForeground(Color.BLACK);
         jMenuPedidos.setForeground(Color.BLACK);
+        jMenuReportes.setForeground(Color.BLACK);
         panel.setVisible(true);
         menu.setForeground(Color.GRAY);
 
@@ -975,7 +1295,7 @@ public class Pedidos extends javax.swing.JFrame {
         Double parcial = 0.0;
         if (jTableEditPed.getValueAt(0, 0) != null) { //primero chequeo que haya filas con datos en la tabla de productos
             for (int i = 0; i < jTableEditPed.getRowCount(); i++) {
-                if (jTableEditPed.getValueAt(i, 4) != null) {
+                if (jTableEditPed.getValueAt(i, 4) != null && jTableEditPed.getValueAt(i, 0).toString().length() > 0) {
                     parcial = Double.valueOf(jTableEditPed.getValueAt(i, 4).toString());
                     total = total + parcial;
                 }
@@ -1200,6 +1520,9 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JButton jButtonCancelarPed;
     private javax.swing.JButton jButtonCrearEmpleado;
     private javax.swing.JButton jButtonDeleteItem;
+    private javax.swing.JButton jButtonGenerarRTXT;
+    private javax.swing.JButton jButtonGenerarRVD;
+    private javax.swing.JButton jButtonGenerarReporteVentasProd;
     private javax.swing.JButton jButtonGuardarPed;
     private javax.swing.JButton jButtonNuevoPed;
     private javax.swing.JComboBox<String> jComboEmpleado;
@@ -1215,6 +1538,13 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1232,15 +1562,32 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelTotal;
     private javax.swing.JLabel jLabelTotalFinal;
     private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuEmpleados;
     private javax.swing.JMenu jMenuPedidos;
+    private javax.swing.JMenuItem jMenuRTXT;
+    private javax.swing.JMenuItem jMenuRVD;
+    private javax.swing.JMenuItem jMenuRVP;
+    private javax.swing.JMenu jMenuReportes;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanelBusqPed;
     private javax.swing.JPanel jPanelEmpleados;
     private javax.swing.JPanel jPanelModifPed;
+    private javax.swing.JPanel jPanelReporteTXT;
+    private javax.swing.JPanel jPanelReporteVentaDia;
+    private javax.swing.JPanel jPanelReporteVentasProd;
+    private javax.swing.JPopupMenu jPopupMenu1;
+    private javax.swing.JPopupMenu jPopupMenu2;
+    private javax.swing.JPopupMenu jPopupMenu3;
+    private javax.swing.JTextField jRTXTFd;
+    private javax.swing.JTextField jRTXTFh;
+    private javax.swing.JTextField jRVDTextFechaD;
+    private javax.swing.JTextField jRVDTextFechaH;
+    private javax.swing.JComboBox<String> jRVPComboTurno;
+    private javax.swing.JFormattedTextField jRVPTextFechaDesde;
+    private javax.swing.JFormattedTextField jRVPTextFechaHasta;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTableEditPed;
