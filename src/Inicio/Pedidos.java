@@ -704,15 +704,37 @@ public class Pedidos extends javax.swing.JFrame {
         String prod = jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(), 0).toString();
         Producto p = null;
         try {
-            p = Productos_servicio.getInstance().recuperarPorId(Integer.valueOf(prod));
+            if (p == null && prod!="") {
+                if (isNumeric(prod)) {//compruebo si es numérico para ver si busco por id o descripción
+                    p = Productos_servicio.getInstance().recuperarPorId(Integer.valueOf(prod));
+                    if (p == null) {
+                        JOptionPane.showMessageDialog(this, "El código de producto ingresado no existe", "Error", JOptionPane.WARNING_MESSAGE);
+                    }
+
+                } else {
+                    p = Productos_servicio.getInstance().recuperarPorDescripcion(prod);
+                    if (p == null) {
+                        JOptionPane.showMessageDialog(this, "El producto ingresado no existe", "Error", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        jTableEditPed.setValueAt(p.getIdProducto(), jTableEditPed.getSelectedRow(), 0);
+                    }
+
+                }
+
+            }
         } catch (SQLException ex) {
             Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
+
         }
-        jTableEditPed.setValueAt(p.getDescripcion(), jTableEditPed.getSelectedRow(), 1);
-        jTableEditPed.setValueAt(p.getPrecio(), jTableEditPed.getSelectedRow(), 2);
-        jTableEditPed.setCellSelectionEnabled(true);
-        jTableEditPed.changeSelection(jTableEditPed.getSelectedRow(), 3, false, false);
-        jTableEditPed.requestFocus();
+        if (p != null) {
+            jTableEditPed.setValueAt(p.getDescripcion(), jTableEditPed.getSelectedRow(), 1);
+            jTableEditPed.setValueAt(p.getPrecio(), jTableEditPed.getSelectedRow(), 2);
+            jTableEditPed.setCellSelectionEnabled(true);
+            jTableEditPed.changeSelection(jTableEditPed.getSelectedRow(), 3, false, false);
+            jTableEditPed.requestFocus();
+            
+        } 
+
     }
 
     private void jButtonGuardarPedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarPedActionPerformed
@@ -726,19 +748,23 @@ public class Pedidos extends javax.swing.JFrame {
         }
         String idPedido = jLabelNped.getText();
         if (ped == null) {
-            /****************NUEVO*************/
+            /**
+             * **************NUEVO************
+             */
             try {
                 emp = Empleados_servicio.getInstance().recuperarEmpPorIdTarj(jTextEmpleadoLeg.getText());
             } catch (SQLException ex) {
                 Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            Pedidos_servicio.getInstance().guardarPedidoCab(idPedido, emp.getIdEmpleado().toString(), jLabelBonifMonto.getText(), jLabelTotalFinal.getText(), 0,Usuarios_servicio.getInstance().getUsuarioLogeado());
+            Pedidos_servicio.getInstance().guardarPedidoCab(idPedido, emp.getIdEmpleado().toString(), jLabelBonifMonto.getText(), jLabelTotalFinal.getText(), 0, Usuarios_servicio.getInstance().getUsuarioLogeado());
 
         } else {
-           /****************MODIFICACION*************/
+            /**
+             * **************MODIFICACION************
+             */
             Pedidos_servicio.getInstance().borrarPedidoDet(idPedido);
-            Pedidos_servicio.getInstance().actualizarTotalBonif(ped.getIdPedido(),Double.valueOf(jLabelTotal.getText()),Double.valueOf(jLabelBonifMonto.getText()));
+            Pedidos_servicio.getInstance().actualizarTotalBonif(ped.getIdPedido(), Double.valueOf(jLabelTotal.getText()), Double.valueOf(jLabelBonifMonto.getText()));
         }
         for (int i = 0; i < model.getRowCount(); i++) {
             if (jTableEditPed.getValueAt(i, 0) != null && jTableEditPed.getValueAt(i, 0).toString() != "") {
@@ -852,7 +878,7 @@ public class Pedidos extends javax.swing.JFrame {
         jLabelBonificado.setText(String.valueOf(emp.getBonificacion()));
         jLabelTopeDiario.setText(String.valueOf(emp.getBonifTope()));
         saldo = Double.valueOf(emp.getBonifTope()) - Pedidos_servicio.getInstance().recuperarTotalEmpleado(emp.getIdEmpleado(), null, ped);
-        if(saldo<0.0){
+        if (saldo < 0.0) {
             saldo = 0.0;
         }
         jLabelSaldo.setText(String.valueOf(saldo));
@@ -964,7 +990,7 @@ public class Pedidos extends javax.swing.JFrame {
             Double totF = total - bonif;
             jLabelTotalFinal.setText(String.valueOf(totF));
             String fechaCorte = Parametros_servicio.getInstance().recuperarValorPorCodigo("quincena");
-            Double saldo = Pedidos_servicio.getInstance().recuperarTotalEmpleado(Integer.valueOf(jTextEmpleadoLeg.getText()), fechaCorte, null) + totF;
+            Double saldo = Pedidos_servicio.getInstance().recuperarTotalEmpleado(Integer.valueOf(jTextEmpleadoLeg.getText()), fechaCorte, ped) + totF;
             jLabelSaldoQuincena.setText(String.valueOf(saldo));
             jButtonGuardarPed.setEnabled(true);
         }
@@ -1109,7 +1135,7 @@ public class Pedidos extends javax.swing.JFrame {
 
                     }
                     completaValoresEmpleado(ped.getEmpleado());
-                    recalculaTotal();
+                    //recalculaTotal();
 
                 } else {
 
@@ -1123,7 +1149,7 @@ public class Pedidos extends javax.swing.JFrame {
                         } catch (SQLException ex) {
                             Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                       
+
                         Pedidos_servicio.getInstance().borrarPedidoCab(String.valueOf(ped.getIdPedido()));
                         try {
                             Conexion.getConnection().commit();

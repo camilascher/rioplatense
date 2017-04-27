@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import modelos.Producto;
 
 public class Productos_servicio {
@@ -51,6 +52,9 @@ public class Productos_servicio {
             PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT idproducto, descripcion, precio FROM producto WHERE idproducto = ?");
             consulta.setInt(1, id_prod);
             ResultSet resultado = consulta.executeQuery();
+            if (!resultado.isBeforeFirst()){
+                 return prod;
+            }
             while (resultado.next()) {
                 prod = new Producto(id_prod, resultado.getString("descripcion"), resultado.getDouble("precio"));
             }
@@ -63,9 +67,12 @@ public class Productos_servicio {
     public Producto recuperarPorDescripcion(String desc) throws SQLException {
         Producto prod = null;
         try {
-            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT idproducto, descripcion, precio FROM producto WHERE descripcion = ?");
-            consulta.setString(1, desc);
+            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT idproducto, descripcion, precio FROM producto WHERE descripcion like ? ;");
+            consulta.setString(1, desc+"%");
             ResultSet resultado = consulta.executeQuery();
+            if (!resultado.isBeforeFirst()){
+                 return prod;
+            }
             while (resultado.next()) {
                 prod = new Producto(resultado.getInt("idproducto"), resultado.getString("descripcion"), resultado.getDouble("precio"));
             }

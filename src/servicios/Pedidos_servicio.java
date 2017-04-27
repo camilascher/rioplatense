@@ -157,7 +157,7 @@ public class Pedidos_servicio {
             fecha = fecha + ",'%Y/%m/%d'";
         }
         String where = " ped.idempleado=" + emp.toString() + " and str_to_date(fecha,'%Y-%m-%d')>=str_to_date(" + fecha + ")";
-        if (ped != null) { //Si el pedido no es nulo, está modificando, se usa la fecha del día del pedido
+        if (ped != null) { //si el pedido no es nulo, lo omitimos de los resultados para sumarlo en la pantalla
             where += " and ped.idpedido<>" + ped.getIdPedido().toString(); //agrego el <> del id de pedido modificado para que no lotenga en cuenta en el cálculo del total
         }
         try {
