@@ -1627,6 +1627,13 @@ public class Pedidos extends javax.swing.JFrame {
                         }, 2, TimeUnit.SECONDS);
 
                         JOptionPane.showMessageDialog(jPanelBusqPed, "Se ha eliminado el pedido con éxito");
+                        Pedido pedido=null;
+                        try {
+                            pedido = Pedidos_servicio.getInstance().recuperarPedidoCompleto(ped.getIdPedido().toString());
+                        } catch (SQLException ex) {
+                            Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        Impresion_servicio.getInstance().imprimirPedido(pedido);
 
                     } else if (n == JOptionPane.NO_OPTION) {
 

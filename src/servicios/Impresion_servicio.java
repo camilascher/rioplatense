@@ -33,10 +33,11 @@ public class Impresion_servicio {
     }
 
     private Impresora getImpresora() {
-        if(tipoImpresora == 1)
+        if (tipoImpresora == 1) {
             return new Impresora1(null);
-        else
+        } else {
             return new Impresora2(null);
+        }
     }
 
     public void imprimirPedido(Pedido pedido) {
@@ -50,6 +51,9 @@ public class Impresion_servicio {
         Double totalLegajo = pedido.getTotal() - pedido.getBonificacion();
 
         //Cabecera
+        if (pedido.getEliminado() == 1) {
+            impresora.escribir("***PEDIDO ANULADO***");
+        }
         impresora.escribir(empresa);
         impresora.escribir(cliente);
         //String fecha = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(Calendar.getInstance().getTime());
