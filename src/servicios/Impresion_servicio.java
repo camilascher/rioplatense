@@ -18,7 +18,6 @@ import util.Impresora2;
  */
 public class Impresion_servicio {
 
-    private static final String NOMBRE_EMPRESA = "Bridar Alimentacion Integral";
     private static Impresion_servicio instance = null;
     private final int tipoImpresora;
 
@@ -42,22 +41,26 @@ public class Impresion_servicio {
 
     public void imprimirPedido(Pedido pedido) {
         Impresora impresora = getImpresora();
+        String empresa = Parametros_servicio.getInstance().recuperarValorPorCodigo("empresa");
+        String cliente = Parametros_servicio.getInstance().recuperarValorPorCodigo("cliente");
+        String quincena = Parametros_servicio.getInstance().recuperarValorPorCodigo("quincena");
         Empleado empleado = pedido.getEmpleado();
-        Double total = 0.0;
-        Double acumulado = 0.0;
+        Double total = pedido.getTotal();
+        Double acumulado = Pedidos_servicio.getInstance().recuperarTotalEmpleado(empleado.getIdEmpleado(), quincena, null);
+        Double totalLegajo = pedido.getTotal() - pedido.getBonificacion();
 
         //Cabecera
-        impresora.escribir(NOMBRE_EMPRESA);
+        impresora.escribir(empresa);
+        impresora.escribir(cliente);
         //String fecha = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(Calendar.getInstance().getTime());
-        impresora.escribir("Fecha     " + pedido.getFecha());
+        impresora.escribir("Fecha  " + pedido.getFecha());
         impresora.escribir("Ticket Nro " + pedido.getIdPedido());
         impresora.escribir(empleado.getNombreEmpleado().toUpperCase());
-        impresora.escribir("Legoajo: " + empleado.getIdEmpleado().toString());
+        impresora.escribir("Legajo: " + empleado.getIdEmpleado().toString());
         //Items
         impresora.escribir("CNT Producto        Precio");
-        impresora.escribir("* ADICIONALES       ******");
         for (DetallePedido detalle : pedido.getDetallesPedido()) {
-            total += detalle.getCantidad() * detalle.getPrecio();
+            //total += detalle.getCantidad() * detalle.getPrecio();
             String precio = String.format("%5s", String.valueOf(detalle.getCantidad() * detalle.getPrecio()));
             String cant = String.format("%3s", detalle.getCantidad().toString());
             String desc = String.format("%-16s", detalle.getProducto().getDescripcion()).substring(0, 16);
@@ -68,6 +71,8 @@ public class Impresion_servicio {
         impresora.escribir("* SALDOS            ******");
         impresora.escribir("   Total Ticket:" + String.format("%10s", total.toString()));
         impresora.escribir("  Acum. del Mes:" + String.format("%10s", acumulado.toString()));
+        impresora.escribir("   Bonificacion:" + String.format("%10s", pedido.getBonificacion().toString()));
+        impresora.escribir("   Total Legajo:" + String.format("%10s", totalLegajo.toString()));
         //Pie
         impresora.escribir("");
         impresora.escribir("**************************");
