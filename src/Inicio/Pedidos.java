@@ -13,8 +13,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -49,6 +51,7 @@ import servicios.Pedidos_servicio;
 import static servicios.Pedidos_servicio.getInstance;
 import servicios.Productos_servicio;
 import servicios.Usuarios_servicio;
+import util.RequeridoListener;
 
 /**
  *
@@ -79,7 +82,12 @@ public class Pedidos extends javax.swing.JFrame {
         cargarComboEmpleado(jComboEmpleado);
         cargarPantallaNuevoPed();
         jButtonGuardarPed.setEnabled(false);
-
+        new RequeridoListener(jRVDTextFechaD);
+        new RequeridoListener(jRVDTextFechaH);
+        new RequeridoListener(jRVPTextFechaDesde);
+        new RequeridoListener(jRVPTextFechaHasta);
+        new RequeridoListener(jRTXTFd);
+        new RequeridoListener(jRTXTFh);
     }
 
     /**
@@ -1111,11 +1119,13 @@ public class Pedidos extends javax.swing.JFrame {
     }//GEN-LAST:event_jRVPTextFechaHastaActionPerformed
 
     private void jButtonGenerarReporteVentasProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGenerarReporteVentasProdActionPerformed
-        String[] param = new String[3];
-        param[0] = jRVPTextFechaDesde.getText();
-        param[1] = jRVPTextFechaHasta.getText();
-        param[2] = jRVPComboTurno.getSelectedItem().toString();
-        new Reportes("ReporteVentasProducto", param);
+        if (!jRVPTextFechaDesde.getText().equals("") && !jRVPTextFechaHasta.getText().equals("")) {
+            String[] param = new String[3];
+            param[0] = jRVPTextFechaDesde.getText();
+            param[1] = jRVPTextFechaHasta.getText();
+            param[2] = jRVPComboTurno.getSelectedItem().toString();
+            new Reportes("ReporteVentasProducto", param);
+        }
     }//GEN-LAST:event_jButtonGenerarReporteVentasProdActionPerformed
 
     private void jRVPComboTurnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRVPComboTurnoActionPerformed
@@ -1131,10 +1141,12 @@ public class Pedidos extends javax.swing.JFrame {
     }//GEN-LAST:event_jRVDTextFechaHActionPerformed
 
     private void jButtonGenerarRVDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGenerarRVDActionPerformed
-        String[] param = new String[2];
-        param[0] = jRVDTextFechaD.getText();
-        param[1] = jRVDTextFechaH.getText();
-        new Reportes("ReporteVentasDia", param);
+        if (!jRVDTextFechaD.getText().equals("") && !jRVDTextFechaH.getText().equals("")) {
+            String[] param = new String[2];
+            param[0] = jRVDTextFechaD.getText();
+            param[1] = jRVDTextFechaH.getText();
+            new Reportes("ReporteVentasDia", param);
+        }
     }//GEN-LAST:event_jButtonGenerarRVDActionPerformed
 
     private void jMenuRVDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuRVDActionPerformed
@@ -1151,10 +1163,12 @@ public class Pedidos extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuRTXTActionPerformed
 
     private void jButtonGenerarRTXTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGenerarRTXTActionPerformed
-        String[] param = new String[2];
-        param[0] = jRTXTFd.getText();
-        param[1] = jRTXTFh.getText();
-        new Reportes("ReporteTXT", param);
+        if (!jRTXTFd.getText().equals("") && !jRTXTFh.getText().equals("")) {
+            String[] param = new String[2];
+            param[0] = jRTXTFd.getText();
+            param[1] = jRTXTFh.getText();
+            new Reportes("ReporteTXT", param);
+        }
     }//GEN-LAST:event_jButtonGenerarRTXTActionPerformed
 
     private void jTextEmpleadoLegKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextEmpleadoLegKeyPressed
@@ -1201,8 +1215,8 @@ public class Pedidos extends javax.swing.JFrame {
         String idPedido = jLabelNped.getText();
         if (ped == null) {
             /**
-            * **************NUEVO************
-            */
+             * **************NUEVO************
+             */
             try {
                 emp = Empleados_servicio.getInstance().recuperarEmpPorIdTarj(jTextEmpleadoLeg.getText());
             } catch (SQLException ex) {
@@ -1213,8 +1227,8 @@ public class Pedidos extends javax.swing.JFrame {
 
         } else {
             /**
-            * **************MODIFICACION************
-            */
+             * **************MODIFICACION************
+             */
             Pedidos_servicio.getInstance().borrarPedidoDet(idPedido);
             Pedidos_servicio.getInstance().actualizarTotalBonif(ped.getIdPedido(), Double.valueOf(jLabelTotal.getText()), Double.valueOf(jLabelBonifMonto.getText()));
         }
@@ -1243,6 +1257,7 @@ public class Pedidos extends javax.swing.JFrame {
         limpiarPantallaNuevoPed();
         cargarPantallaNuevoPed();
     }//GEN-LAST:event_jButtonGuardarPedActionPerformed
+
     private void cargarComboUsuario(JComboBox combo) {
         List<Usuario> usr = null;
         combo.removeAllItems();
@@ -1456,22 +1471,34 @@ public class Pedidos extends javax.swing.JFrame {
                     /*++++++++++++++++++++++++++++++++++++++++++++++++
                     ++++++++++++++++++MODIFICAR PEDIDO++++++++++++++++
                     ++++++++++++++++++++++++++++++++++++++++++++++++*/
-                    mostrarPanel(jPanelModifPed, jMenuPedidos);
-                    jPanelModifPed.setBorder(javax.swing.BorderFactory.createTitledBorder("Modificar Pedido"));
-                    jLabelNped.setText(ped.getIdPedido().toString());
-                    jTextEmpleadoLeg.setText(String.valueOf(ped.getEmpleado().getIdEmpleado()));
-                    jLabelPedFecha.setText(ped.getFecha());
-                    jTextEmpleadoLeg.setEditable(false);
-                    jLabelEmpleadoNombre.setText(ped.getEmpleado().getNombreEmpleado());
-                    DefaultTableModel model = (DefaultTableModel) jTableEditPed.getModel();
-                    model.removeRow(0);
-                    for (DetallePedido det : ped.getDetallesPedido()) {
-
-                        model.addRow(new Object[]{det.getProducto().getIdProducto(), det.getProducto().getDescripcion(), det.getPrecio().toString(), det.getCantidad().toString(), String.valueOf(det.getCantidad() * det.getPrecio())});
-
+                    Date fechaPed = null;
+                    try {
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                        fechaPed = sdf.parse(jTablePedidos.getValueAt(fila, 1).toString());
+                    } catch (ParseException ex) {
+                        Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    completaValoresEmpleado(ped.getEmpleado());
-                    //recalculaTotal();
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+                    if (sdf.format(fechaPed).equals(sdf.format(new Date()))) {
+                        mostrarPanel(jPanelModifPed, jMenuPedidos);
+                        jPanelModifPed.setBorder(javax.swing.BorderFactory.createTitledBorder("Modificar Pedido"));
+                        jLabelNped.setText(ped.getIdPedido().toString());
+                        jTextEmpleadoLeg.setText(String.valueOf(ped.getEmpleado().getIdEmpleado()));
+                        jLabelPedFecha.setText(ped.getFecha());
+                        jTextEmpleadoLeg.setEditable(false);
+                        jLabelEmpleadoNombre.setText(ped.getEmpleado().getNombreEmpleado());
+                        DefaultTableModel model = (DefaultTableModel) jTableEditPed.getModel();
+                        model.removeRow(0);
+                        for (DetallePedido det : ped.getDetallesPedido()) {
+
+                            model.addRow(new Object[]{det.getProducto().getIdProducto(), det.getProducto().getDescripcion(), det.getPrecio().toString(), det.getCantidad().toString(), String.valueOf(det.getCantidad() * det.getPrecio())});
+
+                        }
+                        completaValoresEmpleado(ped.getEmpleado());
+                        //recalculaTotal();
+                    } else {
+                        JOptionPane.showMessageDialog(Pedidos.this, "No puede modificar pedidos de otro día", "Error", JOptionPane.WARNING_MESSAGE);
+                    }
 
                 } else {
 
