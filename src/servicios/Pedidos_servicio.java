@@ -134,7 +134,7 @@ public class Pedidos_servicio {
             ResultSet resultado = consulta.executeQuery();
             while (resultado.next()) {
                 if (pedidoAnterior != resultado.getInt("ped.idpedido")) {
-                    pedido = new Pedido(resultado.getInt("ped.idpedido"), new Empleado(resultado.getInt("ped.idempleado"), resultado.getString("emp.nombre"), resultado.getInt("emp.dni"), resultado.getString("emp.tarjeta"), resultado.getDouble("emp.bonificado"), resultado.getInt("emp.bonif_tope")), new SimpleDateFormat("dd/MM/yyyy HH:mm").format(resultado.getDate("ped.fecha")), resultado.getDouble("ped.total"), resultado.getDouble("ped.bonificacion"), resultado.getInt("ped.eliminado"), new Usuario(resultado.getInt("ped.usuarioid_creacion"), resultado.getString("usu.nombre"), null));
+                    pedido = new Pedido(resultado.getInt("ped.idpedido"), new Empleado(resultado.getInt("ped.idempleado"), resultado.getString("emp.nombre"), resultado.getInt("emp.dni"), resultado.getString("emp.tarjeta"), resultado.getDouble("emp.bonificado"), resultado.getInt("emp.bonif_tope")), new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(resultado.getTimestamp("ped.fecha")), resultado.getDouble("ped.total"), resultado.getDouble("ped.bonificacion"), resultado.getInt("ped.eliminado"), new Usuario(resultado.getInt("ped.usuarioid_creacion"), resultado.getString("usu.nombre"), null));
 
                     pedidoAnterior = resultado.getInt("ped.idpedido");
                 }

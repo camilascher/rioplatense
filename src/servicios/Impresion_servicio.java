@@ -70,9 +70,9 @@ public class Impresion_servicio {
         //Totales
         impresora.escribir("* SALDOS            ******");
         impresora.escribir("   Total Ticket:" + String.format("%10s", total.toString()));
-        impresora.escribir("  Acum. del Mes:" + String.format("%10s", acumulado.toString()));
         impresora.escribir("   Bonificacion:" + String.format("%10s", pedido.getBonificacion().toString()));
         impresora.escribir("   Total Legajo:" + String.format("%10s", totalLegajo.toString()));
+        impresora.escribir("  Acum. del Mes:" + String.format("%10s", acumulado.toString()));
         //Pie
         impresora.escribir("");
         impresora.escribir("**************************");
