@@ -161,10 +161,26 @@ public class Pedidos_servicio {
             where += " and ped.idpedido<>" + ped.getIdPedido().toString(); //agrego el <> del id de pedido modificado para que no lotenga en cuenta en el cálculo del total
         }
         try {
-            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT ifnull(sum(ped.total),0) as Total FROM ABMPrueba.pedido ped where" + where + " and ped.eliminado = 0;");
+            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT ifnull(sum(ped.total-ped.bonificacion),0) as Total FROM ABMPrueba.pedido ped where" + where + " and ped.eliminado = 0;");
             resultado = consulta.executeQuery();
             resultado.next();
             tot = resultado.getDouble("Total");
+        } catch (SQLException ex) {
+            Logger.getLogger(Pedidos_servicio.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+        return tot;
+    }
+    
+    public Double recuperarTotalBonificaciones(Integer emp) { 
+        ResultSet resultado = null;
+        Double tot = 0.0;
+        
+        try {
+            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT ifnull(sum(ped.bonificacion),0) as Bonificacion FROM ABMPrueba.pedido ped where ped.idempleado=" + emp.toString() + " and ped.eliminado = 0;");
+            resultado = consulta.executeQuery();
+            resultado.next();
+            tot = resultado.getDouble("Bonificacion");
         } catch (SQLException ex) {
             Logger.getLogger(Pedidos_servicio.class.getName()).log(Level.SEVERE, null, ex);
 
