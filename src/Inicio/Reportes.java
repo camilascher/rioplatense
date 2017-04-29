@@ -5,6 +5,8 @@
  */
 package Inicio;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,7 +44,12 @@ public class Reportes {
     }
 
     private void crearReporteVentasProducto(String[] param) {
-        URL in = this.getClass().getResource("ReporteVentasProducto.jasper");
+        String pathReporte = "";
+        try {
+            pathReporte = new File("src/Inicio/ReporteVentasProducto.jasper").getCanonicalPath();
+        } catch (IOException ex) {
+            Logger.getLogger(Reportes.class.getName()).log(Level.SEVERE, null, ex);
+        }
         JasperReport reporte;
         Map parametersMap = new HashMap();
         String where_usr = "";
@@ -72,7 +79,7 @@ public class Reportes {
                 + "                and str_to_date(ped.fecha,'%Y-%m-%d') between str_to_date('" + param[0] + "','%d/%m/%Y') and str_to_date('" + param[1] + "','%d/%m/%Y') \n"
                 + "                group by Codigo,Producto;");
         try {
-            reporte = (JasperReport) JRLoader.loadObjectFromFile("C:\\Users\\Cami\\Documents\\ABM Prueba\\src\\Inicio\\ReporteVentasProducto.jasper");
+            reporte = (JasperReport) JRLoader.loadObjectFromFile(pathReporte);
             JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametersMap, Conexion.getConnection());
             JasperViewer.viewReport(jasperPrint, false);
         } catch (Exception ex) {
@@ -81,7 +88,12 @@ public class Reportes {
     }
 
     private void crearReporteVentasDia(String[] param) {
-        URL in = this.getClass().getResource("ReporteVentasDia.jasper");
+        String pathReporte = "";
+        try {
+            pathReporte = new File("src/Inicio/ReporteVentasDia.jasper").getCanonicalPath();
+        } catch (IOException ex) {
+            Logger.getLogger(Reportes.class.getName()).log(Level.SEVERE, null, ex);
+        }
         JasperReport reporte;
         Map parametersMap = new HashMap();
         parametersMap.put("query", "SELECT\n"
@@ -96,7 +108,7 @@ public class Reportes {
         parametersMap.put("fd", param[0]);
         parametersMap.put("fh", param[1]);
         try {
-            reporte = (JasperReport) JRLoader.loadObjectFromFile("C:\\Users\\Cami\\Documents\\ABM Prueba\\src\\Inicio\\ReporteVentasDia.jasper");
+            reporte = (JasperReport) JRLoader.loadObjectFromFile(pathReporte);
             JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametersMap, Conexion.getConnection());
             JasperViewer.viewReport(jasperPrint, false);
         } catch (Exception ex) {
@@ -105,7 +117,12 @@ public class Reportes {
     }
 
     private void crearReporteTXT(String[] param) {
-        URL in = this.getClass().getResource("ReporteTXT.jasper");
+        String pathReporte = "";
+        try {
+            pathReporte = new File("src/Inicio/ReporteTXT.jasper").getCanonicalPath();
+        } catch (IOException ex) {
+            Logger.getLogger(Reportes.class.getName()).log(Level.SEVERE, null, ex);
+        }
         JasperReport reporte;
         Map parametersMap = new HashMap();
         parametersMap.put("query", "SELECT \n"
@@ -117,12 +134,12 @@ public class Reportes {
                 + "from\n"
                 + "ABMPrueba.pedido ped\n"
                 + "where \n"
-                + "str_to_date(ped.fecha,'%Y-%m-%d') between str_to_date('" + param[0] + "','%d/%m/%Y') and str_to_date('" + param[1] + "','%d/%m/%Y'); \n" 
+                + "str_to_date(ped.fecha,'%Y-%m-%d') between str_to_date('" + param[0] + "','%d/%m/%Y') and str_to_date('" + param[1] + "','%d/%m/%Y'); \n"
         );
         parametersMap.put("fd", param[0]);
         parametersMap.put("fh", param[1]);
         try {
-            reporte = (JasperReport) JRLoader.loadObjectFromFile("C:\\Users\\Cami\\Documents\\ABM Prueba\\src\\Inicio\\ReporteTXT.jasper");
+            reporte = (JasperReport) JRLoader.loadObjectFromFile(pathReporte);
             JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametersMap, Conexion.getConnection());
             JasperViewer.viewReport(jasperPrint, false);
         } catch (Exception ex) {
