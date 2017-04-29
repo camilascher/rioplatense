@@ -96,7 +96,7 @@ public class Empleados_servicio {
     public void guardarEmpleado(Integer id, String nombre, Integer dni, String tarj, Double bonificado, Double bonif_tope) {
         String tar = null;
         if (tarj != null) {
-            tar = "'" + tar + "'";
+            tar = "'" + tarj + "'";
         }
         String a = "INSERT INTO ABMPrueba.empleado (idempleado, nombre, dni,tarjeta,bonificado, bonif_tope) VALUES (" + id + ",'" + nombre + "'," + dni + ", " + tar + "," + bonificado + "," + bonif_tope + ");";
 

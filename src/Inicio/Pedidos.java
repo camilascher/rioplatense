@@ -13,8 +13,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -50,6 +52,7 @@ import servicios.Pedidos_servicio;
 import static servicios.Pedidos_servicio.getInstance;
 import servicios.Productos_servicio;
 import servicios.Usuarios_servicio;
+import util.RequeridoListener;
 
 /**
  *
@@ -80,7 +83,12 @@ public class Pedidos extends javax.swing.JFrame {
         cargarComboEmpleado(jComboEmpleado);
         cargarPantallaNuevoPed();
         jButtonGuardarPed.setEnabled(false);
-
+        new RequeridoListener(jRVDTextFechaD);
+        new RequeridoListener(jRVDTextFechaH);
+        new RequeridoListener(jRVPTextFechaDesde);
+        new RequeridoListener(jRVPTextFechaHasta);
+        new RequeridoListener(jRTXTFd);
+        new RequeridoListener(jRTXTFh);
     }
 
     /**
@@ -307,7 +315,7 @@ public class Pedidos extends javax.swing.JFrame {
                             .addComponent(jButtonBuscar)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(71, Short.MAX_VALUE))
+                    .addContainerGap(83, Short.MAX_VALUE))
             );
 
             jComboEmpleado.getAccessibleContext().setAccessibleName("\"\"");
@@ -511,7 +519,7 @@ public class Pedidos extends javax.swing.JFrame {
                 .addGroup(jPanelModifPedLayout.createSequentialGroup()
                     .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabelPedFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
                         .addComponent(jLabelNped, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -668,7 +676,7 @@ public class Pedidos extends javax.swing.JFrame {
                     .addGroup(jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel18)
                         .addComponent(jTextEmpleadoBon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 214, Short.MAX_VALUE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 221, Short.MAX_VALUE)
                     .addGroup(jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jButtonCrearEmpleado)
                         .addComponent(jButtonCancelarEmpleado))
@@ -676,6 +684,8 @@ public class Pedidos extends javax.swing.JFrame {
             );
 
             getContentPane().add(jPanelEmpleados, "card4");
+
+            jPanelReporteVentasProd.setBorder(javax.swing.BorderFactory.createTitledBorder("Reporte de ventas por producto"));
 
             jRVPTextFechaDesde.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -687,6 +697,7 @@ public class Pedidos extends javax.swing.JFrame {
 
             jLabel21.setText("Fecha hasta");
 
+            jRVPTextFechaHasta.setPreferredSize(new java.awt.Dimension(6, 27));
             jRVPTextFechaHasta.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     jRVPTextFechaHastaActionPerformed(evt);
@@ -716,39 +727,38 @@ public class Pedidos extends javax.swing.JFrame {
                 .addGroup(jPanelReporteVentasProdLayout.createSequentialGroup()
                     .addGroup(jPanelReporteVentasProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanelReporteVentasProdLayout.createSequentialGroup()
-                            .addGap(27, 27, 27)
+                            .addGap(311, 311, 311)
+                            .addComponent(jButtonGenerarReporteVentasProd))
+                        .addGroup(jPanelReporteVentasProdLayout.createSequentialGroup()
+                            .addContainerGap()
                             .addGroup(jPanelReporteVentasProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel20)
                                 .addComponent(jLabel21)
                                 .addComponent(jLabel22))
-                            .addGap(50, 50, 50)
-                            .addGroup(jPanelReporteVentasProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jRVPTextFechaDesde)
-                                .addComponent(jRVPTextFechaHasta)
-                                .addComponent(jRVPComboTurno, 0, 85, Short.MAX_VALUE)))
-                        .addGroup(jPanelReporteVentasProdLayout.createSequentialGroup()
-                            .addGap(311, 311, 311)
-                            .addComponent(jButtonGenerarReporteVentasProd)))
-                    .addContainerGap(502, Short.MAX_VALUE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(jPanelReporteVentasProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jRVPTextFechaDesde, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jRVPComboTurno, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jRVPTextFechaHasta, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addContainerGap(490, Short.MAX_VALUE))
             );
             jPanelReporteVentasProdLayout.setVerticalGroup(
                 jPanelReporteVentasProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanelReporteVentasProdLayout.createSequentialGroup()
-                    .addGap(31, 31, 31)
                     .addGroup(jPanelReporteVentasProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jRVPTextFechaDesde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel20))
-                    .addGap(18, 18, 18)
+                        .addComponent(jLabel20)
+                        .addComponent(jRVPTextFechaDesde, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                     .addGroup(jPanelReporteVentasProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel21)
-                        .addComponent(jRVPTextFechaHasta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(18, 18, 18)
+                        .addComponent(jRVPTextFechaHasta, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel21))
+                    .addGap(18, 18, Short.MAX_VALUE)
                     .addGroup(jPanelReporteVentasProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel22)
                         .addComponent(jRVPComboTurno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(18, 18, 18)
+                    .addGap(56, 56, 56)
                     .addComponent(jButtonGenerarReporteVentasProd)
-                    .addContainerGap(347, Short.MAX_VALUE))
+                    .addGap(347, 347, 347))
             );
 
             getContentPane().add(jPanelReporteVentasProd, "card6");
@@ -767,7 +777,7 @@ public class Pedidos extends javax.swing.JFrame {
                 }
             });
 
-            jLabel23.setText("Fecha desde");
+            jLabel23.setText("Fecha Desde");
 
             jLabel24.setText("Fecha Hasta");
 
@@ -785,7 +795,10 @@ public class Pedidos extends javax.swing.JFrame {
                 .addGroup(jPanelReporteVentaDiaLayout.createSequentialGroup()
                     .addGroup(jPanelReporteVentaDiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanelReporteVentaDiaLayout.createSequentialGroup()
-                            .addGap(53, 53, 53)
+                            .addGap(245, 245, 245)
+                            .addComponent(jButtonGenerarRVD))
+                        .addGroup(jPanelReporteVentaDiaLayout.createSequentialGroup()
+                            .addContainerGap()
                             .addGroup(jPanelReporteVentaDiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelReporteVentaDiaLayout.createSequentialGroup()
                                     .addComponent(jLabel24)
@@ -794,27 +807,24 @@ public class Pedidos extends javax.swing.JFrame {
                                     .addComponent(jLabel23)
                                     .addGap(3, 3, 3)))
                             .addGroup(jPanelReporteVentaDiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jRVDTextFechaD, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
-                                .addComponent(jRVDTextFechaH)))
-                        .addGroup(jPanelReporteVentaDiaLayout.createSequentialGroup()
-                            .addGap(245, 245, 245)
-                            .addComponent(jButtonGenerarRVD)))
+                                .addComponent(jRVDTextFechaD)
+                                .addComponent(jRVDTextFechaH, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addContainerGap(556, Short.MAX_VALUE))
             );
             jPanelReporteVentaDiaLayout.setVerticalGroup(
                 jPanelReporteVentaDiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanelReporteVentaDiaLayout.createSequentialGroup()
-                    .addGap(20, 20, 20)
+                    .addContainerGap()
                     .addGroup(jPanelReporteVentaDiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jRVDTextFechaD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jRVDTextFechaD, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel23))
-                    .addGap(18, 18, 18)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                     .addGroup(jPanelReporteVentaDiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jRVDTextFechaH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jRVDTextFechaH, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel24))
-                    .addGap(28, 28, 28)
+                    .addGap(37, 37, 37)
                     .addComponent(jButtonGenerarRVD)
-                    .addContainerGap(363, Short.MAX_VALUE))
+                    .addContainerGap(362, Short.MAX_VALUE))
             );
 
             getContentPane().add(jPanelReporteVentaDia, "card7");
@@ -824,6 +834,10 @@ public class Pedidos extends javax.swing.JFrame {
             jLabel25.setText("Fecha desde");
 
             jLabel26.setText("Fecha hasta");
+
+            jRTXTFd.setPreferredSize(new java.awt.Dimension(6, 27));
+
+            jRTXTFh.setPreferredSize(new java.awt.Dimension(6, 27));
 
             jButtonGenerarRTXT.setText("Generar");
             jButtonGenerarRTXT.addActionListener(new java.awt.event.ActionListener() {
@@ -843,10 +857,10 @@ public class Pedidos extends javax.swing.JFrame {
                             .addGroup(jPanelReporteTXTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel25)
                                 .addComponent(jLabel26))
-                            .addGap(37, 37, 37)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addGroup(jPanelReporteTXTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jRTXTFd)
-                                .addComponent(jRTXTFh, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)))
+                                .addComponent(jRTXTFd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jRTXTFh, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGroup(jPanelReporteTXTLayout.createSequentialGroup()
                             .addGap(249, 249, 249)
                             .addComponent(jButtonGenerarRTXT)))
@@ -857,15 +871,15 @@ public class Pedidos extends javax.swing.JFrame {
                 .addGroup(jPanelReporteTXTLayout.createSequentialGroup()
                     .addContainerGap()
                     .addGroup(jPanelReporteTXTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel25)
-                        .addComponent(jRTXTFd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(18, 18, 18)
+                        .addComponent(jRTXTFd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel25))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                     .addGroup(jPanelReporteTXTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel26)
                         .addComponent(jRTXTFh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGap(54, 54, 54)
                     .addComponent(jButtonGenerarRTXT)
-                    .addContainerGap(346, Short.MAX_VALUE))
+                    .addGap(346, 346, 346))
             );
 
             getContentPane().add(jPanelReporteTXT, "card7");
@@ -910,7 +924,7 @@ public class Pedidos extends javax.swing.JFrame {
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36)
                 .addComponent(jButtonParamGuardar)
-                .addContainerGap(293, Short.MAX_VALUE))
+                .addContainerGap(300, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanelParametros, "card8");
@@ -1156,11 +1170,13 @@ public class Pedidos extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Verifique los datos ingresados", "Error", JOptionPane.WARNING_MESSAGE);
         }
+        JOptionPane.showMessageDialog(this, "El empleado fue creado correctamente", "Empleados", JOptionPane.INFORMATION_MESSAGE);
         limpiarPantallaEmpleado();
     }//GEN-LAST:event_jButtonCrearEmpleadoActionPerformed
 
     private void jButtonCancelarEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarEmpleadoActionPerformed
         limpiarPantallaEmpleado();
+        mostrarPanel(jPanelModifPed, jMenuPedidos);
     }//GEN-LAST:event_jButtonCancelarEmpleadoActionPerformed
 
     private void jRVPTextFechaDesdeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRVPTextFechaDesdeActionPerformed
@@ -1172,11 +1188,13 @@ public class Pedidos extends javax.swing.JFrame {
     }//GEN-LAST:event_jRVPTextFechaHastaActionPerformed
 
     private void jButtonGenerarReporteVentasProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGenerarReporteVentasProdActionPerformed
-        String[] param = new String[3];
-        param[0] = jRVPTextFechaDesde.getText();
-        param[1] = jRVPTextFechaHasta.getText();
-        param[2] = jRVPComboTurno.getSelectedItem().toString();
-        new Reportes("ReporteVentasProducto", param);
+        if (!jRVPTextFechaDesde.getText().equals("") && !jRVPTextFechaHasta.getText().equals("")) {
+            String[] param = new String[3];
+            param[0] = jRVPTextFechaDesde.getText();
+            param[1] = jRVPTextFechaHasta.getText();
+            param[2] = jRVPComboTurno.getSelectedItem().toString();
+            new Reportes("ReporteVentasProducto", param);
+        }
     }//GEN-LAST:event_jButtonGenerarReporteVentasProdActionPerformed
 
     private void jRVPComboTurnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRVPComboTurnoActionPerformed
@@ -1192,10 +1210,12 @@ public class Pedidos extends javax.swing.JFrame {
     }//GEN-LAST:event_jRVDTextFechaHActionPerformed
 
     private void jButtonGenerarRVDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGenerarRVDActionPerformed
-        String[] param = new String[2];
-        param[0] = jRVDTextFechaD.getText();
-        param[1] = jRVDTextFechaH.getText();
-        new Reportes("ReporteVentasDia", param);
+        if (!jRVDTextFechaD.getText().equals("") && !jRVDTextFechaH.getText().equals("")) {
+            String[] param = new String[2];
+            param[0] = jRVDTextFechaD.getText();
+            param[1] = jRVDTextFechaH.getText();
+            new Reportes("ReporteVentasDia", param);
+        }
     }//GEN-LAST:event_jButtonGenerarRVDActionPerformed
 
     private void jMenuRVDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuRVDActionPerformed
@@ -1212,10 +1232,12 @@ public class Pedidos extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuRTXTActionPerformed
 
     private void jButtonGenerarRTXTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGenerarRTXTActionPerformed
-        String[] param = new String[2];
-        param[0] = jRTXTFd.getText();
-        param[1] = jRTXTFh.getText();
-        new Reportes("ReporteTXT", param);
+        if (!jRTXTFd.getText().equals("") && !jRTXTFh.getText().equals("")) {
+            String[] param = new String[2];
+            param[0] = jRTXTFd.getText();
+            param[1] = jRTXTFh.getText();
+            new Reportes("ReporteTXT", param);
+        }
     }//GEN-LAST:event_jButtonGenerarRTXTActionPerformed
 
     private void jTextEmpleadoLegKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextEmpleadoLegKeyPressed
@@ -1547,22 +1569,34 @@ public class Pedidos extends javax.swing.JFrame {
                     /*++++++++++++++++++++++++++++++++++++++++++++++++
                     ++++++++++++++++++MODIFICAR PEDIDO++++++++++++++++
                     ++++++++++++++++++++++++++++++++++++++++++++++++*/
-                    mostrarPanel(jPanelModifPed, jMenuPedidos);
-                    jPanelModifPed.setBorder(javax.swing.BorderFactory.createTitledBorder("Modificar Pedido"));
-                    jLabelNped.setText(ped.getIdPedido().toString());
-                    jTextEmpleadoLeg.setText(String.valueOf(ped.getEmpleado().getIdEmpleado()));
-                    jLabelPedFecha.setText(ped.getFecha());
-                    jTextEmpleadoLeg.setEditable(false);
-                    jLabelEmpleadoNombre.setText(ped.getEmpleado().getNombreEmpleado());
-                    DefaultTableModel model = (DefaultTableModel) jTableEditPed.getModel();
-                    model.removeRow(0);
-                    for (DetallePedido det : ped.getDetallesPedido()) {
-
-                        model.addRow(new Object[]{det.getProducto().getIdProducto(), det.getProducto().getDescripcion(), det.getPrecio().toString(), det.getCantidad().toString(), String.valueOf(det.getCantidad() * det.getPrecio())});
-
+                    Date fechaPed = null;
+                    try {
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                        fechaPed = sdf.parse(jTablePedidos.getValueAt(fila, 1).toString());
+                    } catch (ParseException ex) {
+                        Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    completaValoresEmpleado(ped.getEmpleado());
-                    //recalculaTotal();
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+                    if (sdf.format(fechaPed).equals(sdf.format(new Date()))) {
+                        mostrarPanel(jPanelModifPed, jMenuPedidos);
+                        jPanelModifPed.setBorder(javax.swing.BorderFactory.createTitledBorder("Modificar Pedido"));
+                        jLabelNped.setText(ped.getIdPedido().toString());
+                        jTextEmpleadoLeg.setText(String.valueOf(ped.getEmpleado().getIdEmpleado()));
+                        jLabelPedFecha.setText(ped.getFecha());
+                        jTextEmpleadoLeg.setEditable(false);
+                        jLabelEmpleadoNombre.setText(ped.getEmpleado().getNombreEmpleado());
+                        DefaultTableModel model = (DefaultTableModel) jTableEditPed.getModel();
+                        model.removeRow(0);
+                        for (DetallePedido det : ped.getDetallesPedido()) {
+
+                            model.addRow(new Object[]{det.getProducto().getIdProducto(), det.getProducto().getDescripcion(), det.getPrecio().toString(), det.getCantidad().toString(), String.valueOf(det.getCantidad() * det.getPrecio())});
+
+                        }
+                        completaValoresEmpleado(ped.getEmpleado());
+                        //recalculaTotal();
+                    } else {
+                        JOptionPane.showMessageDialog(Pedidos.this, "No puede modificar pedidos de otro día", "Error", JOptionPane.WARNING_MESSAGE);
+                    }
 
                 } else {
 

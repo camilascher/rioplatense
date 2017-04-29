@@ -1,12 +1,15 @@
-Bridar Alimentacion Integral
-Fecha     27/04/2017 00:00
-Ticket Nro 4
+Bridar Alimentación Integral
+Ciaber
+Fecha  29/04/2017 18:32:07
+Ticket Nro 7
 PEDRO GARCÍA
-Legoajo: 245674
+Legajo: 245674
 CNT Producto        Precio
-* ADICIONALES       ******
+  1 Hamburguesa       10.0
 * SALDOS            ******
-   Total Ticket:       0.0
+   Total Ticket:      10.0
+   Bonificacion:      10.0
+   Total Legajo:       0.0
   Acum. del Mes:       0.0
 
 **************************
