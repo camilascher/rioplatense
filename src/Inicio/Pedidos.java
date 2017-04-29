@@ -1103,11 +1103,13 @@ public class Pedidos extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Verifique los datos ingresados", "Error", JOptionPane.WARNING_MESSAGE);
         }
+        JOptionPane.showMessageDialog(this, "El empleado fue creado correctamente", "Empleados", JOptionPane.INFORMATION_MESSAGE);
         limpiarPantallaEmpleado();
     }//GEN-LAST:event_jButtonCrearEmpleadoActionPerformed
 
     private void jButtonCancelarEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarEmpleadoActionPerformed
         limpiarPantallaEmpleado();
+        mostrarPanel(jPanelModifPed, jMenuPedidos);
     }//GEN-LAST:event_jButtonCancelarEmpleadoActionPerformed
 
     private void jRVPTextFechaDesdeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRVPTextFechaDesdeActionPerformed
