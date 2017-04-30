@@ -5,6 +5,11 @@
  */
 package Inicio;
 
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,6 +31,15 @@ public class Login extends javax.swing.JFrame {
         initComponents();
         new RequeridoListener(nombre);
         new RequeridoListener(clave);
+        String file="";
+        try {
+            file = new File("Bridar.png").getCanonicalPath();
+        } catch (IOException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Toolkit kit = Toolkit.getDefaultToolkit();
+        Image img = kit.createImage(file);
+        setIconImage(img);
     }
 
     /**

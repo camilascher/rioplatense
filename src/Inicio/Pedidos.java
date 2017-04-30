@@ -9,9 +9,12 @@ import com.mysql.jdbc.StringUtils;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -94,6 +97,15 @@ public class Pedidos extends javax.swing.JFrame {
         new RequeridoListener(jTextEmpleadoDNI);
         new RequeridoListener(jTextEmpleadoBonPorc);
         new RequeridoListener(jTextEmpleadoBon);
+        String file="";
+        try {
+            file = new File("Bridar.png").getCanonicalPath();
+        } catch (IOException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Toolkit kit = Toolkit.getDefaultToolkit();
+        Image img = kit.createImage(file);
+        setIconImage(img);
     }
 
     /**
@@ -1049,7 +1061,7 @@ public class Pedidos extends javax.swing.JFrame {
         String prod = jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(), 0).toString();
         Producto p = null;
         try {
-            if (p == null && prod.length() > 0) {
+            if (prod.length() > 0) {
                 if (isNumeric(prod)) {//compruebo si es numérico para ver si busco por id o descripción
                     p = Productos_servicio.getInstance().recuperarPorId(Integer.valueOf(prod));
                     if (p == null) {
@@ -1077,6 +1089,14 @@ public class Pedidos extends javax.swing.JFrame {
             jTableEditPed.setCellSelectionEnabled(true);
             jTableEditPed.changeSelection(jTableEditPed.getSelectedRow(), 3, false, false);
             jTableEditPed.requestFocus();
+        } else {
+            jTableEditPed.setValueAt("", jTableEditPed.getSelectedRow(), 1);
+            jTableEditPed.setValueAt("", jTableEditPed.getSelectedRow(), 2);
+            jTableEditPed.setValueAt("", jTableEditPed.getSelectedRow(), 3);
+            jTableEditPed.setValueAt("", jTableEditPed.getSelectedRow(), 4);
+            jTableEditPed.setCellSelectionEnabled(true);
+            jTableEditPed.changeSelection(jTableEditPed.getSelectedRow(), 0, false, false);
+            jTableEditPed.requestFocus();
 
         }
 
@@ -1094,12 +1114,12 @@ public class Pedidos extends javax.swing.JFrame {
         }
         model.addRow(new Object[]{"", "", "", ""});
         jLabelTotal.setText(Integer.toString(0));
-        jLabelBonifMonto.setText("");
-        jLabelBonificado.setText("");
-        jLabelSaldo.setText("");
-        jLabelSaldoQuincena.setText("");
-        jLabelTopeDiario.setText("");
-        jLabelTotalFinal.setText("");
+        jLabelBonifMonto.setText("0.0");
+        jLabelBonificado.setText("0.0");
+        jLabelSaldo.setText("0.0");
+        jLabelSaldoQuincena.setText("0.0");
+        jLabelTopeDiario.setText("0.0");
+        jLabelTotalFinal.setText("0.0");
 
     }
 
@@ -1120,6 +1140,13 @@ public class Pedidos extends javax.swing.JFrame {
         jLabelNped.setText(ped);
         jTextEmpleadoLeg.setEditable(true);
         jLabelPedFecha.setText(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(Calendar.getInstance().getTime()));
+        jLabelBonifMonto.setText("0.0");
+        jLabelBonificado.setText("0.0");
+        jLabelSaldo.setText("0.0");
+        jLabelSaldoQuincena.setText("0.0");
+        jLabelTopeDiario.setText("0.0");
+        jLabelTotalFinal.setText("0.0");
+        
 
     }
 
@@ -1287,12 +1314,18 @@ public class Pedidos extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) jTableEditPed.getModel();
         Producto prod = null;
         Empleado emp = null;
+
         try {
             Conexion.getConnection().setAutoCommit(false);
         } catch (SQLException ex) {
             Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
         }
         String idPedido = jLabelNped.getText();
+        recalculaTotal();
+        if (jLabelTotal.getText().equals("") || jLabelTotal.getText().equals("0.0")) {
+            JOptionPane.showMessageDialog(this, "No hay productos cargados para generar el pedido", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         if (ped == null) {
             /**
              * **************NUEVO************
