@@ -9,6 +9,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import servicios.Parametros_servicio;
 
 /**
  *
@@ -23,7 +24,7 @@ public class Impresora1 implements Impresora {
 
     public Impresora1(String texto) {
         if (texto == null) {
-            dispositivo = "pantalla.txt";
+            dispositivo = Parametros_servicio.getInstance().recuperarValorPorCodigo("dispositivo");
         } else {
             dispositivo = texto;
         }

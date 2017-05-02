@@ -94,7 +94,7 @@
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="60" splitType="Stretch">
+		<band height="67" splitType="Stretch">
 			<textField>
 				<reportElement x="128" y="40" width="166" height="20" uuid="7079588a-e4fd-4bdb-935b-2b4e9114bdd6"/>
 				<textElement>
@@ -123,39 +123,39 @@
 				</textElement>
 				<textFieldExpression><![CDATA["Código"]]></textFieldExpression>
 			</textField>
+			<line>
+				<reportElement x="0" y="60" width="555" height="1" uuid="d3a73ebb-7f17-405e-a2ec-629c6db483e5"/>
+			</line>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="33" splitType="Stretch">
+		<band height="25" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="13" width="100" height="20" uuid="3069a5eb-c849-449c-bcb6-0c7bad1dc1aa"/>
+				<reportElement x="0" y="2" width="100" height="20" uuid="3069a5eb-c849-449c-bcb6-0c7bad1dc1aa"/>
 				<textFieldExpression><![CDATA[$F{Codigo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="128" y="13" width="166" height="20" uuid="cfb1688e-4f50-4bfe-96cf-ebb0b69efc27"/>
+				<reportElement x="128" y="2" width="166" height="20" uuid="cfb1688e-4f50-4bfe-96cf-ebb0b69efc27"/>
 				<textFieldExpression><![CDATA[$F{Producto}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="317" y="13" width="100" height="20" uuid="cbe14f11-75d1-4bee-b9a2-568f838f4fe5"/>
+				<reportElement x="317" y="2" width="100" height="20" uuid="cbe14f11-75d1-4bee-b9a2-568f838f4fe5"/>
 				<textFieldExpression><![CDATA[$F{Cantidad}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="434" y="13" width="100" height="20" uuid="be33a106-b62a-4100-8b1a-9ead30f58b1a"/>
+				<reportElement x="434" y="3" width="100" height="20" uuid="be33a106-b62a-4100-8b1a-9ead30f58b1a"/>
 				<textFieldExpression><![CDATA[$F{Total}]]></textFieldExpression>
 			</textField>
-			<line>
-				<reportElement x="0" y="1" width="555" height="1" uuid="d3a73ebb-7f17-405e-a2ec-629c6db483e5"/>
-			</line>
 		</band>
 	</detail>
 	<columnFooter>
 		<band height="45" splitType="Stretch">
 			<textField>
-				<reportElement x="434" y="0" width="100" height="20" uuid="06bfc656-daf2-4cf5-8312-c7e3c68dc969"/>
+				<reportElement x="434" y="7" width="100" height="20" uuid="06bfc656-daf2-4cf5-8312-c7e3c68dc969"/>
 				<textFieldExpression><![CDATA[$V{Total_1}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="0" y="0" width="555" height="2" uuid="cb5299ef-22af-4487-a9a7-7f2f062f7aab"/>
+				<reportElement x="0" y="0" width="555" height="1" uuid="cb5299ef-22af-4487-a9a7-7f2f062f7aab"/>
 			</line>
 		</band>
 	</columnFooter>

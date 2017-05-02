@@ -5,6 +5,7 @@
  */
 package Inicio;
 
+import reportes.Reportes;
 import com.mysql.jdbc.StringUtils;
 import java.awt.Color;
 import java.awt.Component;
@@ -97,15 +98,7 @@ public class Pedidos extends javax.swing.JFrame {
         new RequeridoListener(jTextEmpleadoDNI);
         new RequeridoListener(jTextEmpleadoBonPorc);
         new RequeridoListener(jTextEmpleadoBon);
-        String file="";
-        try {
-            file = new File("Bridar.png").getCanonicalPath();
-        } catch (IOException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        Toolkit kit = Toolkit.getDefaultToolkit();
-        Image img = kit.createImage(file);
-        setIconImage(img);
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Imagenes/Bridar.png")));
     }
 
     /**
@@ -323,16 +316,13 @@ public class Pedidos extends javax.swing.JFrame {
                             .addComponent(jLabel1)))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel2)
-                                .addComponent(jTextFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(24, 24, 24))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                            .addComponent(jButtonBuscar)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(83, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(jTextFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jButtonBuscar))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE)
+                    .addContainerGap())
             );
 
             jComboEmpleado.getAccessibleContext().setAccessibleName("\"\"");

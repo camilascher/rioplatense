@@ -27,7 +27,7 @@ public class Impresion_servicio {
 
     public static Impresion_servicio getInstance() {
         if (instance == null) {
-            instance = new Impresion_servicio(1);
+            instance = new Impresion_servicio(Integer.valueOf(Parametros_servicio.getInstance().recuperarValorPorCodigo("impresora")));
         }
         return instance;
     }

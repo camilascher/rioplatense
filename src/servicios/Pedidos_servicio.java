@@ -177,7 +177,7 @@ public class Pedidos_servicio {
         Double tot = 0.0;
         
         try {
-            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT ifnull(sum(ped.bonificacion),0) as Bonificacion FROM ABMPrueba.pedido ped where ped.idempleado=" + emp.toString() + " and ped.eliminado = 0;");
+            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT ifnull(sum(ped.bonificacion),0) as Bonificacion FROM ABMPrueba.pedido ped where ped.idempleado=" + emp.toString() + " and ped.eliminado = 0 and date_format(fecha,'%Y-%m-%d') = date_format(sysdate(),'%Y-%m-%d');");
             resultado = consulta.executeQuery();
             resultado.next();
             tot = resultado.getDouble("Bonificacion");

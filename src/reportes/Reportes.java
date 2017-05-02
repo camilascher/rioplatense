@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Inicio;
+package reportes;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,13 +45,7 @@ public class Reportes {
     }
 
     private void crearReporteVentasProducto(String[] param) {
-        String pathReporte = "";
-        try {
-            pathReporte = new File("src/Inicio/ReporteVentasProducto.jasper").getCanonicalPath();
-        } catch (IOException ex) {
-            Logger.getLogger(Reportes.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        JasperReport reporte;
+        InputStream jasper1 = getClass().getResourceAsStream("/reportes/ReporteVentasProducto.jasper");
         Map parametersMap = new HashMap();
         String where_usr = "";
         if (param[2].length() > 0) {
@@ -79,8 +74,7 @@ public class Reportes {
                 + "                and str_to_date(ped.fecha,'%Y-%m-%d') between str_to_date('" + param[0] + "','%d/%m/%Y') and str_to_date('" + param[1] + "','%d/%m/%Y') \n"
                 + "                group by Codigo,Producto;");
         try {
-            reporte = (JasperReport) JRLoader.loadObjectFromFile(pathReporte);
-            JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametersMap, Conexion.getConnection());
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasper1, parametersMap, Conexion.getConnection());
             JasperViewer.viewReport(jasperPrint, false);
         } catch (Exception ex) {
             Logger.getLogger(Reportes.class.getName()).log(Level.SEVERE, null, ex);
@@ -88,13 +82,7 @@ public class Reportes {
     }
 
     private void crearReporteVentasDia(String[] param) {
-        String pathReporte = "";
-        try {
-            pathReporte = new File("src/Inicio/ReporteVentasDia.jasper").getCanonicalPath();
-        } catch (IOException ex) {
-            Logger.getLogger(Reportes.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        JasperReport reporte;
+        InputStream jasper1 = getClass().getResourceAsStream("/reportes/ReporteVentasDia.jasper");
         Map parametersMap = new HashMap();
         parametersMap.put("query", "SELECT\n"
                 + "                date_format((ped.fecha),'%d/%m/%Y') as Dia,"
@@ -108,8 +96,7 @@ public class Reportes {
         parametersMap.put("fd", param[0]);
         parametersMap.put("fh", param[1]);
         try {
-            reporte = (JasperReport) JRLoader.loadObjectFromFile(pathReporte);
-            JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametersMap, Conexion.getConnection());
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasper1, parametersMap, Conexion.getConnection());
             JasperViewer.viewReport(jasperPrint, false);
         } catch (Exception ex) {
             Logger.getLogger(Reportes.class.getName()).log(Level.SEVERE, null, ex);
@@ -117,13 +104,7 @@ public class Reportes {
     }
 
     private void crearReporteTXT(String[] param) {
-        String pathReporte = "";
-        try {
-            pathReporte = new File("src/Inicio/ReporteTXT.jasper").getCanonicalPath();
-        } catch (IOException ex) {
-            Logger.getLogger(Reportes.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        JasperReport reporte;
+        InputStream jasper1 = getClass().getResourceAsStream("/reportes/ReporteTXT.jasper");
         Map parametersMap = new HashMap();
         parametersMap.put("query", "SELECT \n"
                 + "concat(lpad(ped.idpedido,8,0),\n"
@@ -139,8 +120,7 @@ public class Reportes {
         parametersMap.put("fd", param[0]);
         parametersMap.put("fh", param[1]);
         try {
-            reporte = (JasperReport) JRLoader.loadObjectFromFile(pathReporte);
-            JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametersMap, Conexion.getConnection());
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasper1, parametersMap, Conexion.getConnection());
             JasperViewer.viewReport(jasperPrint, false);
         } catch (Exception ex) {
             Logger.getLogger(Reportes.class.getName()).log(Level.SEVERE, null, ex);

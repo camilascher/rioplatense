@@ -31,15 +31,7 @@ public class Login extends javax.swing.JFrame {
         initComponents();
         new RequeridoListener(nombre);
         new RequeridoListener(clave);
-        String file="";
-        try {
-            file = new File("Bridar.png").getCanonicalPath();
-        } catch (IOException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        Toolkit kit = Toolkit.getDefaultToolkit();
-        Image img = kit.createImage(file);
-        setIconImage(img);
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Imagenes/Bridar.png")));
     }
 
     /**
