@@ -81,7 +81,7 @@ public class Empleados_servicio {
     public Empleado recuperarEmpPorIdTarj(String id) throws SQLException {
         Empleado emp = null;
         try {
-            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT idempleado,nombre,dni,tarjeta,bonificado,bonif_tope from ABMPrueba.empleado where idempleado='" + id + "' or tarjeta='" + id + "' or dni=" + id + ";");
+            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT idempleado,nombre,dni,tarjeta,bonificado,bonif_tope from ABMPrueba.empleado where idempleado='" + id + "' or tarjeta='" + id + "' or dni='" + id + "';");
             ResultSet resultado = consulta.executeQuery();
             while (resultado.next()) {
                 emp = new Empleado(resultado.getInt("idempleado"), resultado.getString("nombre"), resultado.getInt("dni"), resultado.getString("tarjeta"), resultado.getDouble("bonificado"), resultado.getInt("bonif_tope"));

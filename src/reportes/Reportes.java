@@ -60,6 +60,7 @@ public class Reportes {
                 + "                prod.idproducto as Codigo,\n"
                 + "                prod.descripcion as Producto,\n"
                 + "                sum(det.cantidad) as Cantidad,\n"
+                + "                '$' as moneda,"
                 + "                sum(det.cantidad*det.precio) as Total,\n"
                 + "                usr.nombre as Turno\n"
                 + "                FROM\n"
@@ -72,7 +73,8 @@ public class Reportes {
                 + "			and det.idpedido = ped.idpedido\n"
                 + "                and usr.idusuario = ped.usuarioid_creacion\n" + where_usr
                 + "                and str_to_date(ped.fecha,'%Y-%m-%d') between str_to_date('" + param[0] + "','%d/%m/%Y') and str_to_date('" + param[1] + "','%d/%m/%Y') \n"
-                + "                group by Codigo,Producto;");
+                + "                and ped.eliminado = 0 \n"
+                + "group by Codigo,Producto;");
         try {
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasper1, parametersMap, Conexion.getConnection());
             JasperViewer.viewReport(jasperPrint, false);
@@ -87,11 +89,12 @@ public class Reportes {
         parametersMap.put("query", "SELECT\n"
                 + "                date_format((ped.fecha),'%d/%m/%Y') as Dia,"
                 + "               count(ped.idpedido) as CantTick,"
+                + "'$' as moneda,"
                 + "                sum(ped.total) as Total\n"
                 + "                FROM\n"
                 + "			ABMPrueba.pedido ped\n"
                 + "                 WHERE\n"
-                + "                 str_to_date(ped.fecha,'%Y-%m-%d') between str_to_date('" + param[0] + "','%d/%m/%Y') and str_to_date('" + param[1] + "','%d/%m/%Y') \n"
+                + "                 str_to_date(ped.fecha,'%Y-%m-%d') between str_to_date('" + param[0] + "','%d/%m/%Y') and str_to_date('" + param[1] + "','%d/%m/%Y') and ped.eliminado=0\n"
                 + "                group by Dia;");
         parametersMap.put("fd", param[0]);
         parametersMap.put("fh", param[1]);
@@ -115,7 +118,7 @@ public class Reportes {
                 + "from\n"
                 + "ABMPrueba.pedido ped\n"
                 + "where \n"
-                + "str_to_date(ped.fecha,'%Y-%m-%d') between str_to_date('" + param[0] + "','%d/%m/%Y') and str_to_date('" + param[1] + "','%d/%m/%Y'); \n"
+                + "str_to_date(ped.fecha,'%Y-%m-%d') between str_to_date('" + param[0] + "','%d/%m/%Y') and str_to_date('" + param[1] + "','%d/%m/%Y') and eliminado=0; \n"
         );
         parametersMap.put("fd", param[0]);
         parametersMap.put("fh", param[1]);

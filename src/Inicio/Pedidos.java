@@ -427,6 +427,11 @@ public class Pedidos extends javax.swing.JFrame {
                 }
             });
 
+            jTextEmpleadoLeg.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jTextEmpleadoLegActionPerformed(evt);
+                }
+            });
             jTextEmpleadoLeg.addKeyListener(new java.awt.event.KeyAdapter() {
                 public void keyPressed(java.awt.event.KeyEvent evt) {
                     jTextEmpleadoLegKeyPressed(evt);
@@ -1373,6 +1378,10 @@ public class Pedidos extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Los valores de parámetros fueron actualizados correctamente", "Parámetros", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_jButtonParamGuardarActionPerformed
 
+    private void jTextEmpleadoLegActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextEmpleadoLegActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextEmpleadoLegActionPerformed
+
     private void cargarComboUsuario(JComboBox combo) {
         List<Usuario> usr = null;
         combo.removeAllItems();
@@ -1660,7 +1669,7 @@ public class Pedidos extends javax.swing.JFrame {
                             }
                         }, 2, TimeUnit.SECONDS);
 
-                        JOptionPane.showMessageDialog(jPanelBusqPed, "Se ha eliminado el pedido con éxito");
+                        //JOptionPane.showMessageDialog(jPanelBusqPed, "Se ha eliminado el pedido con éxito");
                         Pedido pedido = null;
                         try {
                             pedido = Pedidos_servicio.getInstance().recuperarPedidoCompleto(ped.getIdPedido().toString());

@@ -27,6 +27,7 @@
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="Turno" class="java.lang.String"/>
+	<field name="moneda" class="java.lang.String"/>
 	<variable name="Total_1" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
 		<variableExpression><![CDATA[$F{Total}]]></variableExpression>
 	</variable>
@@ -96,22 +97,22 @@
 	<columnHeader>
 		<band height="67" splitType="Stretch">
 			<textField>
-				<reportElement x="128" y="40" width="166" height="20" uuid="7079588a-e4fd-4bdb-935b-2b4e9114bdd6"/>
-				<textElement>
+				<reportElement x="128" y="40" width="232" height="20" uuid="7079588a-e4fd-4bdb-935b-2b4e9114bdd6"/>
+				<textElement textAlignment="Center">
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Producto"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="317" y="40" width="100" height="20" uuid="78dea873-a60b-4a12-b0dd-3eec3b251bfe"/>
-				<textElement>
+				<reportElement x="372" y="40" width="75" height="20" uuid="78dea873-a60b-4a12-b0dd-3eec3b251bfe"/>
+				<textElement textAlignment="Center">
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Cantidad"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="434" y="40" width="100" height="20" uuid="0c75a0bb-1938-4c73-a085-9fc588de49dc"/>
-				<textElement>
+				<reportElement x="513" y="41" width="42" height="20" uuid="0c75a0bb-1938-4c73-a085-9fc588de49dc"/>
+				<textElement textAlignment="Right">
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Total"]]></textFieldExpression>
@@ -135,28 +136,40 @@
 				<textFieldExpression><![CDATA[$F{Codigo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="128" y="2" width="166" height="20" uuid="cfb1688e-4f50-4bfe-96cf-ebb0b69efc27"/>
+				<reportElement x="128" y="2" width="232" height="20" uuid="cfb1688e-4f50-4bfe-96cf-ebb0b69efc27"/>
+				<textElement textAlignment="Left"/>
 				<textFieldExpression><![CDATA[$F{Producto}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="317" y="2" width="100" height="20" uuid="cbe14f11-75d1-4bee-b9a2-568f838f4fe5"/>
+				<reportElement x="401" y="2" width="23" height="20" uuid="cbe14f11-75d1-4bee-b9a2-568f838f4fe5"/>
+				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{Cantidad}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="434" y="3" width="100" height="20" uuid="be33a106-b62a-4100-8b1a-9ead30f58b1a"/>
+				<reportElement x="513" y="2" width="42" height="20" uuid="be33a106-b62a-4100-8b1a-9ead30f58b1a"/>
+				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{Total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="491" y="2" width="22" height="20" uuid="a4764824-a16f-4a39-b1ce-25539a15003a"/>
+				<textFieldExpression><![CDATA[$F{moneda}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<columnFooter>
 		<band height="45" splitType="Stretch">
 			<textField>
-				<reportElement x="434" y="7" width="100" height="20" uuid="06bfc656-daf2-4cf5-8312-c7e3c68dc969"/>
+				<reportElement x="513" y="1" width="42" height="20" uuid="06bfc656-daf2-4cf5-8312-c7e3c68dc969"/>
+				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$V{Total_1}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="0" y="0" width="555" height="1" uuid="cb5299ef-22af-4487-a9a7-7f2f062f7aab"/>
 			</line>
+			<textField>
+				<reportElement x="491" y="1" width="22" height="20" uuid="5a012e4b-d08e-4f82-81a2-1860707aab70"/>
+				<textFieldExpression><![CDATA[$F{moneda}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnFooter>
 	<pageFooter>
