@@ -198,10 +198,18 @@ public class Pedidos extends javax.swing.JFrame {
                 return column == 1? true : false;
             }};
             jButtonParamGuardar = new javax.swing.JButton();
+            jPanelEmpleadosEliminar = new javax.swing.JPanel();
+            jTextEmpIdElim = new javax.swing.JTextField();
+            jLabelEmpElim = new javax.swing.JLabel();
+            jLabel29 = new javax.swing.JLabel();
+            jButtonEmpElim = new javax.swing.JButton();
+            jButtonEmpElimCanc = new javax.swing.JButton();
             jMenuBar1 = new javax.swing.JMenuBar();
             jMenuPedidos = new javax.swing.JMenu();
             jMenu2 = new javax.swing.JMenu();
             jMenuEmpleados = new javax.swing.JMenu();
+            jMenuEmpleadoNuevo = new javax.swing.JMenuItem();
+            jMenuEmpleadoEliminar = new javax.swing.JMenuItem();
             jMenuReportes = new javax.swing.JMenu();
             jMenuRVP = new javax.swing.JMenuItem();
             jMenuRVD = new javax.swing.JMenuItem();
@@ -321,7 +329,7 @@ public class Pedidos extends javax.swing.JFrame {
                             .addComponent(jTextFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(jButtonBuscar))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
                     .addContainerGap())
             );
 
@@ -531,7 +539,7 @@ public class Pedidos extends javax.swing.JFrame {
                 .addGroup(jPanelModifPedLayout.createSequentialGroup()
                     .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabelPedFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
                         .addComponent(jLabelNped, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -840,7 +848,7 @@ public class Pedidos extends javax.swing.JFrame {
                         .addComponent(jLabel24))
                     .addGap(37, 37, 37)
                     .addComponent(jButtonGenerarRVD)
-                    .addContainerGap(362, Short.MAX_VALUE))
+                    .addContainerGap(397, Short.MAX_VALUE))
             );
 
             getContentPane().add(jPanelReporteVentaDia, "card7");
@@ -940,10 +948,75 @@ public class Pedidos extends javax.swing.JFrame {
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36)
                 .addComponent(jButtonParamGuardar)
-                .addContainerGap(300, Short.MAX_VALUE))
+                .addContainerGap(330, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanelParametros, "card8");
+
+        jPanelEmpleadosEliminar.setBorder(javax.swing.BorderFactory.createTitledBorder("Eliminar empleado"));
+
+        jTextEmpIdElim.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextEmpIdElimActionPerformed(evt);
+            }
+        });
+        jTextEmpIdElim.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextEmpIdElimKeyPressed(evt);
+            }
+        });
+
+        jLabel29.setText("Ingrese legajo o DNI del empleado");
+
+        jButtonEmpElim.setText("Eliminar");
+        jButtonEmpElim.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEmpElimActionPerformed(evt);
+            }
+        });
+
+        jButtonEmpElimCanc.setText("Cancelar");
+        jButtonEmpElimCanc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEmpElimCancActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanelEmpleadosEliminarLayout = new javax.swing.GroupLayout(jPanelEmpleadosEliminar);
+        jPanelEmpleadosEliminar.setLayout(jPanelEmpleadosEliminarLayout);
+        jPanelEmpleadosEliminarLayout.setHorizontalGroup(
+            jPanelEmpleadosEliminarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelEmpleadosEliminarLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel29)
+                .addGap(18, 18, 18)
+                .addComponent(jTextEmpIdElim, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(45, 45, 45)
+                .addComponent(jLabelEmpElim, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(294, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelEmpleadosEliminarLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonEmpElim)
+                .addGap(18, 18, 18)
+                .addComponent(jButtonEmpElimCanc)
+                .addGap(278, 278, 278))
+        );
+        jPanelEmpleadosEliminarLayout.setVerticalGroup(
+            jPanelEmpleadosEliminarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelEmpleadosEliminarLayout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addGroup(jPanelEmpleadosEliminarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel29)
+                    .addComponent(jTextEmpIdElim, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelEmpElim, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(40, 40, 40)
+                .addGroup(jPanelEmpleadosEliminarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonEmpElim)
+                    .addComponent(jButtonEmpElimCanc))
+                .addContainerGap(421, Short.MAX_VALUE))
+        );
+
+        getContentPane().add(jPanelEmpleadosEliminar, "card9");
 
         jMenuPedidos.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jMenuPedidos.setForeground(new java.awt.Color(153, 153, 153));
@@ -969,6 +1042,34 @@ public class Pedidos extends javax.swing.JFrame {
                 jMenuEmpleadosActionPerformed(evt);
             }
         });
+
+        jMenuEmpleadoNuevo.setText("Nuevo empleado");
+        jMenuEmpleadoNuevo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenuEmpleadoNuevoMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jMenuEmpleadoNuevoMousePressed(evt);
+            }
+        });
+        jMenuEmpleadoNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuEmpleadoNuevoActionPerformed(evt);
+            }
+        });
+        jMenuEmpleados.add(jMenuEmpleadoNuevo);
+
+        jMenuEmpleadoEliminar.setText("Eliminar empleado");
+        jMenuEmpleadoEliminar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenuEmpleadoEliminarMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jMenuEmpleadoEliminarMousePressed(evt);
+            }
+        });
+        jMenuEmpleados.add(jMenuEmpleadoEliminar);
+
         jMenuBar1.add(jMenuEmpleados);
 
         jMenuReportes.setText("Reportes");
@@ -1084,6 +1185,9 @@ public class Pedidos extends javax.swing.JFrame {
             jTableEditPed.setCellSelectionEnabled(true);
             jTableEditPed.changeSelection(jTableEditPed.getSelectedRow(), 3, false, false);
             jTableEditPed.requestFocus();
+            if (jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(), 3) != null) {
+                jTableEditPed.setValueAt(jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(), 3).toString(), jTableEditPed.getSelectedRow(), 3);
+            }
         } else {
             jTableEditPed.setValueAt("", jTableEditPed.getSelectedRow(), 1);
             jTableEditPed.setValueAt("", jTableEditPed.getSelectedRow(), 2);
@@ -1141,7 +1245,6 @@ public class Pedidos extends javax.swing.JFrame {
         jLabelSaldoQuincena.setText("0.0");
         jLabelTopeDiario.setText("0.0");
         jLabelTotalFinal.setText("0.0");
-        
 
     }
 
@@ -1175,7 +1278,7 @@ public class Pedidos extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuEmpleadosActionPerformed
 
     private void jMenuEmpleadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuEmpleadosMouseClicked
-        mostrarPanel(jPanelEmpleados, jMenuEmpleados);
+
 
     }//GEN-LAST:event_jMenuEmpleadosMouseClicked
 
@@ -1382,6 +1485,61 @@ public class Pedidos extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextEmpleadoLegActionPerformed
 
+    private void jMenuEmpleadoNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuEmpleadoNuevoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuEmpleadoNuevoActionPerformed
+
+    private void jMenuEmpleadoNuevoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuEmpleadoNuevoMouseClicked
+
+    }//GEN-LAST:event_jMenuEmpleadoNuevoMouseClicked
+
+    private void jMenuEmpleadoEliminarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuEmpleadoEliminarMouseClicked
+
+    }//GEN-LAST:event_jMenuEmpleadoEliminarMouseClicked
+
+    private void jButtonEmpElimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEmpElimActionPerformed
+        Empleados_servicio.getInstance().eliminarEmpleado(Integer.valueOf(jTextEmpIdElim.getText()));
+        JOptionPane.showMessageDialog(this, "El empleado " + jLabelEmpElim.getText() + " ha sido eliminado exitosamente", "", JOptionPane.INFORMATION_MESSAGE);
+        jTextEmpIdElim.setText("");
+        jLabelEmpElim.setText("");
+    }//GEN-LAST:event_jButtonEmpElimActionPerformed
+
+    private void jButtonEmpElimCancActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEmpElimCancActionPerformed
+        jTextEmpIdElim.setText("");
+        jLabelEmpElim.setText("");
+    }//GEN-LAST:event_jButtonEmpElimCancActionPerformed
+
+    private void jTextEmpIdElimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextEmpIdElimActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextEmpIdElimActionPerformed
+
+    private void jTextEmpIdElimKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextEmpIdElimKeyPressed
+        Empleado emp = null;
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER && !StringUtils.isNullOrEmpty(jTextEmpIdElim.getText())) {
+            try {
+                emp = Empleados_servicio.getInstance().recuperarEmpPorIdTarj(jTextEmpIdElim.getText());
+            } catch (SQLException ex) {
+                Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (emp != null) {
+                jLabelEmpElim.setText(emp.getNombreEmpleado());
+                jTextEmpIdElim.setText(String.valueOf(emp.getIdEmpleado()));
+            } else {
+                JOptionPane.showMessageDialog(jPanelModifPed, "No se ha encontrado el legajo ingresado");
+                jTextEmpIdElim.setText("");
+                jLabelEmpElim.setText("");
+            }
+        }
+    }//GEN-LAST:event_jTextEmpIdElimKeyPressed
+
+    private void jMenuEmpleadoNuevoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuEmpleadoNuevoMousePressed
+        mostrarPanel(jPanelEmpleados, jMenuEmpleados);
+    }//GEN-LAST:event_jMenuEmpleadoNuevoMousePressed
+
+    private void jMenuEmpleadoEliminarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuEmpleadoEliminarMousePressed
+        mostrarPanel(jPanelEmpleadosEliminar, jMenuEmpleados);
+    }//GEN-LAST:event_jMenuEmpleadoEliminarMousePressed
+
     private void cargarComboUsuario(JComboBox combo) {
         List<Usuario> usr = null;
         combo.removeAllItems();
@@ -1421,6 +1579,7 @@ public class Pedidos extends javax.swing.JFrame {
         jPanelReporteVentasProd.setVisible(false);
         jPanelReporteTXT.setVisible(false);
         jPanelParametros.setVisible(false);
+        jPanelEmpleadosEliminar.setVisible(false);
         jMenuEmpleados.setForeground(Color.BLACK);
         jMenuPedidos.setForeground(Color.BLACK);
         jMenuReportes.setForeground(Color.BLACK);
@@ -1711,6 +1870,8 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JButton jButtonCancelarPed;
     private javax.swing.JButton jButtonCrearEmpleado;
     private javax.swing.JButton jButtonDeleteItem;
+    private javax.swing.JButton jButtonEmpElim;
+    private javax.swing.JButton jButtonEmpElimCanc;
     private javax.swing.JButton jButtonGenerarRTXT;
     private javax.swing.JButton jButtonGenerarRVD;
     private javax.swing.JButton jButtonGenerarReporteVentasProd;
@@ -1738,6 +1899,7 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1747,6 +1909,7 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel jLabelBonifMonto;
     private javax.swing.JLabel jLabelBonificado;
+    private javax.swing.JLabel jLabelEmpElim;
     private javax.swing.JLabel jLabelEmpleadoNombre;
     private javax.swing.JLabel jLabelNped;
     private javax.swing.JLabel jLabelPedFecha;
@@ -1758,6 +1921,8 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuEmpleadoEliminar;
+    private javax.swing.JMenuItem jMenuEmpleadoNuevo;
     private javax.swing.JMenu jMenuEmpleados;
     private javax.swing.JMenu jMenuParam;
     private javax.swing.JMenu jMenuPedidos;
@@ -1768,6 +1933,7 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanelBusqPed;
     private javax.swing.JPanel jPanelEmpleados;
+    private javax.swing.JPanel jPanelEmpleadosEliminar;
     private javax.swing.JPanel jPanelModifPed;
     private javax.swing.JPanel jPanelParametros;
     private javax.swing.JPanel jPanelReporteTXT;
@@ -1789,6 +1955,7 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JTable jTableEditPed;
     private javax.swing.JTable jTableParam;
     private javax.swing.JTable jTablePedidos;
+    private javax.swing.JTextField jTextEmpIdElim;
     private javax.swing.JTextField jTextEmpleadoBon;
     private javax.swing.JTextField jTextEmpleadoBonPorc;
     private javax.swing.JTextField jTextEmpleadoDNI;

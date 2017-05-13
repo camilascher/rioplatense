@@ -51,7 +51,7 @@ public class Empleados_servicio {
     public Empleado recuperarEmpPorDescripcion(String empleado) throws SQLException {
         Empleado emp = null;
         try {
-            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT idempleado,nombre,dni,tarjeta,bonificado,bonif_tope from ABMPrueba.empleado where nombre='" + empleado + "';");
+            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT idempleado,nombre,dni,tarjeta,bonificado,bonif_tope from ABMPrueba.empleado where nombre='" + empleado + "' and eliminado <> 1;");
             ResultSet resultado = consulta.executeQuery();
             while (resultado.next()) {
                 emp = new Empleado(resultado.getInt("idempleado"), resultado.getString("nombre"), resultado.getInt("dni"), resultado.getString("tarjeta"), resultado.getDouble("bonificado"), resultado.getInt("bonif_tope"));
@@ -66,7 +66,7 @@ public class Empleados_servicio {
     public Empleado recuperarEmpPorId(String id) throws SQLException {
         Empleado emp = null;
         try {
-            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT idempleado,nombre,dni,tarjeta,bonificado,bonif_tope from ABMPrueba.empleado where idempleado='" + id + "';");
+            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT idempleado,nombre,dni,tarjeta,bonificado,bonif_tope from ABMPrueba.empleado where idempleado='" + id + "' and eliminado <> 1;");
             ResultSet resultado = consulta.executeQuery();
             while (resultado.next()) {
                 emp = new Empleado(resultado.getInt("idempleado"), resultado.getString("nombre"), resultado.getInt("dni"), resultado.getString("tarjeta"), resultado.getDouble("bonificado"), resultado.getInt("bonif_tope"));
@@ -81,7 +81,7 @@ public class Empleados_servicio {
     public Empleado recuperarEmpPorIdTarj(String id) throws SQLException {
         Empleado emp = null;
         try {
-            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT idempleado,nombre,dni,tarjeta,bonificado,bonif_tope from ABMPrueba.empleado where idempleado='" + id + "' or tarjeta='" + id + "' or dni='" + id + "';");
+            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT idempleado,nombre,dni,tarjeta,bonificado,bonif_tope from ABMPrueba.empleado where (idempleado='" + id + "' or tarjeta='" + id + "' or dni='" + id + "') and eliminado <> 1;");
             ResultSet resultado = consulta.executeQuery();
             while (resultado.next()) {
                 emp = new Empleado(resultado.getInt("idempleado"), resultado.getString("nombre"), resultado.getInt("dni"), resultado.getString("tarjeta"), resultado.getDouble("bonificado"), resultado.getInt("bonif_tope"));
@@ -100,6 +100,16 @@ public class Empleados_servicio {
         }
         String a = "INSERT INTO ABMPrueba.empleado (idempleado, nombre, dni,tarjeta,bonificado, bonif_tope) VALUES (" + id + ",'" + nombre + "'," + dni + ", " + tar + "," + bonificado + "," + bonif_tope + ");";
 
+        try {
+            PreparedStatement insert = Conexion.getConnection().prepareStatement(a);
+            insert.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(Pedidos_servicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void eliminarEmpleado(Integer id){
+        String a = "UPDATE ABMPrueba.empleado SET eliminado = 1 where idempleado = "+id+";";
         try {
             PreparedStatement insert = Conexion.getConnection().prepareStatement(a);
             insert.executeUpdate();

@@ -84,6 +84,12 @@ public class Impresion_servicio {
         impresora.escribir("* Este comprobante no es *");
         impresora.escribir("* valido como factura    *");
         impresora.escribir("**************************");
+        impresora.escribir("                          ");
+        impresora.escribir("                          ");
+        impresora.escribir("                          ");
+        impresora.escribir("                          ");
+        impresora.escribir("                          ");
+        impresora.escribir("                          ");
         impresora.finalizar();
     }
 }

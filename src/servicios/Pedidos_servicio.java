@@ -154,7 +154,7 @@ public class Pedidos_servicio {
         if (fecha == null) {
             fecha = " sysdate(),'%Y-%m-%d' ";
         } else {
-            fecha = fecha + ",'%Y/%m/%d'";
+            fecha = "'"+fecha + "','%Y-%m-%d'";
         }
         String where = " ped.idempleado=" + emp.toString() + " and str_to_date(fecha,'%Y-%m-%d')>=str_to_date(" + fecha + ")";
         if (ped != null) { //si el pedido no es nulo, lo omitimos de los resultados para sumarlo en la pantalla

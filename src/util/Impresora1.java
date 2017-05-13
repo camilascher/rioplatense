@@ -27,7 +27,7 @@ public class Impresora1 implements Impresora {
         if (texto == null) {
             dispositivo = Parametros_servicio.getInstance().recuperarValorPorCodigo("dispositivo");
         } else {
-            dispositivo = texto;
+            dispositivo = "LPT1";
         }
         try {
             fw = new FileWriter(dispositivo);
