@@ -38,6 +38,8 @@ public class Reportes {
             case "ReporteTXT":
                 crearReporteTXT(param);
                 break;
+            case "ReporteConsumosEmpleado":
+                crearReporteConsumosEmpleado(param);
             default:
                 break;
         }
@@ -120,6 +122,47 @@ public class Reportes {
                 + "where \n"
                 + "str_to_date(ped.fecha,'%Y-%m-%d') between str_to_date('" + param[0] + "','%d/%m/%Y') and str_to_date('" + param[1] + "','%d/%m/%Y') and eliminado=0; \n"
         );
+        parametersMap.put("fd", param[0]);
+        parametersMap.put("fh", param[1]);
+        try {
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasper1, parametersMap, Conexion.getConnection());
+            JasperViewer.viewReport(jasperPrint, false);
+        } catch (Exception ex) {
+            Logger.getLogger(Reportes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void crearReporteConsumosEmpleado(String[] param) {
+        InputStream jasper1 = getClass().getResourceAsStream("/reportes/ReporteConsumosEmpleado.jasper");
+        Map parametersMap = new HashMap();
+        String query = "SELECT \n"
+                + "emp.nombre Empleado,\n"
+                + "ped.idpedido TicketNro,\n"
+                + "ped.fecha Fecha,\n"
+                + "prod.descripcion Producto,\n"
+                + "det.cantidad Cantidad,\n"
+                + "det.precio Precio,\n"
+                + "det.cantidad * det.precio Total\n"
+                + "FROM\n"
+                + "ABMPrueba.pedido ped,\n"
+                + "ABMPrueba.detalle_pedido det,\n"
+                + "ABMPrueba.empleado emp,\n"
+                + "ABMPrueba.producto prod\n"
+                + "WHERE\n"
+                + "ped.idpedido = det.idpedido\n"
+                + "and ped.idempleado = emp.idempleado\n"
+                + "and det.idproducto = prod.idproducto\n"
+                + "and ped.eliminado = 0";
+        if (param[2] != null) {
+            query += " and emp.idempleado=" + param[2];
+            parametersMap.put("emp",param[3]);
+        }
+        else {
+            parametersMap.put("emp","Todos");
+        }
+        query += " and str_to_date(ped.fecha,'%Y-%m-%d') between str_to_date('" + param[0] + "','%d/%m/%Y') and str_to_date('" + param[1] + "','%d/%m/%Y');";
+
+        parametersMap.put("query", query);
         parametersMap.put("fd", param[0]);
         parametersMap.put("fh", param[1]);
         try {
