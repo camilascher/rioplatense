@@ -98,7 +98,7 @@ public class Empleados_servicio {
         if (tarj != null) {
             tar = "'" + tarj + "'";
         }
-        String a = "INSERT INTO ABMPrueba.empleado (idempleado, nombre, dni,tarjeta,bonificado, bonif_tope) VALUES (" + id + ",'" + nombre + "'," + dni + ", " + tar + "," + bonificado + "," + bonif_tope + ");";
+        String a = "INSERT INTO ABMPrueba.empleado (idempleado, nombre, dni,tarjeta,bonificado, bonif_tope,eliminado) VALUES (" + id + ",'" + nombre + "'," + dni + ", " + tar + "," + bonificado + "," + bonif_tope + ",0);";
 
         try {
             PreparedStatement insert = Conexion.getConnection().prepareStatement(a);

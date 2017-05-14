@@ -31,6 +31,9 @@
 	<variable name="Total_1" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
 		<variableExpression><![CDATA[$F{Total}]]></variableExpression>
 	</variable>
+	<variable name="Total_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{Total}]]></variableExpression>
+	</variable>
 	<group name="Total">
 		<groupExpression><![CDATA[$F{Total}]]></groupExpression>
 	</group>
@@ -156,26 +159,25 @@
 			</textField>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="45" splitType="Stretch">
-			<textField>
-				<reportElement x="513" y="1" width="42" height="20" uuid="06bfc656-daf2-4cf5-8312-c7e3c68dc969"/>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$V{Total_1}]]></textFieldExpression>
-			</textField>
+	<summary>
+		<band height="42" splitType="Stretch">
 			<line>
-				<reportElement x="0" y="0" width="555" height="1" uuid="cb5299ef-22af-4487-a9a7-7f2f062f7aab"/>
+				<reportElement x="0" y="1" width="555" height="1" uuid="ea472881-5a29-4c7a-baf0-1dd7e74e2fd0"/>
 			</line>
 			<textField>
-				<reportElement x="491" y="1" width="22" height="20" uuid="5a012e4b-d08e-4f82-81a2-1860707aab70"/>
+				<reportElement x="469" y="2" width="22" height="20" uuid="318e777b-5417-461a-bbda-0a186e8f7168"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{moneda}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="491" y="2" width="64" height="20" uuid="f78643fe-55a3-4503-be66-6a2dc10d4898"/>
+				<textElement textAlignment="Right">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Total_2}]]></textFieldExpression>
+			</textField>
 		</band>
-	</columnFooter>
-	<pageFooter>
-		<band height="54" splitType="Stretch"/>
-	</pageFooter>
-	<summary>
-		<band height="42" splitType="Stretch"/>
 	</summary>
 </jasperReport>

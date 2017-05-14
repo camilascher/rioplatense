@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a62b9ad-e7a2-4451-baca-0461805964b8">
-	<property name="ireport.zoom" value="1.464100000000001"/>
-	<property name="ireport.x" value="20"/>
-	<property name="ireport.y" value="22"/>
+	<property name="ireport.zoom" value="1.331000000000001"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="query" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -27,6 +27,7 @@
 	<field name="Total" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<sortField name="Empleado"/>
 	<variable name="Total_1" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
 		<variableExpression><![CDATA[$F{Total}]]></variableExpression>
 	</variable>
@@ -36,10 +37,13 @@
 	<variable name="Total_3" class="java.math.BigDecimal" resetType="Group" resetGroup="Empleado" calculation="Sum">
 		<variableExpression><![CDATA[$F{Total}]]></variableExpression>
 	</variable>
+	<variable name="Total_4" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{Total}]]></variableExpression>
+	</variable>
 	<group name="Empleado">
 		<groupExpression><![CDATA[$F{Empleado}]]></groupExpression>
 		<groupFooter>
-			<band height="26">
+			<band height="28">
 				<staticText>
 					<reportElement x="486" y="0" width="13" height="20" uuid="5d71358a-72b3-4ee1-bce2-eab25f7f3822"/>
 					<text><![CDATA[$]]></text>
@@ -58,9 +62,6 @@
 				</textField>
 				<line>
 					<reportElement x="1" y="0" width="554" height="1" uuid="34b626ef-e896-4d84-b3ff-4b7c146feff1"/>
-				</line>
-				<line>
-					<reportElement x="1" y="25" width="553" height="1" uuid="164230f6-8a0e-469b-a85a-2a52a8205e62"/>
 				</line>
 			</band>
 		</groupFooter>
@@ -151,7 +152,7 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="26" splitType="Stretch">
+		<band height="20" splitType="Stretch">
 			<textField>
 				<reportElement x="0" y="0" width="139" height="20" uuid="892d46e3-6cb4-4f53-bc11-ec448e79fbfb"/>
 				<textFieldExpression><![CDATA[$F{Empleado}]]></textFieldExpression>
@@ -182,32 +183,32 @@
 			</staticText>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="45" splitType="Stretch">
-			<textField>
-				<reportElement x="499" y="0" width="56" height="20" uuid="7ab796f2-9adc-4a24-bae5-682ad6d595fc"/>
-				<textFieldExpression><![CDATA[$V{Total_1}]]></textFieldExpression>
-			</textField>
+	<summary>
+		<band height="42" splitType="Stretch">
 			<staticText>
-				<reportElement x="486" y="0" width="13" height="20" uuid="caeab073-5c96-41ea-9d79-7ac7aa5556d6"/>
-				<text><![CDATA[$]]></text>
-			</staticText>
-			<line>
-				<reportElement x="0" y="0" width="554" height="1" uuid="fcf0a2fe-af30-442f-ba74-21ecada2641c"/>
-			</line>
-			<line>
-				<reportElement x="1" y="0" width="554" height="1" uuid="1caa83a1-8cd0-4ebd-b25e-bb826ea7fb05"/>
-			</line>
-			<staticText>
-				<reportElement x="451" y="1" width="29" height="20" uuid="f08e6697-d53c-402f-a214-3522068189a2"/>
+				<reportElement x="427" y="0" width="44" height="20" uuid="e4d2350a-44b5-428b-87d5-5a348189c838"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
 				<text><![CDATA[Total]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="473" y="0" width="13" height="20" uuid="06dc7186-1f1f-4ea9-b319-2a57db67fd85"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[$]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="486" y="0" width="68" height="20" uuid="f3dc4c6f-c091-4dc5-ac4a-7e523b8d62ab"/>
+				<textElement textAlignment="Right">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Total_4}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="3" y="0" width="552" height="1" uuid="8063168a-0a23-4963-a34e-f9d4b6acb107"/>
+			</line>
 		</band>
-	</columnFooter>
-	<pageFooter>
-		<band height="54" splitType="Stretch"/>
-	</pageFooter>
-	<summary>
-		<band height="42" splitType="Stretch"/>
 	</summary>
 </jasperReport>
