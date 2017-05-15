@@ -9,6 +9,7 @@ import reportes.Reportes;
 import com.mysql.jdbc.StringUtils;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -451,6 +452,14 @@ public class Pedidos extends javax.swing.JFrame {
                 }
             });
 
+            jTextEmpleadoLeg.addFocusListener(new java.awt.event.FocusAdapter() {
+                public void focusGained(java.awt.event.FocusEvent evt) {
+                    jTextEmpleadoLegFocusGained(evt);
+                }
+                public void focusLost(java.awt.event.FocusEvent evt) {
+                    jTextEmpleadoLegFocusLost(evt);
+                }
+            });
             jTextEmpleadoLeg.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     jTextEmpleadoLegActionPerformed(evt);
@@ -1492,22 +1501,26 @@ public class Pedidos extends javax.swing.JFrame {
 
     private void jTextEmpleadoLegKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextEmpleadoLegKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER && !StringUtils.isNullOrEmpty(jTextEmpleadoLeg.getText())) {
-            Empleado emp = null;
-            Double saldo = 0.0;
-            try {
-                emp = Empleados_servicio.getInstance().recuperarEmpPorIdTarj(jTextEmpleadoLeg.getText());
-            } catch (SQLException ex) {
-                Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            if (emp != null) {
-                completaValoresEmpleado(emp);
-            } else {
-                JOptionPane.showMessageDialog(jPanelModifPed, "No se ha encontrado el legajo ingresado");
-                jTextEmpleadoLeg.setText("");
-                jLabelEmpleadoNombre.setText("");
-            }
+            buscarLegajoEmp();
         }
     }//GEN-LAST:event_jTextEmpleadoLegKeyPressed
+
+    private void buscarLegajoEmp() throws HeadlessException {
+        Empleado emp = null;
+        Double saldo = 0.0;
+        try {
+            emp = Empleados_servicio.getInstance().recuperarEmpPorIdTarj(jTextEmpleadoLeg.getText());
+        } catch (SQLException ex) {
+            Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (emp != null) {
+            completaValoresEmpleado(emp);
+        } else {
+            JOptionPane.showMessageDialog(jPanelModifPed, "No se ha encontrado el legajo ingresado");
+            jTextEmpleadoLeg.setText("");
+            jLabelEmpleadoNombre.setText("");
+        }
+    }
 
     private void jButtonDeleteItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteItemActionPerformed
         ((DefaultTableModel) jTableEditPed.getModel()).removeRow(jTableEditPed.getSelectedRow());
@@ -1526,7 +1539,7 @@ public class Pedidos extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) jTableEditPed.getModel();
         Producto prod = null;
         Empleado emp = null;
-        if (tablaCompleta()) {
+        if (tablaCompleta() && !StringUtils.isNullOrEmpty(jTextEmpleadoLeg.getText())&& !StringUtils.isNullOrEmpty(jLabelEmpleadoNombre.getText())) {
             try {
                 Conexion.getConnection().setAutoCommit(false);
             } catch (SQLException ex) {
@@ -1582,7 +1595,7 @@ public class Pedidos extends javax.swing.JFrame {
             limpiarPantallaNuevoPed();
             cargarPantallaNuevoPed();
         } else {
-            JOptionPane.showMessageDialog(this, "No se ha indicado cantidad para algún producto en el pedido, por favor, controle los valores ingresados");
+            JOptionPane.showMessageDialog(this, "Falta el legajo del empleado o no se ha indicado cantidad para algún producto en el pedido");
         }
     }//GEN-LAST:event_jButtonGuardarPedActionPerformed
 
@@ -1706,6 +1719,20 @@ public class Pedidos extends javax.swing.JFrame {
             jLabelEmpElim.setText("");
         }
     }//GEN-LAST:event_jTextEmpIdElimFocusLost
+
+    private void jTextEmpleadoLegFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextEmpleadoLegFocusLost
+        if(StringUtils.isNullOrEmpty(jLabelEmpleadoNombre.getText()) || StringUtils.isNullOrEmpty(jTextEmpleadoLeg.getText())){
+            jTextEmpleadoLeg.setText("");
+            jTextEmpleadoLeg.requestFocusInWindow();
+        }
+        else {
+            buscarLegajoEmp();
+        }
+    }//GEN-LAST:event_jTextEmpleadoLegFocusLost
+
+    private void jTextEmpleadoLegFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextEmpleadoLegFocusGained
+        jLabelEmpleadoNombre.setText("");
+    }//GEN-LAST:event_jTextEmpleadoLegFocusGained
 
     private void cargarComboUsuario(JComboBox combo) {
         List<Usuario> usr = null;
