@@ -1539,7 +1539,7 @@ public class Pedidos extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) jTableEditPed.getModel();
         Producto prod = null;
         Empleado emp = null;
-        if (tablaCompleta() && !StringUtils.isNullOrEmpty(jTextEmpleadoLeg.getText())&& !StringUtils.isNullOrEmpty(jLabelEmpleadoNombre.getText())) {
+        if (tablaCompleta() && !StringUtils.isNullOrEmpty(jTextEmpleadoLeg.getText()) && !StringUtils.isNullOrEmpty(jLabelEmpleadoNombre.getText())) {
             try {
                 Conexion.getConnection().setAutoCommit(false);
             } catch (SQLException ex) {
@@ -1713,25 +1713,27 @@ public class Pedidos extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonRCEGenActionPerformed
 
     private void jTextEmpIdElimFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextEmpIdElimFocusLost
-        if(jTextEmpIdElim.getText().equals(""))
-        {
+        if (jTextEmpIdElim.getText().equals("")) {
             jButtonEmpElim.setEnabled(false);
             jLabelEmpElim.setText("");
         }
     }//GEN-LAST:event_jTextEmpIdElimFocusLost
 
     private void jTextEmpleadoLegFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextEmpleadoLegFocusLost
-        if(StringUtils.isNullOrEmpty(jLabelEmpleadoNombre.getText()) || StringUtils.isNullOrEmpty(jTextEmpleadoLeg.getText())){
-            jTextEmpleadoLeg.setText("");
-            jTextEmpleadoLeg.requestFocusInWindow();
-        }
-        else {
-            buscarLegajoEmp();
+        if (ped == null) { //para que en la modificación no lo haga
+            if (StringUtils.isNullOrEmpty(jLabelEmpleadoNombre.getText()) || StringUtils.isNullOrEmpty(jTextEmpleadoLeg.getText())) {
+                jTextEmpleadoLeg.setText("");
+                jTextEmpleadoLeg.requestFocusInWindow();
+            } else {
+                buscarLegajoEmp();
+            }
         }
     }//GEN-LAST:event_jTextEmpleadoLegFocusLost
 
     private void jTextEmpleadoLegFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextEmpleadoLegFocusGained
-        jLabelEmpleadoNombre.setText("");
+        if (ped == null) { //para que en la modificación no lo haga
+            jLabelEmpleadoNombre.setText("");
+        }
     }//GEN-LAST:event_jTextEmpleadoLegFocusGained
 
     private void cargarComboUsuario(JComboBox combo) {
