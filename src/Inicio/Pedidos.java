@@ -22,26 +22,32 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.EventObject;
 import java.util.List;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.AbstractCellEditor;
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import modelos.DetallePedido;
 import modelos.Empleado;
@@ -305,17 +311,16 @@ public class Pedidos extends javax.swing.JFrame {
                         "Nro. Pedido", "Fecha", "Empleado", "Modificar","Eliminar"
                     }
                 ));
-                jTablePedidos.getColumn("Modificar").setCellRenderer(new ButtonRenderer());
-                jTablePedidos.getColumn("Modificar").setCellEditor(
-                    new ButtonEditor(new JCheckBox()));
+                jTablePedidos.getColumn("Modificar").setCellRenderer(new EditCellRenderer());
+                jTablePedidos.getColumn("Modificar").setCellEditor(new EditCellEditor());
                 JScrollPane scroll = new JScrollPane(jTablePedidos);
                 //jPanel2.add(scroll);
                 setSize(400, 100);
                 setVisible(true);
-                jTablePedidos.getColumn("Eliminar").setCellRenderer(new ButtonRenderer());
-                jTablePedidos.getColumn("Eliminar").setCellEditor(
-                    new ButtonEditor(new JCheckBox()));
+                jTablePedidos.getColumn("Eliminar").setCellRenderer(new DeleteCellRenderer());
+                jTablePedidos.getColumn("Eliminar").setCellEditor(new DeleteCellEditor());
                 jTablePedidos.setEnabled(true);
+                jTablePedidos.setRowHeight(30);
                 jScrollPane2.setViewportView(jTablePedidos);
 
                 javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -1907,6 +1912,223 @@ public class Pedidos extends javax.swing.JFrame {
         });
 
     }
+
+    /**
+     * ** NICO ***
+     */
+    public class DeleteCellRenderer extends DefaultTableCellRenderer {
+
+        public DeleteCellRenderer() {
+            setHorizontalAlignment(JLabel.CENTER);
+            try {
+                Image img = ImageIO.read(getClass().getResource("/Imagenes/trash.png"));
+                ImageIcon imageIcon = new ImageIcon(img.getScaledInstance(24, 24, Image.SCALE_SMOOTH));
+                setIcon(imageIcon);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            setText(null);
+            if (value instanceof Boolean && (Boolean) value) {
+                setEnabled(true);
+            } else {
+                setEnabled(false);
+            }
+            return this;
+        }
+    }
+
+    public class DeleteCellEditor extends AbstractCellEditor implements TableCellEditor {
+
+        private JLabel label;
+
+        public DeleteCellEditor() {
+            label = new JLabel("");
+            label.setHorizontalAlignment(JLabel.CENTER);
+            try {
+                Image img = ImageIO.read(getClass().getResource("/Imagenes/trash.png"));
+                ImageIcon imageIcon = new ImageIcon(img.getScaledInstance(24, 24, Image.SCALE_SMOOTH));
+                label.setIcon(imageIcon);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        @Override
+        public Object getCellEditorValue() {
+            int n = JOptionPane.showConfirmDialog(jPanelBusqPed, "Seguro?", "Borrar pedido", JOptionPane.YES_NO_OPTION);
+            if (n == JOptionPane.YES_OPTION) {
+                try {
+                    /*++++++++++++++++++++++++++++++++++++++++++++++++
+                            ++++++++++++++++++ELIMINAR PEDIDO++++++++++++++++
+                            ++++++++++++++++++++++++++++++++++++++++++++++++*/
+                    Conexion.getConnection().setAutoCommit(false);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                final int fila = jTablePedidos.getSelectedRow();
+                Pedidos_servicio.getInstance().borrarPedidoCab(String.valueOf(jTablePedidos.getValueAt(fila, 0)));
+                try {
+                    Conexion.getConnection().commit();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
+                executor.schedule(new Runnable() {
+                    @Override
+                    public void run() {
+                        borrarPedido(fila);
+                    }
+                }, 2, TimeUnit.SECONDS);
+
+                JOptionPane.showMessageDialog(jPanelBusqPed, "Se ha eliminado el pedido con éxito");
+                Pedido pedido = null;
+                try {
+                    pedido = Pedidos_servicio.getInstance().recuperarPedidoCompleto(jTablePedidos.getValueAt(fila, 0).toString().toString());
+                } catch (SQLException ex) {
+                    Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                Impresion_servicio.getInstance().imprimirPedido(pedido);
+            } else if (n == JOptionPane.NO_OPTION) {
+
+            } else {
+            }
+            return true;
+        }
+
+        @Override
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    stopCellEditing();
+                }
+            });
+            return label;
+        }
+
+        @Override
+        public boolean isCellEditable(EventObject e) {
+            return true;
+        }
+
+        private void borrarPedido(int fila) {
+            DefaultTableModel model = (DefaultTableModel) jTablePedidos.getModel();
+            model.removeRow(fila);
+        }
+    }
+
+    public class EditCellRenderer extends DefaultTableCellRenderer {
+
+        public EditCellRenderer() {
+            setHorizontalAlignment(JLabel.CENTER);
+            try {
+                Image img = ImageIO.read(getClass().getResource("/Imagenes/pencil.png"));
+                ImageIcon imageIcon = new ImageIcon(img.getScaledInstance(24, 24, Image.SCALE_SMOOTH));
+                setIcon(imageIcon);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            setText(null);
+            if (value instanceof Boolean && (Boolean) value) {
+                setEnabled(true);
+            } else {
+                setEnabled(false);
+            }
+            return this;
+        }
+    }
+
+    public class EditCellEditor extends AbstractCellEditor implements TableCellEditor {
+
+        private JLabel label;
+
+        public EditCellEditor() {
+            label = new JLabel("");
+            label.setHorizontalAlignment(JLabel.CENTER);
+            try {
+                Image img = ImageIO.read(getClass().getResource("/Imagenes/pencil.png"));
+                ImageIcon imageIcon = new ImageIcon(img.getScaledInstance(24, 24, Image.SCALE_SMOOTH));
+                label.setIcon(imageIcon);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        @Override
+        public Object getCellEditorValue() {
+            ped = null;
+            final int fila = jTablePedidos.getSelectedRow();
+            try {
+                ped = Pedidos_servicio.getInstance().recuperarPedidoCompleto(jTablePedidos.getValueAt(fila, 0).toString());
+            } catch (SQLException ex) {
+                Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            /*++++++++++++++++++++++++++++++++++++++++++++++++
+                    ++++++++++++++++++MODIFICAR PEDIDO++++++++++++++++
+                    ++++++++++++++++++++++++++++++++++++++++++++++++*/
+            Date fechaPed = null;
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                fechaPed = sdf.parse(jTablePedidos.getValueAt(fila, 1).toString());
+            } catch (ParseException ex) {
+                Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+            if (sdf.format(fechaPed).equals(sdf.format(new Date()))) {
+                mostrarPanel(jPanelModifPed, jMenuPedidos);
+                jPanelModifPed.setBorder(javax.swing.BorderFactory.createTitledBorder("Modificar Pedido"));
+                jLabelNped.setText(ped.getIdPedido().toString());
+                jTextEmpleadoLeg.setText(String.valueOf(ped.getEmpleado().getIdEmpleado()));
+                jLabelPedFecha.setText(ped.getFecha());
+                jTextEmpleadoLeg.setEditable(false);
+                jLabelEmpleadoNombre.setText(ped.getEmpleado().getNombreEmpleado());
+                DefaultTableModel model = (DefaultTableModel) jTableEditPed.getModel();
+                model.removeRow(0);
+                for (DetallePedido det : ped.getDetallesPedido()) {
+
+                    model.addRow(new Object[]{det.getProducto().getIdProducto(), det.getProducto().getDescripcion(), det.getPrecio().toString(), det.getCantidad().toString(), String.valueOf(det.getCantidad() * det.getPrecio())});
+
+                }
+                completaValoresEmpleado(ped.getEmpleado());
+                //recalculaTotal();
+            } else {
+                JOptionPane.showMessageDialog(Pedidos.this, "No puede modificar pedidos de otro día", "Error", JOptionPane.WARNING_MESSAGE);
+            }
+            return true;
+        }
+
+        @Override
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    stopCellEditing();
+                }
+            });
+            return label;
+        }
+
+        @Override
+        public boolean isCellEditable(EventObject e) {
+            return true;
+        }
+    }
+
+    /**
+     * ** NICO ***
+     */
 
     class ButtonRenderer extends JButton implements TableCellRenderer {
 
