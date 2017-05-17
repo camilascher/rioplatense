@@ -15,7 +15,6 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -60,7 +59,6 @@ import servicios.Empleados_servicio;
 import servicios.Impresion_servicio;
 import servicios.Parametros_servicio;
 import servicios.Pedidos_servicio;
-import static servicios.Pedidos_servicio.getInstance;
 import servicios.Productos_servicio;
 import servicios.Usuarios_servicio;
 import util.RequeridoListener;
@@ -319,6 +317,7 @@ public class Pedidos extends javax.swing.JFrame {
                 setVisible(true);
                 jTablePedidos.getColumn("Eliminar").setCellRenderer(new DeleteCellRenderer());
                 jTablePedidos.getColumn("Eliminar").setCellEditor(new DeleteCellEditor());
+                jTablePedidos.setSurrendersFocusOnKeystroke(true);
                 jTablePedidos.setEnabled(true);
                 jTablePedidos.setRowHeight(30);
                 jScrollPane2.setViewportView(jTablePedidos);
@@ -1294,41 +1293,48 @@ public class Pedidos extends javax.swing.JFrame {
                     p = Productos_servicio.getInstance().recuperarPorId(Integer.valueOf(prod));
                     if (p == null) {
                         JOptionPane.showMessageDialog(this, "El código de producto ingresado no existe", "Error", JOptionPane.WARNING_MESSAGE);
+                        blanquearFila();
+                    } else {
+                        completarFila(p);
                     }
-
                 } else {
                     p = Productos_servicio.getInstance().recuperarPorDescripcion(prod);
                     if (p == null) {
                         JOptionPane.showMessageDialog(this, "El producto ingresado no existe", "Error", JOptionPane.WARNING_MESSAGE);
+                        blanquearFila();
                     } else {
                         jTableEditPed.setValueAt(p.getIdProducto(), jTableEditPed.getSelectedRow(), 0);
                     }
-
                 }
-
+            } else {
+                blanquearFila();
             }
         } catch (SQLException ex) {
             Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
-
+            blanquearFila();
         }
-        if (p != null) {
-            jTableEditPed.setValueAt(p.getDescripcion(), jTableEditPed.getSelectedRow(), 1);
-            jTableEditPed.setValueAt(p.getPrecio(), jTableEditPed.getSelectedRow(), 2);
-            jTableEditPed.setCellSelectionEnabled(true);
-            jTableEditPed.changeSelection(jTableEditPed.getSelectedRow(), 3, false, false);
-            jTableEditPed.requestFocus();
+    }
 
-        } else {
-            jTableEditPed.setValueAt("", jTableEditPed.getSelectedRow(), 1);
-            jTableEditPed.setValueAt("", jTableEditPed.getSelectedRow(), 2);
-            jTableEditPed.setValueAt("", jTableEditPed.getSelectedRow(), 3);
-            jTableEditPed.setValueAt("", jTableEditPed.getSelectedRow(), 4);
-            jTableEditPed.setCellSelectionEnabled(true);
-            jTableEditPed.changeSelection(jTableEditPed.getSelectedRow(), 0, false, false);
-            jTableEditPed.requestFocus();
+    private void blanquearProducto() {
+        jTableEditPed.setValueAt("", jTableEditPed.getSelectedRow(), 0);
+    }
 
-        }
+    private void completarFila(Producto p) {
+        jTableEditPed.setValueAt(p.getDescripcion(), jTableEditPed.getSelectedRow(), 1);
+        jTableEditPed.setValueAt(p.getPrecio(), jTableEditPed.getSelectedRow(), 2);
+        jTableEditPed.setCellSelectionEnabled(true);
+        jTableEditPed.requestFocus();
+        jTableEditPed.changeSelection(jTableEditPed.getSelectedRow(), 3, false, false);
+    }
 
+    private void blanquearFila() {
+        jTableEditPed.setValueAt("", jTableEditPed.getSelectedRow(), 1);
+        jTableEditPed.setValueAt("", jTableEditPed.getSelectedRow(), 2);
+        jTableEditPed.setValueAt("", jTableEditPed.getSelectedRow(), 3);
+        jTableEditPed.setValueAt("", jTableEditPed.getSelectedRow(), 4);
+        jTableEditPed.setCellSelectionEnabled(true);
+        jTableEditPed.requestFocus();
+        jTableEditPed.changeSelection(jTableEditPed.getSelectedRow(), 0, false, false);
     }
 
     private void limpiarPantallaNuevoPed() {
@@ -1407,15 +1413,9 @@ public class Pedidos extends javax.swing.JFrame {
     private boolean tablaCompleta() {
         DefaultTableModel model = (DefaultTableModel) jTableEditPed.getModel();
         for (int i = 0; i < model.getRowCount(); i++) {
-            if (!StringUtils.isNullOrEmpty(String.valueOf(jTableEditPed.getValueAt(i, 0)))) {
-                if (StringUtils.isNullOrEmpty(String.valueOf(jTableEditPed.getValueAt(i, 3)))) {
-                    return false;
-                } else if (!StringUtils.isNullOrEmpty(String.valueOf(jTableEditPed.getValueAt(i, 3)))) {
-                    return false;
-                }
-
+            if (!StringUtils.isNullOrEmpty(String.valueOf(jTableEditPed.getValueAt(i, 0))) && StringUtils.isNullOrEmpty(String.valueOf(jTableEditPed.getValueAt(i, 3)))) {
+                return false;
             }
-
         }
         return true;
     }
@@ -1746,7 +1746,7 @@ public class Pedidos extends javax.swing.JFrame {
 
     private void jTextEmpleadoLegFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextEmpleadoLegFocusLost
         if (ped == null) { //para que en la modificación no lo haga
-            if (StringUtils.isNullOrEmpty(jLabelEmpleadoNombre.getText()) || StringUtils.isNullOrEmpty(jTextEmpleadoLeg.getText())) {
+            if (StringUtils.isNullOrEmpty(jLabelEmpleadoNombre.getText()) && StringUtils.isNullOrEmpty(jTextEmpleadoLeg.getText())) {
                 jTextEmpleadoLeg.setText("");
                 jTextEmpleadoLeg.requestFocusInWindow();
             } else {
@@ -1960,45 +1960,8 @@ public class Pedidos extends javax.swing.JFrame {
 
         @Override
         public Object getCellEditorValue() {
-            int n = JOptionPane.showConfirmDialog(jPanelBusqPed, "Seguro?", "Borrar pedido", JOptionPane.YES_NO_OPTION);
-            if (n == JOptionPane.YES_OPTION) {
-                try {
-                    /*++++++++++++++++++++++++++++++++++++++++++++++++
-                            ++++++++++++++++++ELIMINAR PEDIDO++++++++++++++++
-                            ++++++++++++++++++++++++++++++++++++++++++++++++*/
-                    Conexion.getConnection().setAutoCommit(false);
-                } catch (SQLException ex) {
-                    Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                final int fila = jTablePedidos.getSelectedRow();
-                Pedidos_servicio.getInstance().borrarPedidoCab(String.valueOf(jTablePedidos.getValueAt(fila, 0)));
-                try {
-                    Conexion.getConnection().commit();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
-                executor.schedule(new Runnable() {
-                    @Override
-                    public void run() {
-                        borrarPedido(fila);
-                    }
-                }, 2, TimeUnit.SECONDS);
-
-                JOptionPane.showMessageDialog(jPanelBusqPed, "Se ha eliminado el pedido con éxito");
-                Pedido pedido = null;
-                try {
-                    pedido = Pedidos_servicio.getInstance().recuperarPedidoCompleto(jTablePedidos.getValueAt(fila, 0).toString().toString());
-                } catch (SQLException ex) {
-                    Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                Impresion_servicio.getInstance().imprimirPedido(pedido);
-            } else if (n == JOptionPane.NO_OPTION) {
-
-            } else {
-            }
+            final int fila = jTablePedidos.getSelectedRow();
+            eliminarPedido(fila);
             return true;
         }
 
@@ -2016,11 +1979,6 @@ public class Pedidos extends javax.swing.JFrame {
         @Override
         public boolean isCellEditable(EventObject e) {
             return true;
-        }
-
-        private void borrarPedido(int fila) {
-            DefaultTableModel model = (DefaultTableModel) jTablePedidos.getModel();
-            model.removeRow(fila);
         }
     }
 
@@ -2075,37 +2033,7 @@ public class Pedidos extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
             }
-            /*++++++++++++++++++++++++++++++++++++++++++++++++
-                    ++++++++++++++++++MODIFICAR PEDIDO++++++++++++++++
-                    ++++++++++++++++++++++++++++++++++++++++++++++++*/
-            Date fechaPed = null;
-            try {
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-                fechaPed = sdf.parse(jTablePedidos.getValueAt(fila, 1).toString());
-            } catch (ParseException ex) {
-                Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-            if (sdf.format(fechaPed).equals(sdf.format(new Date()))) {
-                mostrarPanel(jPanelModifPed, jMenuPedidos);
-                jPanelModifPed.setBorder(javax.swing.BorderFactory.createTitledBorder("Modificar Pedido"));
-                jLabelNped.setText(ped.getIdPedido().toString());
-                jTextEmpleadoLeg.setText(String.valueOf(ped.getEmpleado().getIdEmpleado()));
-                jLabelPedFecha.setText(ped.getFecha());
-                jTextEmpleadoLeg.setEditable(false);
-                jLabelEmpleadoNombre.setText(ped.getEmpleado().getNombreEmpleado());
-                DefaultTableModel model = (DefaultTableModel) jTableEditPed.getModel();
-                model.removeRow(0);
-                for (DetallePedido det : ped.getDetallesPedido()) {
-
-                    model.addRow(new Object[]{det.getProducto().getIdProducto(), det.getProducto().getDescripcion(), det.getPrecio().toString(), det.getCantidad().toString(), String.valueOf(det.getCantidad() * det.getPrecio())});
-
-                }
-                completaValoresEmpleado(ped.getEmpleado());
-                //recalculaTotal();
-            } else {
-                JOptionPane.showMessageDialog(Pedidos.this, "No puede modificar pedidos de otro día", "Error", JOptionPane.WARNING_MESSAGE);
-            }
+            modificarPedido(fila);
             return true;
         }
 
@@ -2126,10 +2054,81 @@ public class Pedidos extends javax.swing.JFrame {
         }
     }
 
+    private void modificarPedido(final int fila) {
+        /*++++++++++++++++++++++++++++++++++++++++++++++++
+        ++++++++++++++++++MODIFICAR PEDIDO++++++++++++++++
+        ++++++++++++++++++++++++++++++++++++++++++++++++*/
+        Date fechaPed = null;
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            fechaPed = sdf.parse(jTablePedidos.getValueAt(fila, 1).toString());
+        } catch (ParseException ex) {
+            Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        if (sdf.format(fechaPed).equals(sdf.format(new Date()))) {
+            mostrarPanel(jPanelModifPed, jMenuPedidos);
+            jPanelModifPed.setBorder(javax.swing.BorderFactory.createTitledBorder("Modificar Pedido"));
+            jLabelNped.setText(ped.getIdPedido().toString());
+            jTextEmpleadoLeg.setText(String.valueOf(ped.getEmpleado().getIdEmpleado()));
+            jLabelPedFecha.setText(ped.getFecha());
+            jTextEmpleadoLeg.setEditable(false);
+            jLabelEmpleadoNombre.setText(ped.getEmpleado().getNombreEmpleado());
+            DefaultTableModel model = (DefaultTableModel) jTableEditPed.getModel();
+            model.removeRow(0);
+            for (DetallePedido det : ped.getDetallesPedido()) {
+
+                model.addRow(new Object[]{det.getProducto().getIdProducto(), det.getProducto().getDescripcion(), det.getPrecio().toString(), det.getCantidad().toString(), String.valueOf(det.getCantidad() * det.getPrecio())});
+
+            }
+            completaValoresEmpleado(ped.getEmpleado());
+            //recalculaTotal();
+        } else {
+            JOptionPane.showMessageDialog(Pedidos.this, "No puede modificar pedidos de otro día", "Error", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    private void eliminarPedido(final int fila) {
+        int n = JOptionPane.showConfirmDialog(jPanelBusqPed, "Seguro?", "Borrar pedido", JOptionPane.YES_NO_OPTION);
+        if (n == JOptionPane.YES_OPTION) {
+            /*++++++++++++++++++++++++++++++++++++++++++++++++
+            ++++++++++++++++++ELIMINAR PEDIDO++++++++++++++++
+            ++++++++++++++++++++++++++++++++++++++++++++++++*/
+            try {
+                Conexion.getConnection().setAutoCommit(false);
+            } catch (SQLException ex) {
+                Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            Pedidos_servicio.getInstance().borrarPedidoCab(String.valueOf(jTablePedidos.getValueAt(fila, 0)));
+            try {
+                Conexion.getConnection().commit();
+            } catch (SQLException ex) {
+                Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
+            executor.schedule(new Runnable() {
+                @Override
+                public void run() {
+                    borrarPedido(fila);
+                }
+            }, 2, TimeUnit.SECONDS);
+
+            JOptionPane.showMessageDialog(jPanelBusqPed, "Se ha eliminado el pedido con éxito");
+            Pedido pedido = null;
+            try {
+                pedido = Pedidos_servicio.getInstance().recuperarPedidoCompleto(String.valueOf(jTablePedidos.getValueAt(fila, 0)));
+            } catch (SQLException ex) {
+                Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            Impresion_servicio.getInstance().imprimirPedido(pedido);
+        }
+    }
+
     /**
      * ** NICO ***
      */
-
     class ButtonRenderer extends JButton implements TableCellRenderer {
 
         public ButtonRenderer() {
@@ -2148,6 +2147,10 @@ public class Pedidos extends javax.swing.JFrame {
             setText((value == null) ? "" : value.toString());
             return this;
         }
+    }
+
+    private void borrarPedido(int fila) {
+        ((DefaultTableModel) jTablePedidos.getModel()).removeRow(fila);
     }
 
     /**
@@ -2207,79 +2210,9 @@ public class Pedidos extends javax.swing.JFrame {
                     Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 if (columna == 3) {
-                    /*++++++++++++++++++++++++++++++++++++++++++++++++
-                    ++++++++++++++++++MODIFICAR PEDIDO++++++++++++++++
-                    ++++++++++++++++++++++++++++++++++++++++++++++++*/
-                    Date fechaPed = null;
-                    try {
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-                        fechaPed = sdf.parse(jTablePedidos.getValueAt(fila, 1).toString());
-                    } catch (ParseException ex) {
-                        Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-                    if (sdf.format(fechaPed).equals(sdf.format(new Date()))) {
-                        mostrarPanel(jPanelModifPed, jMenuPedidos);
-                        jPanelModifPed.setBorder(javax.swing.BorderFactory.createTitledBorder("Modificar Pedido"));
-                        jLabelNped.setText(ped.getIdPedido().toString());
-                        jTextEmpleadoLeg.setText(String.valueOf(ped.getEmpleado().getIdEmpleado()));
-                        jLabelPedFecha.setText(ped.getFecha());
-                        jTextEmpleadoLeg.setEditable(false);
-                        jLabelEmpleadoNombre.setText(ped.getEmpleado().getNombreEmpleado());
-                        DefaultTableModel model = (DefaultTableModel) jTableEditPed.getModel();
-                        model.removeRow(0);
-                        for (DetallePedido det : ped.getDetallesPedido()) {
-
-                            model.addRow(new Object[]{det.getProducto().getIdProducto(), det.getProducto().getDescripcion(), det.getPrecio().toString(), det.getCantidad().toString(), String.valueOf(det.getCantidad() * det.getPrecio())});
-
-                        }
-                        completaValoresEmpleado(ped.getEmpleado());
-                        //recalculaTotal();
-                    } else {
-                        JOptionPane.showMessageDialog(Pedidos.this, "No puede modificar pedidos de otro día", "Error", JOptionPane.WARNING_MESSAGE);
-                    }
-
+                    modificarPedido(fila);
                 } else {
-
-                    int n = JOptionPane.showConfirmDialog(jPanelBusqPed, "Seguro?", "Borrar pedido", JOptionPane.YES_NO_OPTION);
-                    if (n == JOptionPane.YES_OPTION) {
-                        try {
-                            /*++++++++++++++++++++++++++++++++++++++++++++++++
-                            ++++++++++++++++++ELIMINAR PEDIDO++++++++++++++++
-                            ++++++++++++++++++++++++++++++++++++++++++++++++*/
-                            Conexion.getConnection().setAutoCommit(false);
-                        } catch (SQLException ex) {
-                            Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-
-                        Pedidos_servicio.getInstance().borrarPedidoCab(String.valueOf(ped.getIdPedido()));
-                        try {
-                            Conexion.getConnection().commit();
-                        } catch (SQLException ex) {
-                            Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-
-                        final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
-                        executor.schedule(new Runnable() {
-                            @Override
-                            public void run() {
-                                borrarPedido(fila);
-                            }
-                        }, 2, TimeUnit.SECONDS);
-
-                        //JOptionPane.showMessageDialog(jPanelBusqPed, "Se ha eliminado el pedido con éxito");
-                        Pedido pedido = null;
-                        try {
-                            pedido = Pedidos_servicio.getInstance().recuperarPedidoCompleto(ped.getIdPedido().toString());
-                        } catch (SQLException ex) {
-                            Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        Impresion_servicio.getInstance().imprimirPedido(pedido);
-
-                    } else if (n == JOptionPane.NO_OPTION) {
-
-                    } else {
-                    }
+                    eliminarPedido(fila);
                 }
 
             }
@@ -2295,10 +2228,6 @@ public class Pedidos extends javax.swing.JFrame {
 
         protected void fireEditingStopped() {
             super.fireEditingStopped();
-        }
-
-        private void borrarPedido(int fila) {
-            ((DefaultTableModel) jTablePedidos.getModel()).removeRow(fila);
         }
     }
 
