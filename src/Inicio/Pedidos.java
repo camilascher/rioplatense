@@ -439,16 +439,24 @@ public class Pedidos extends javax.swing.JFrame {
                             {
 
                                 if(jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),2)!= null && !"".equals(jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),2)) && jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),3)!= null && !"".equals(jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),3)) ){
-                                    Double precio = Double.valueOf(jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),2).toString());
-                                    int cant =  Integer.valueOf(jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),3).toString());
-                                    Double tot = precio*cant;
-                                    jTableEditPed.setValueAt(tot,jTableEditPed.getSelectedRow(),4);
+                                    if(Integer.valueOf(String.valueOf(jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(), 3)))>=0){
 
-                                    recalculaTotal();
-                                    agregarFila();
-                                    jTableEditPed.setCellSelectionEnabled(true);
-                                    jTableEditPed.changeSelection(jTableEditPed.getSelectedRow()+1, 0, false, false);
-                                    jTableEditPed.requestFocus();
+                                        Double precio = Double.valueOf(jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),2).toString());
+                                        int cant =  Integer.valueOf(jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(),3).toString());
+                                        Double tot = precio*cant;
+                                        jTableEditPed.setValueAt(tot,jTableEditPed.getSelectedRow(),4);
+
+                                        recalculaTotal();
+                                        agregarFila();
+                                        jTableEditPed.setCellSelectionEnabled(true);
+                                        jTableEditPed.changeSelection(jTableEditPed.getSelectedRow()+1, 0, false, false);
+                                        jTableEditPed.requestFocus();
+                                    }
+                                    else
+                                    {
+                                        jTableEditPed.setValueAt(0, jTableEditPed.getSelectedRow(), 3);
+                                        recalculaTotal();
+                                    }
                                 }
                             }
 
@@ -1386,6 +1394,8 @@ public class Pedidos extends javax.swing.JFrame {
     }
 
     private void agregarFila() {
+        
+        
         DefaultTableModel model = (DefaultTableModel) jTableEditPed.getModel();
         model.addRow(new Object[]{"", "", "", "", ""});
     }
@@ -1413,7 +1423,7 @@ public class Pedidos extends javax.swing.JFrame {
     private boolean tablaCompleta() {
         DefaultTableModel model = (DefaultTableModel) jTableEditPed.getModel();
         for (int i = 0; i < model.getRowCount(); i++) {
-            if (!StringUtils.isNullOrEmpty(String.valueOf(jTableEditPed.getValueAt(i, 0))) && StringUtils.isNullOrEmpty(String.valueOf(jTableEditPed.getValueAt(i, 3)))) {
+            if (!StringUtils.isNullOrEmpty(String.valueOf(jTableEditPed.getValueAt(i, 0)))&& StringUtils.isNullOrEmpty(String.valueOf(jTableEditPed.getValueAt(i, 3)))) {
                 return false;
             }
         }
