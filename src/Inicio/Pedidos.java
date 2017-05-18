@@ -426,6 +426,7 @@ public class Pedidos extends javax.swing.JFrame {
                         "Código","Producto", "Precio", "Cantidad", "Total"
                     }
                 ));
+                jTableEditPed.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
                 jScrollPane1.setViewportView(jTableEditPed);
                 jTableEditPed.getModel().addTableModelListener(new TableModelListener(){
                     public void tableChanged(TableModelEvent e){
@@ -1292,34 +1293,41 @@ public class Pedidos extends javax.swing.JFrame {
     }
 
     private void completarProducto() {
-        String prod = jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(), 0).toString();
-        Producto p = null;
-        jTableEditPed.setValueAt("", jTableEditPed.getSelectedRow(), 3);
-        try {
-            if (prod.length() > 0) {
-                if (isNumeric(prod)) {//compruebo si es numérico para ver si busco por id o descripción
-                    p = Productos_servicio.getInstance().recuperarPorId(Integer.valueOf(prod));
-                    if (p == null) {
-                        JOptionPane.showMessageDialog(this, "El código de producto ingresado no existe", "Error", JOptionPane.WARNING_MESSAGE);
-                        blanquearFila();
+        if (!StringUtils.isNullOrEmpty(String.valueOf(jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(), 0)))) {
+            if (isAlphaNumeric(String.valueOf(jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(), 0)))) {
+                String prod = jTableEditPed.getValueAt(jTableEditPed.getSelectedRow(), 0).toString();
+                Producto p = null;
+                jTableEditPed.setValueAt("", jTableEditPed.getSelectedRow(), 3);
+                try {
+                    if (prod.length() > 0) {
+                        if (isNumeric(prod)) {//compruebo si es numérico para ver si busco por id o descripción
+                            p = Productos_servicio.getInstance().recuperarPorId(Integer.valueOf(prod));
+                            if (p == null) {
+                                JOptionPane.showMessageDialog(this, "El código de producto ingresado no existe", "Error", JOptionPane.WARNING_MESSAGE);
+                                blanquearFila();
+                            } else {
+                                completarFila(p);
+                            }
+                        } else {
+                            p = Productos_servicio.getInstance().recuperarPorDescripcion(prod);
+                            if (p == null) {
+                                JOptionPane.showMessageDialog(this, "El producto ingresado no existe", "Error", JOptionPane.WARNING_MESSAGE);
+                                blanquearFila();
+                            } else {
+                                jTableEditPed.setValueAt(p.getIdProducto(), jTableEditPed.getSelectedRow(), 0);
+                            }
+                        }
                     } else {
-                        completarFila(p);
-                    }
-                } else {
-                    p = Productos_servicio.getInstance().recuperarPorDescripcion(prod);
-                    if (p == null) {
-                        JOptionPane.showMessageDialog(this, "El producto ingresado no existe", "Error", JOptionPane.WARNING_MESSAGE);
                         blanquearFila();
-                    } else {
-                        jTableEditPed.setValueAt(p.getIdProducto(), jTableEditPed.getSelectedRow(), 0);
                     }
+                } catch (SQLException ex) {
+                    Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
+                    blanquearFila();
                 }
             } else {
+                JOptionPane.showMessageDialog(this, "El producto ingresado no existe", "Error", JOptionPane.WARNING_MESSAGE);
                 blanquearFila();
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
-            blanquearFila();
         }
     }
 
@@ -1336,6 +1344,7 @@ public class Pedidos extends javax.swing.JFrame {
     }
 
     private void blanquearFila() {
+        jTableEditPed.setValueAt("", jTableEditPed.getSelectedRow(), 0);
         jTableEditPed.setValueAt("", jTableEditPed.getSelectedRow(), 1);
         jTableEditPed.setValueAt("", jTableEditPed.getSelectedRow(), 2);
         jTableEditPed.setValueAt("", jTableEditPed.getSelectedRow(), 3);
@@ -1363,6 +1372,7 @@ public class Pedidos extends javax.swing.JFrame {
         jLabelSaldoQuincena.setText("0.0");
         jLabelTopeDiario.setText("0.0");
         jLabelTotalFinal.setText("0.0");
+        jButtonGuardarPed.setEnabled(false);
 
     }
 
@@ -1394,8 +1404,7 @@ public class Pedidos extends javax.swing.JFrame {
     }
 
     private void agregarFila() {
-        
-        
+
         DefaultTableModel model = (DefaultTableModel) jTableEditPed.getModel();
         model.addRow(new Object[]{"", "", "", "", ""});
     }
@@ -1423,7 +1432,7 @@ public class Pedidos extends javax.swing.JFrame {
     private boolean tablaCompleta() {
         DefaultTableModel model = (DefaultTableModel) jTableEditPed.getModel();
         for (int i = 0; i < model.getRowCount(); i++) {
-            if (!StringUtils.isNullOrEmpty(String.valueOf(jTableEditPed.getValueAt(i, 0)))&& StringUtils.isNullOrEmpty(String.valueOf(jTableEditPed.getValueAt(i, 3)))) {
+            if (!StringUtils.isNullOrEmpty(String.valueOf(jTableEditPed.getValueAt(i, 0))) && StringUtils.isNullOrEmpty(String.valueOf(jTableEditPed.getValueAt(i, 3)))) {
                 return false;
             }
         }
@@ -1543,17 +1552,25 @@ public class Pedidos extends javax.swing.JFrame {
     private void buscarLegajoEmp() throws HeadlessException {
         Empleado emp = null;
         Double saldo = 0.0;
-        try {
-            emp = Empleados_servicio.getInstance().recuperarEmpPorIdTarj(jTextEmpleadoLeg.getText());
-        } catch (SQLException ex) {
-            Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        if (emp != null) {
-            completaValoresEmpleado(emp);
-        } else {
-            JOptionPane.showMessageDialog(jPanelModifPed, "No se ha encontrado el legajo ingresado");
-            jTextEmpleadoLeg.setText("");
-            jLabelEmpleadoNombre.setText("");
+        if (!StringUtils.isNullOrEmpty(jTextEmpleadoLeg.getText())) {
+            if (isNumeric(jTextEmpleadoLeg.getText())) {
+                try {
+                    emp = Empleados_servicio.getInstance().recuperarEmpPorIdTarj(jTextEmpleadoLeg.getText());
+                } catch (SQLException ex) {
+                    Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                if (emp != null) {
+                    completaValoresEmpleado(emp);
+                } else {
+                    jTextEmpleadoLeg.setText("");
+                    jLabelEmpleadoNombre.setText("");
+                    JOptionPane.showMessageDialog(jPanelModifPed, "No se ha encontrado el legajo ingresado");
+                }
+            } else {
+                jTextEmpleadoLeg.setText("");
+                jLabelEmpleadoNombre.setText("");
+                JOptionPane.showMessageDialog(jPanelModifPed, "No se ha encontrado el legajo ingresado");
+            }
         }
     }
 
@@ -1757,7 +1774,6 @@ public class Pedidos extends javax.swing.JFrame {
     private void jTextEmpleadoLegFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextEmpleadoLegFocusLost
         if (ped == null) { //para que en la modificación no lo haga
             if (StringUtils.isNullOrEmpty(jLabelEmpleadoNombre.getText()) && StringUtils.isNullOrEmpty(jTextEmpleadoLeg.getText())) {
-                jTextEmpleadoLeg.setText("");
                 jTextEmpleadoLeg.requestFocusInWindow();
             } else {
                 buscarLegajoEmp();
@@ -1790,6 +1806,10 @@ public class Pedidos extends javax.swing.JFrame {
 
     public static boolean isNumeric(String str) {
         return str.matches("-?\\d+(\\.\\d+)?");  //match a number with optional '-' and decimal.
+    }
+
+    public static boolean isAlphaNumeric(String str) {
+        return str.matches("^[a-zA-Z0-9]*$");
     }
 
     public void limpiarPantallaEmpleado() {
