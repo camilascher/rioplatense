@@ -172,12 +172,15 @@ public class Pedidos_servicio {
         return tot;
     }
     
-    public Double recuperarTotalBonificaciones(Integer emp) { 
+    public Double recuperarTotalBonificaciones(Integer emp,Pedido ped) { 
         ResultSet resultado = null;
         Double tot = 0.0;
-        
+        String where = "";
+        if (ped!= null){
+            where += " and ped.idpedido<>"+ped.getIdPedido().toString();
+        }
         try {
-            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT ifnull(sum(ped.bonificacion),0) as Bonificacion FROM ABMPrueba.pedido ped where ped.idempleado=" + emp.toString() + " and ped.eliminado = 0 and date_format(fecha,'%Y-%m-%d') = date_format(sysdate(),'%Y-%m-%d');");
+            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT ifnull(sum(ped.bonificacion),0) as Bonificacion FROM ABMPrueba.pedido ped where ped.idempleado=" + emp.toString() + " and ped.eliminado = 0 and date_format(fecha,'%Y-%m-%d') = date_format(sysdate(),'%Y-%m-%d')"+where+";");
             resultado = consulta.executeQuery();
             resultado.next();
             tot = resultado.getDouble("Bonificacion");

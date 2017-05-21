@@ -150,19 +150,27 @@ public class Pedidos extends javax.swing.JFrame {
                 return column == 0 || column==3? true : false;
             }
             @Override
-            public Class getColumnClass(int column) {
+            public Class
+
+            getColumnClass(int column) {
                 switch (column) {
                     case 0:
                     return Object.class;
+
                     case 1:
                     return Object.class;
+
                     case 2:
                     return double.class;
+
                     case 3:
                     return Integer.class;
+
                     case 4:
                     return double.class;
-                    default:
+                    default
+
+                    :
                     return Object.class;
                 }
             }}
@@ -462,6 +470,10 @@ public class Pedidos extends javax.swing.JFrame {
                                         jTableEditPed.setValueAt(0, jTableEditPed.getSelectedRow(), 3);
                                         recalculaTotal();
                                     }
+                                }
+                                else{
+                                    jTableEditPed.setValueAt(0, jTableEditPed.getSelectedRow(), 4);
+                                    recalculaTotal();
                                 }
                             }
 
@@ -1430,7 +1442,7 @@ public class Pedidos extends javax.swing.JFrame {
         jTextEmpleadoLeg.setText(String.valueOf(emp.getIdEmpleado()));
         jLabelBonificado.setText(String.valueOf(emp.getBonificacion()));
         jLabelTopeDiario.setText(String.valueOf(emp.getBonifTope()));
-        saldo = Double.valueOf(emp.getBonifTope()) - Pedidos_servicio.getInstance().recuperarTotalBonificaciones(emp.getIdEmpleado());
+        saldo = Double.valueOf(emp.getBonifTope()) - Pedidos_servicio.getInstance().recuperarTotalBonificaciones(emp.getIdEmpleado(), ped);
         if (saldo < 0.0) {
             saldo = 0.0;
         }
@@ -1447,7 +1459,7 @@ public class Pedidos extends javax.swing.JFrame {
     private boolean tablaCompleta() {
         DefaultTableModel model = (DefaultTableModel) jTableEditPed.getModel();
         for (int i = 0; i < model.getRowCount(); i++) {
-            if (!StringUtils.isNullOrEmpty(String.valueOf(jTableEditPed.getValueAt(i, 0))) && StringUtils.isNullOrEmpty(String.valueOf(jTableEditPed.getValueAt(i, 3)))) {
+            if (!StringUtils.isNullOrEmpty(String.valueOf(jTableEditPed.getValueAt(i, 0))) && (StringUtils.isNullOrEmpty(String.valueOf(jTableEditPed.getValueAt(i, 3))) || !isNumeric(String.valueOf(jTableEditPed.getValueAt(i, 3))))) {
                 return false;
             }
         }
@@ -1504,7 +1516,7 @@ public class Pedidos extends javax.swing.JFrame {
         if (!isInteger(jTextEmpleadoDNI.getText())) {
             return false;
         }
-        if (!isAlphaNumeric(jTextEmpleadoNombre.getText())) {
+        if (!isAlphaNumericComma(jTextEmpleadoNombre.getText())) {
             return false;
         }
         if (!isAlphaNumeric(jTextEmpleadoTarjeta.getText())) {
@@ -1610,8 +1622,10 @@ public class Pedidos extends javax.swing.JFrame {
     }
 
     private void jButtonDeleteItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteItemActionPerformed
-        ((DefaultTableModel) jTableEditPed.getModel()).removeRow(jTableEditPed.getSelectedRow());
-        recalculaTotal();
+        if (jTableEditPed.getRowCount() > 1) {
+            ((DefaultTableModel) jTableEditPed.getModel()).removeRow(jTableEditPed.getSelectedRow());
+            recalculaTotal();
+        }
     }//GEN-LAST:event_jButtonDeleteItemActionPerformed
 
     private void jButtonAddItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddItemActionPerformed
@@ -1743,7 +1757,7 @@ public class Pedidos extends javax.swing.JFrame {
                 jLabelEmpElim.setText("");
                 jButtonEmpElim.setEnabled(false);
             }
-        }        
+        }
     }//GEN-LAST:event_jButtonEmpElimActionPerformed
 
     private void jButtonEmpElimCancActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEmpElimCancActionPerformed
@@ -1874,6 +1888,10 @@ public class Pedidos extends javax.swing.JFrame {
 
     public static boolean isAlphaNumeric(String str) {
         return str.matches("^[a-zA-Z0-9]*$");
+    }
+    
+    public static boolean isAlphaNumericComma(String str) {
+        return str.matches("^[a-zA-Z0-9,. ]*$");
     }
 
     public boolean isInteger(String input) { //Pass in string
