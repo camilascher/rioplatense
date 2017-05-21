@@ -51,7 +51,7 @@ public class Empleados_servicio {
     public Empleado recuperarEmpPorDescripcion(String empleado) throws SQLException {
         Empleado emp = null;
         try {
-            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT idempleado,nombre,dni,tarjeta,bonificado,bonif_tope from ABMPrueba.empleado where nombre='" + empleado + "' and eliminado <> 1;");
+            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT idempleado,nombre,dni,tarjeta,bonificado,bonif_tope from ABMPrueba.empleado where nombre='" + empleado + "' ;");
             ResultSet resultado = consulta.executeQuery();
             while (resultado.next()) {
                 emp = new Empleado(resultado.getInt("idempleado"), resultado.getString("nombre"), resultado.getInt("dni"), resultado.getString("tarjeta"), resultado.getDouble("bonificado"), resultado.getInt("bonif_tope"));

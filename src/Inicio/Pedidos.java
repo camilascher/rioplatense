@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.EventObject;
@@ -31,6 +32,7 @@ import javax.imageio.ImageIO;
 import javax.swing.AbstractCellEditor;
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
+import javax.swing.InputVerifier;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -54,6 +56,7 @@ import modelos.Parametros;
 import modelos.Pedido;
 import modelos.Producto;
 import modelos.Usuario;
+import org.eclipse.persistence.jpa.jpql.parser.DateTime;
 import servicios.Conexion;
 import servicios.Empleados_servicio;
 import servicios.Impresion_servicio;
@@ -90,6 +93,7 @@ public class Pedidos extends javax.swing.JFrame {
         }
         initComponents();
         cargarComboEmpleado(jComboEmpleado);
+
         cargarPantallaNuevoPed();
         jButtonGuardarPed.setEnabled(false);
         new RequeridoListener(jRVDTextFechaD);
@@ -766,6 +770,7 @@ public class Pedidos extends javax.swing.JFrame {
 
                 jPanelReporteVentasProd.setBorder(javax.swing.BorderFactory.createTitledBorder("Reporte de ventas por producto"));
 
+                jRVPTextFechaDesde.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
                 jRVPTextFechaDesde.addActionListener(new java.awt.event.ActionListener() {
                     public void actionPerformed(java.awt.event.ActionEvent evt) {
                         jRVPTextFechaDesdeActionPerformed(evt);
@@ -776,6 +781,7 @@ public class Pedidos extends javax.swing.JFrame {
 
                 jLabel21.setText("Fecha Hasta");
 
+                jRVPTextFechaHasta.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
                 jRVPTextFechaHasta.setPreferredSize(new java.awt.Dimension(6, 27));
                 jRVPTextFechaHasta.addActionListener(new java.awt.event.ActionListener() {
                     public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1011,6 +1017,9 @@ public class Pedidos extends javax.swing.JFrame {
             jPanelEmpleadosEliminar.setBorder(javax.swing.BorderFactory.createTitledBorder("Eliminar empleado"));
 
             jTextEmpIdElim.addFocusListener(new java.awt.event.FocusAdapter() {
+                public void focusGained(java.awt.event.FocusEvent evt) {
+                    jTextEmpIdElimFocusGained(evt);
+                }
                 public void focusLost(java.awt.event.FocusEvent evt) {
                     jTextEmpIdElimFocusLost(evt);
                 }
@@ -1272,23 +1281,29 @@ public class Pedidos extends javax.swing.JFrame {
 
     private void cargarPedidos() {
         List<Pedido> ped;
-        try {
-            ped = Pedidos_servicio.getInstance().recuperarTodasEnc(this.jTextNroPedido.getText(), this.jTextFecha.getText(), (String) this.jComboEmpleado.getSelectedItem());
-            DefaultTableModel dtm = (DefaultTableModel) jTablePedidos.getModel();
-            dtm.setRowCount(0);
-            for (int i = 0; i < ped.size(); i++) {
-                dtm.addRow(new Object[]{
-                    ped.get(i).getIdPedido(),
-                    ped.get(i).getFecha(),
-                    ped.get(i).getEmpleado().getNombreEmpleado()
+        if ((StringUtils.isNullOrEmpty(jTextNroPedido.getText()) || isInteger(jTextNroPedido.getText())) && (StringUtils.isNullOrEmpty(jTextFecha.getText()) || isDate(jTextFecha.getText()))) {
+            try {
+                ped = Pedidos_servicio.getInstance().recuperarTodasEnc(this.jTextNroPedido.getText(), this.jTextFecha.getText(), (String) this.jComboEmpleado.getSelectedItem());
+                DefaultTableModel dtm = (DefaultTableModel) jTablePedidos.getModel();
+                dtm.setRowCount(0);
+                for (int i = 0; i < ped.size(); i++) {
+                    dtm.addRow(new Object[]{
+                        ped.get(i).getIdPedido(),
+                        ped.get(i).getFecha(),
+                        ped.get(i).getEmpleado().getNombreEmpleado()
 
-                });
+                    });
 
+                }
+
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+                JOptionPane.showMessageDialog(this, "Ha surgido un error y no se han podido recuperar los registros");
             }
-
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            JOptionPane.showMessageDialog(this, "Ha surgido un error y no se han podido recuperar los registros");
+        } else {
+            jTextNroPedido.setText("");
+            jTextFecha.setText("");
+            JOptionPane.showMessageDialog(this, "Alguno de los datos ingresados no son válidos");
         }
     }
 
@@ -1464,19 +1479,39 @@ public class Pedidos extends javax.swing.JFrame {
     private void jButtonCrearEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCrearEmpleadoActionPerformed
         String tar = null;
         if (!jTextEmpleadoBon.getText().equals("") && !jTextEmpleadoBonPorc.getText().equals("") && !jTextEmpleadoId.getText().equals("") && !jTextEmpleadoDNI.getText().equals("") && !jTextEmpleadoNombre.getText().equals("")) {
-            if (isNumeric(jTextEmpleadoId.getText()) && isNumeric(jTextEmpleadoBonPorc.getText()) && isNumeric(jTextEmpleadoBon.getText()) && isNumeric(jTextEmpleadoDNI.getText())) {
+            if (formatoEmpleado()) {
                 if (jTextEmpleadoTarjeta.getText() != "") {
                     tar = jTextEmpleadoTarjeta.getText();
                 }
                 Empleados_servicio.getInstance().guardarEmpleado(Integer.valueOf(jTextEmpleadoId.getText()), jTextEmpleadoNombre.getText(), Integer.valueOf(jTextEmpleadoDNI.getText()), tar, Double.valueOf(jTextEmpleadoBonPorc.getText()), Double.valueOf(jTextEmpleadoBon.getText()));
+                JOptionPane.showMessageDialog(this, "El empleado fue creado correctamente", "Empleados", JOptionPane.INFORMATION_MESSAGE);
+                limpiarPantallaEmpleado();
             } else {
                 JOptionPane.showMessageDialog(this, "Verifique los datos ingresados", "Error", JOptionPane.WARNING_MESSAGE);
             }
-            JOptionPane.showMessageDialog(this, "El empleado fue creado correctamente", "Empleados", JOptionPane.INFORMATION_MESSAGE);
-            limpiarPantallaEmpleado();
         }
     }//GEN-LAST:event_jButtonCrearEmpleadoActionPerformed
-
+    private boolean formatoEmpleado() {
+        if (!isNumeric(jTextEmpleadoBon.getText())) {
+            return false;
+        }
+        if (!isNumeric(jTextEmpleadoBonPorc.getText()) || Double.valueOf(jTextEmpleadoBonPorc.getText()) > 100 || Double.valueOf(jTextEmpleadoBonPorc.getText()) < 0) {
+            return false;
+        }
+        if (!isInteger(jTextEmpleadoId.getText())) {
+            return false;
+        }
+        if (!isInteger(jTextEmpleadoDNI.getText())) {
+            return false;
+        }
+        if (!isAlphaNumeric(jTextEmpleadoNombre.getText())) {
+            return false;
+        }
+        if (!isAlphaNumeric(jTextEmpleadoTarjeta.getText())) {
+            return false;
+        }
+        return true;
+    }
     private void jButtonCancelarEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarEmpleadoActionPerformed
         limpiarPantallaEmpleado();
         mostrarPanel(jPanelModifPed, jMenuPedidos);
@@ -1513,7 +1548,7 @@ public class Pedidos extends javax.swing.JFrame {
     }//GEN-LAST:event_jRVDTextFechaHActionPerformed
 
     private void jButtonGenerarRVDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGenerarRVDActionPerformed
-        if (!jRVDTextFechaD.getText().equals("") && !jRVDTextFechaH.getText().equals("")) {
+        if (!jRVDTextFechaD.getText().equals("") && !jRVDTextFechaH.getText().equals("") && isDate(jRVDTextFechaD.getText()) && isDate(jRVDTextFechaH.getText())) {
             String[] param = new String[2];
             param[0] = jRVDTextFechaD.getText();
             param[1] = jRVDTextFechaH.getText();
@@ -1535,7 +1570,7 @@ public class Pedidos extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuRTXTActionPerformed
 
     private void jButtonGenerarRTXTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGenerarRTXTActionPerformed
-        if (!jRTXTFd.getText().equals("") && !jRTXTFh.getText().equals("")) {
+        if (!jRTXTFd.getText().equals("") && !jRTXTFh.getText().equals("") && isDate(jRTXTFd.getText()) && isDate(jRTXTFh.getText())) {
             String[] param = new String[2];
             param[0] = jRTXTFd.getText();
             param[1] = jRTXTFh.getText();
@@ -1680,11 +1715,35 @@ public class Pedidos extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuEmpleadoEliminarMouseClicked
 
     private void jButtonEmpElimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEmpElimActionPerformed
-        Empleados_servicio.getInstance().eliminarEmpleado(Integer.valueOf(jTextEmpIdElim.getText()));
-        JOptionPane.showMessageDialog(this, "El empleado " + jLabelEmpElim.getText() + " ha sido eliminado exitosamente", "", JOptionPane.INFORMATION_MESSAGE);
-        jTextEmpIdElim.setText("");
-        jLabelEmpElim.setText("");
-        jButtonEmpElim.setEnabled(false);
+        Empleado emp = null;
+        if (!StringUtils.isNullOrEmpty(jTextEmpIdElim.getText())) {
+            if (isInteger(jTextEmpIdElim.getText())) {
+                try {
+                    emp = Empleados_servicio.getInstance().recuperarEmpPorIdTarj(jTextEmpIdElim.getText());
+                } catch (SQLException ex) {
+                    Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                if (emp != null) {
+                    jLabelEmpElim.setText(emp.getNombreEmpleado());
+                    jTextEmpIdElim.setText(String.valueOf(emp.getIdEmpleado()));
+                    Empleados_servicio.getInstance().eliminarEmpleado(Integer.valueOf(jTextEmpIdElim.getText()));
+                    JOptionPane.showMessageDialog(this, "El empleado " + jLabelEmpElim.getText() + " ha sido eliminado exitosamente", "", JOptionPane.INFORMATION_MESSAGE);
+                    jTextEmpIdElim.setText("");
+                    jLabelEmpElim.setText("");
+                    jButtonEmpElim.setEnabled(false);
+                } else {
+                    JOptionPane.showMessageDialog(jPanelModifPed, "No se ha encontrado el legajo ingresado");
+                    jTextEmpIdElim.setText("");
+                    jLabelEmpElim.setText("");
+                    jButtonEmpElim.setEnabled(false);
+                }
+            } else {
+                JOptionPane.showMessageDialog(jPanelModifPed, "No se ha encontrado el legajo ingresado");
+                jTextEmpIdElim.setText("");
+                jLabelEmpElim.setText("");
+                jButtonEmpElim.setEnabled(false);
+            }
+        }        
     }//GEN-LAST:event_jButtonEmpElimActionPerformed
 
     private void jButtonEmpElimCancActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEmpElimCancActionPerformed
@@ -1699,7 +1758,7 @@ public class Pedidos extends javax.swing.JFrame {
 
     private void jTextEmpIdElimKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextEmpIdElimKeyPressed
         Empleado emp = null;
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER && !StringUtils.isNullOrEmpty(jTextEmpIdElim.getText())) {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER && !StringUtils.isNullOrEmpty(jTextEmpIdElim.getText()) && isInteger(jTextEmpIdElim.getText())) {
             try {
                 emp = Empleados_servicio.getInstance().recuperarEmpPorIdTarj(jTextEmpIdElim.getText());
             } catch (SQLException ex) {
@@ -1742,7 +1801,7 @@ public class Pedidos extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboRCEEmpActionPerformed
 
     private void jButtonRCEGenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRCEGenActionPerformed
-        if (!jTextRCEFD.getText().equals("") && !jTextRCEFH.getText().equals("")) {
+        if (!jTextRCEFD.getText().equals("") && !jTextRCEFH.getText().equals("") && isDate(jTextRCEFD.getText()) && isDate(jTextRCEFH.getText())) {
             Empleado emp = null;
             String[] param = new String[4];
             param[0] = jTextRCEFD.getText();
@@ -1769,6 +1828,7 @@ public class Pedidos extends javax.swing.JFrame {
             jButtonEmpElim.setEnabled(false);
             jLabelEmpElim.setText("");
         }
+
     }//GEN-LAST:event_jTextEmpIdElimFocusLost
 
     private void jTextEmpleadoLegFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextEmpleadoLegFocusLost
@@ -1786,6 +1846,10 @@ public class Pedidos extends javax.swing.JFrame {
             jLabelEmpleadoNombre.setText("");
         }
     }//GEN-LAST:event_jTextEmpleadoLegFocusGained
+
+    private void jTextEmpIdElimFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextEmpIdElimFocusGained
+
+    }//GEN-LAST:event_jTextEmpIdElimFocusGained
 
     private void cargarComboUsuario(JComboBox combo) {
         List<Usuario> usr = null;
@@ -1810,6 +1874,19 @@ public class Pedidos extends javax.swing.JFrame {
 
     public static boolean isAlphaNumeric(String str) {
         return str.matches("^[a-zA-Z0-9]*$");
+    }
+
+    public boolean isInteger(String input) { //Pass in string
+        try { //Try to make the input into an integer
+            Integer.parseInt(input);
+            return true; //Return true if it works
+        } catch (Exception e) {
+            return false; //If it doesn't work return false
+        }
+    }
+
+    public static boolean isDate(String str) {
+        return str.matches("[0-9]{1,2}(/)[0-9]{1,2}(/)[0-9]{4}");
     }
 
     public void limpiarPantallaEmpleado() {
