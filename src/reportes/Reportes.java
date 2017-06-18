@@ -40,6 +40,7 @@ public class Reportes {
                 break;
             case "ReporteConsumosEmpleado":
                 crearReporteConsumosEmpleado(param);
+                break;
             case "ReporteTXTTotal":
                 crearReporteTXTTotal(param);
                 break;
@@ -145,10 +146,10 @@ public class Reportes {
                 + "                lpad(cast(sum(ped.total*100) as decimal(11,0)),10,0)) \n"
                 + "                res\n"
                 + "                from\n"
-                + "                rioplatense.pedido ped\n" 
+                + "                rioplatense.pedido ped,\n" 
                 + "                rioplatense.empleado emp\n"
                 + "                where \n"
-                + "                ped.idempleado = emp.idempleado and str_to_date(ped.fecha,'%Y-%m-%d') between str_to_date('" + param[0] + "','%d/%m/%Y') and str_to_date('" + param[1] + "','%d/%m/%Y') and ped.eliminado=0 and emp.tipo in("+param[2]+"); \n"
+                + "                ped.idempleado = emp.idempleado and str_to_date(ped.fecha,'%Y-%m-%d') between str_to_date('" + param[0] + "','%d/%m/%Y') and str_to_date('" + param[1] + "','%d/%m/%Y') and ped.eliminado=0 and emp.tipo in("+param[2]+") group by ped.idempleado; \n"
         );
         parametersMap.put("fd", param[0]);
         parametersMap.put("fh", param[1]);

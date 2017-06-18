@@ -109,6 +109,8 @@ public class Pedidos extends javax.swing.JFrame {
         new RequeridoListener(jTextEmpleadoBon);
         new RequeridoListener(jTextRCEFD);
         new RequeridoListener(jTextRCEFH);
+        new RequeridoListener(jRTXTTFd);
+        new RequeridoListener(jRTXTTFh);
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Imagenes/Bridar.png")));
     }
 
@@ -257,6 +259,14 @@ public class Pedidos extends javax.swing.JFrame {
                 jLabel30 = new javax.swing.JLabel();
                 jLabel31 = new javax.swing.JLabel();
                 jButtonRCEGen = new javax.swing.JButton();
+                jPanelReporteTXTTotal = new javax.swing.JPanel();
+                jLabel34 = new javax.swing.JLabel();
+                jLabel35 = new javax.swing.JLabel();
+                jRTXTTFd = new javax.swing.JTextField();
+                jRTXTTFh = new javax.swing.JTextField();
+                jButtonGenerarRTXTTotal = new javax.swing.JButton();
+                jLabel36 = new javax.swing.JLabel();
+                jRTXTTCE = new javax.swing.JComboBox<>();
                 jMenuBar1 = new javax.swing.JMenuBar();
                 jMenuPedidos = new javax.swing.JMenu();
                 jMenu2 = new javax.swing.JMenu();
@@ -267,6 +277,7 @@ public class Pedidos extends javax.swing.JFrame {
                 jMenuRVP = new javax.swing.JMenuItem();
                 jMenuRVD = new javax.swing.JMenuItem();
                 jMenuRTXT = new javax.swing.JMenuItem();
+                jMenuRTXTTotal = new javax.swing.JMenuItem();
                 jMenuRCE = new javax.swing.JMenuItem();
                 jMenuParam = new javax.swing.JMenu();
 
@@ -966,7 +977,7 @@ public class Pedidos extends javax.swing.JFrame {
 
                 jLabel33.setText("Tipo de empleado");
 
-                jRTXTCE.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Quincenal", "Mensual" }));
+                jRTXTCE.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Jornal", "Mensual" }));
                 jRTXTCE.addActionListener(new java.awt.event.ActionListener() {
                     public void actionPerformed(java.awt.event.ActionEvent evt) {
                         jRTXTCEActionPerformed(evt);
@@ -1204,6 +1215,79 @@ public class Pedidos extends javax.swing.JFrame {
 
             getContentPane().add(jPanelReporteConsumosEmpleado, "card10");
 
+            jPanelReporteTXTTotal.setBorder(javax.swing.BorderFactory.createTitledBorder("Reporte para txt total por empleado"));
+
+            jLabel34.setText("Fecha Desde");
+
+            jLabel35.setText("Fecha Hasta");
+
+            jRTXTTFd.setPreferredSize(new java.awt.Dimension(6, 27));
+
+            jRTXTTFh.setPreferredSize(new java.awt.Dimension(6, 27));
+
+            jButtonGenerarRTXTTotal.setText("Generar");
+            jButtonGenerarRTXTTotal.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jButtonGenerarRTXTTotalActionPerformed(evt);
+                }
+            });
+
+            jLabel36.setText("Tipo de empleado");
+
+            jRTXTTCE.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Jornal", "Mensual" }));
+            jRTXTTCE.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jRTXTTCEActionPerformed(evt);
+                }
+            });
+
+            javax.swing.GroupLayout jPanelReporteTXTTotalLayout = new javax.swing.GroupLayout(jPanelReporteTXTTotal);
+            jPanelReporteTXTTotal.setLayout(jPanelReporteTXTTotalLayout);
+            jPanelReporteTXTTotalLayout.setHorizontalGroup(
+                jPanelReporteTXTTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelReporteTXTTotalLayout.createSequentialGroup()
+                    .addGroup(jPanelReporteTXTTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanelReporteTXTTotalLayout.createSequentialGroup()
+                            .addContainerGap()
+                            .addGroup(jPanelReporteTXTTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel34)
+                                .addComponent(jLabel35))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(jPanelReporteTXTTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jRTXTTFd, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jRTXTTFh, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanelReporteTXTTotalLayout.createSequentialGroup()
+                            .addGap(249, 249, 249)
+                            .addComponent(jButtonGenerarRTXTTotal))
+                        .addGroup(jPanelReporteTXTTotalLayout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(jLabel36)
+                            .addGap(18, 18, 18)
+                            .addComponent(jRTXTTCE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addContainerGap(553, Short.MAX_VALUE))
+            );
+            jPanelReporteTXTTotalLayout.setVerticalGroup(
+                jPanelReporteTXTTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelReporteTXTTotalLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(jPanelReporteTXTTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jRTXTTFd, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel34))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addGroup(jPanelReporteTXTTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel35)
+                        .addComponent(jRTXTTFh, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(18, 18, 18)
+                    .addGroup(jPanelReporteTXTTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel36)
+                        .addComponent(jRTXTTCE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(19, 19, 19)
+                    .addComponent(jButtonGenerarRTXTTotal)
+                    .addGap(346, 346, 346))
+            );
+
+            getContentPane().add(jPanelReporteTXTTotal, "card7");
+
             jMenuPedidos.setBorder(javax.swing.BorderFactory.createEtchedBorder());
             jMenuPedidos.setForeground(new java.awt.Color(153, 153, 153));
             jMenuPedidos.setText("Pedidos");
@@ -1288,6 +1372,14 @@ public class Pedidos extends javax.swing.JFrame {
                 }
             });
             jMenuReportes.add(jMenuRTXT);
+
+            jMenuRTXTTotal.setText("Reporte de ventas para TXT total por empleado");
+            jMenuRTXTTotal.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mousePressed(java.awt.event.MouseEvent evt) {
+                    jMenuRTXTTotalMousePressed(evt);
+                }
+            });
+            jMenuReportes.add(jMenuRTXTTotal);
 
             jMenuRCE.setText("Reporte de consumos por empleado");
             jMenuRCE.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1633,9 +1725,9 @@ public class Pedidos extends javax.swing.JFrame {
             param[0] = jRTXTFd.getText();
             param[1] = jRTXTFh.getText();
             switch(jRTXTCE.getSelectedItem().toString()){
-                case "Quincenal": param[2]="'Q'"; break;
+                case "Jornal": param[2]="'J'"; break;
                 case "Mensual": param[2]="'M'"; break;
-                default: param[2]="'M','Q'"; break;
+                default: param[2]="'M','J'"; break;
             }   
             new Reportes("ReporteTXT", param);
         }
@@ -1925,6 +2017,28 @@ public class Pedidos extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jRTXTCEActionPerformed
 
+    private void jButtonGenerarRTXTTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGenerarRTXTTotalActionPerformed
+        if (!jRTXTTFd.getText().equals("") && !jRTXTTFh.getText().equals("") && isDate(jRTXTTFd.getText()) && isDate(jRTXTTFh.getText())) {
+            String[] param = new String[3];
+            param[0] = jRTXTTFd.getText();
+            param[1] = jRTXTTFh.getText();
+            switch(jRTXTTCE.getSelectedItem().toString()){
+                case "Jornal": param[2]="'J'"; break;
+                case "Mensual": param[2]="'M'"; break;
+                default: param[2]="'M','J'"; break;
+            }   
+            new Reportes("ReporteTXTTotal", param);
+        }
+    }//GEN-LAST:event_jButtonGenerarRTXTTotalActionPerformed
+
+    private void jRTXTTCEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRTXTTCEActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRTXTTCEActionPerformed
+
+    private void jMenuRTXTTotalMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuRTXTTotalMousePressed
+        mostrarPanel(jPanelReporteTXTTotal,jMenuReportes);
+    }//GEN-LAST:event_jMenuRTXTTotalMousePressed
+
     private void cargarComboUsuario(JComboBox combo) {
         List<Usuario> usr = null;
         combo.removeAllItems();
@@ -1987,6 +2101,7 @@ public class Pedidos extends javax.swing.JFrame {
         jPanelParametros.setVisible(false);
         jPanelEmpleadosEliminar.setVisible(false);
         jPanelReporteConsumosEmpleado.setVisible(false);
+        jPanelReporteTXTTotal.setVisible(false);
         jMenuEmpleados.setForeground(Color.BLACK);
         jMenuPedidos.setForeground(Color.BLACK);
         jMenuReportes.setForeground(Color.BLACK);
@@ -2426,6 +2541,7 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JButton jButtonEmpElim;
     private javax.swing.JButton jButtonEmpElimCanc;
     private javax.swing.JButton jButtonGenerarRTXT;
+    private javax.swing.JButton jButtonGenerarRTXTTotal;
     private javax.swing.JButton jButtonGenerarRVD;
     private javax.swing.JButton jButtonGenerarReporteVentasProd;
     private javax.swing.JButton jButtonGuardarPed;
@@ -2462,6 +2578,9 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
+    private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -2489,6 +2608,7 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JMenu jMenuPedidos;
     private javax.swing.JMenuItem jMenuRCE;
     private javax.swing.JMenuItem jMenuRTXT;
+    private javax.swing.JMenuItem jMenuRTXTTotal;
     private javax.swing.JMenuItem jMenuRVD;
     private javax.swing.JMenuItem jMenuRVP;
     private javax.swing.JMenu jMenuReportes;
@@ -2500,6 +2620,7 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelParametros;
     private javax.swing.JPanel jPanelReporteConsumosEmpleado;
     private javax.swing.JPanel jPanelReporteTXT;
+    private javax.swing.JPanel jPanelReporteTXTTotal;
     private javax.swing.JPanel jPanelReporteVentaDia;
     private javax.swing.JPanel jPanelReporteVentasProd;
     private javax.swing.JPopupMenu jPopupMenu1;
@@ -2508,6 +2629,9 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jRTXTCE;
     private javax.swing.JTextField jRTXTFd;
     private javax.swing.JTextField jRTXTFh;
+    private javax.swing.JComboBox<String> jRTXTTCE;
+    private javax.swing.JTextField jRTXTTFd;
+    private javax.swing.JTextField jRTXTTFh;
     private javax.swing.JTextField jRVDTextFechaD;
     private javax.swing.JTextField jRVDTextFechaH;
     private javax.swing.JComboBox<String> jRVPComboTurno;
