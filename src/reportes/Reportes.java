@@ -40,6 +40,9 @@ public class Reportes {
                 break;
             case "ReporteConsumosEmpleado":
                 crearReporteConsumosEmpleado(param);
+            case "ReporteTXTTotal":
+                crearReporteTXTTotal(param);
+                break;
             default:
                 break;
         }
@@ -118,9 +121,34 @@ public class Reportes {
                 + "lpad(cast((ped.total*100) as decimal(11,0)),10,0) \n"
                 + ") res \n"
                 + "from\n"
-                + "rioplatense.pedido ped\n"
+                + "rioplatense.pedido ped,\n"
+                + "rioplatense.empleado emp\n"
                 + "where \n"
-                + "str_to_date(ped.fecha,'%Y-%m-%d') between str_to_date('" + param[0] + "','%d/%m/%Y') and str_to_date('" + param[1] + "','%d/%m/%Y') and eliminado=0; \n"
+                + "ped.idempleado = emp.idempleado and str_to_date(ped.fecha,'%Y-%m-%d') between str_to_date('" + param[0] + "','%d/%m/%Y') and str_to_date('" + param[1] + "','%d/%m/%Y') and ped.eliminado=0 and emp.tipo in ("+param[2]+"); \n"
+        );
+        parametersMap.put("fd", param[0]);
+        parametersMap.put("fh", param[1]);
+        try {
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasper1, parametersMap, Conexion.getConnection());
+            JasperViewer.viewReport(jasperPrint, false);
+        } catch (Exception ex) {
+            Logger.getLogger(Reportes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void crearReporteTXTTotal(String[] param) {
+        InputStream jasper1 = getClass().getResourceAsStream("/reportes/ReporteTXTTotal.jasper");
+        Map parametersMap = new HashMap();
+        parametersMap.put("query", "SELECT \n"
+                + "				concat(\n"
+                + "                lpad(ped.idempleado,6,0),\n"
+                + "                lpad(cast(sum(ped.total*100) as decimal(11,0)),10,0)) \n"
+                + "                res\n"
+                + "                from\n"
+                + "                rioplatense.pedido ped\n" 
+                + "                rioplatense.empleado emp\n"
+                + "                where \n"
+                + "                ped.idempleado = emp.idempleado and str_to_date(ped.fecha,'%Y-%m-%d') between str_to_date('" + param[0] + "','%d/%m/%Y') and str_to_date('" + param[1] + "','%d/%m/%Y') and ped.eliminado=0 and emp.tipo in("+param[2]+"); \n"
         );
         parametersMap.put("fd", param[0]);
         parametersMap.put("fh", param[1]);
@@ -155,10 +183,9 @@ public class Reportes {
                 + "and ped.eliminado = 0";
         if (param[2] != null) {
             query += " and emp.idempleado=" + param[2];
-            parametersMap.put("emp",param[3]);
-        }
-        else {
-            parametersMap.put("emp","Todos");
+            parametersMap.put("emp", param[3]);
+        } else {
+            parametersMap.put("emp", "Todos");
         }
         query += " and str_to_date(ped.fecha,'%Y-%m-%d') between str_to_date('" + param[0] + "','%d/%m/%Y') and str_to_date('" + param[1] + "','%d/%m/%Y');";
 

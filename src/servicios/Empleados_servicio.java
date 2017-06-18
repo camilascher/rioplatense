@@ -93,12 +93,12 @@ public class Empleados_servicio {
         return emp;
     }
 
-    public void guardarEmpleado(Integer id, String nombre, Integer dni, String tarj, Double bonificado, Double bonif_tope) {
+    public void guardarEmpleado(Integer id, String nombre, Integer dni, String tarj, Double bonificado, Double bonif_tope, String tipo) {
         String tar = null;
         if (tarj != null) {
             tar = "'" + tarj + "'";
         }
-        String a = "INSERT INTO rioplatense.empleado (idempleado, nombre, dni,tarjeta,bonificado, bonif_tope,eliminado) VALUES (" + id + ",'" + nombre + "'," + dni + ", " + tar + "," + bonificado + "," + bonif_tope + ",0);";
+        String a = "INSERT INTO rioplatense.empleado (idempleado, nombre, dni,tarjeta,bonificado, bonif_tope,eliminado,tipo) VALUES (" + id + ",'" + nombre + "'," + dni + ", " + tar + "," + bonificado + "," + bonif_tope + ",0,'"+tipo+"');";
 
         try {
             PreparedStatement insert = Conexion.getConnection().prepareStatement(a);

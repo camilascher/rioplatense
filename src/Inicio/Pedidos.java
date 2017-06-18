@@ -211,6 +211,8 @@ public class Pedidos extends javax.swing.JFrame {
             jTextEmpleadoBon = new javax.swing.JTextField();
             jButtonCrearEmpleado = new javax.swing.JButton();
             jButtonCancelarEmpleado = new javax.swing.JButton();
+            jLabel32 = new javax.swing.JLabel();
+            jComboEmpleadoTipo = new javax.swing.JComboBox<>();
             jPanelReporteVentasProd = new javax.swing.JPanel();
             jRVPTextFechaDesde = new javax.swing.JFormattedTextField();
             jLabel20 = new javax.swing.JLabel();
@@ -231,6 +233,8 @@ public class Pedidos extends javax.swing.JFrame {
             jRTXTFd = new javax.swing.JTextField();
             jRTXTFh = new javax.swing.JTextField();
             jButtonGenerarRTXT = new javax.swing.JButton();
+            jLabel33 = new javax.swing.JLabel();
+            jRTXTCE = new javax.swing.JComboBox<>();
             jPanelParametros = new javax.swing.JPanel();
             jScrollPane3 = new javax.swing.JScrollPane();
             jTableParam = new javax.swing.JTable(){
@@ -379,7 +383,7 @@ public class Pedidos extends javax.swing.JFrame {
                                 .addComponent(jTextFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jButtonBuscar))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 391, Short.MAX_VALUE)
                         .addContainerGap())
                 );
 
@@ -610,7 +614,7 @@ public class Pedidos extends javax.swing.JFrame {
                     .addGroup(jPanelModifPedLayout.createSequentialGroup()
                         .addGroup(jPanelModifPedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabelPedFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
                             .addComponent(jLabelNped, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -705,10 +709,25 @@ public class Pedidos extends javax.swing.JFrame {
                     }
                 });
 
+                jLabel32.setText("Tipo de empleado");
+
+                jComboEmpleadoTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Quincenal", "Mensual" }));
+                jComboEmpleadoTipo.addActionListener(new java.awt.event.ActionListener() {
+                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                        jComboEmpleadoTipoActionPerformed(evt);
+                    }
+                });
+
                 javax.swing.GroupLayout jPanelEmpleadosLayout = new javax.swing.GroupLayout(jPanelEmpleados);
                 jPanelEmpleados.setLayout(jPanelEmpleadosLayout);
                 jPanelEmpleadosLayout.setHorizontalGroup(
                     jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelEmpleadosLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonCrearEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(33, 33, 33)
+                        .addComponent(jButtonCancelarEmpleado)
+                        .addContainerGap())
                     .addGroup(jPanelEmpleadosLayout.createSequentialGroup()
                         .addGap(28, 28, 28)
                         .addGroup(jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -717,16 +736,20 @@ public class Pedidos extends javax.swing.JFrame {
                             .addComponent(jLabel14)
                             .addComponent(jLabel15)
                             .addComponent(jLabel16)
-                            .addComponent(jLabel18))
+                            .addComponent(jLabel18)
+                            .addComponent(jLabel32))
                         .addGap(45, 45, 45)
                         .addGroup(jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanelEmpleadosLayout.createSequentialGroup()
+                                .addComponent(jComboEmpleadoTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(jPanelEmpleadosLayout.createSequentialGroup()
                                 .addGroup(jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(jTextEmpleadoId, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
                                         .addComponent(jTextEmpleadoDNI, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                     .addComponent(jTextEmpleadoTarjeta, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextEmpleadoNombre))
+                                    .addComponent(jTextEmpleadoNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE))
                                 .addGap(516, 516, 516))
                             .addGroup(jPanelEmpleadosLayout.createSequentialGroup()
                                 .addGroup(jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -735,12 +758,6 @@ public class Pedidos extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelEmpleadosLayout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButtonCrearEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(33, 33, 33)
-                        .addComponent(jButtonCancelarEmpleado)
-                        .addContainerGap())
                 );
                 jPanelEmpleadosLayout.setVerticalGroup(
                     jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -771,7 +788,11 @@ public class Pedidos extends javax.swing.JFrame {
                         .addGroup(jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextEmpleadoBon, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel18))
-                        .addGap(223, 223, 223)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel32)
+                            .addComponent(jComboEmpleadoTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(188, 188, 188)
                         .addGroup(jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButtonCrearEmpleado)
                             .addComponent(jButtonCancelarEmpleado))
@@ -921,7 +942,7 @@ public class Pedidos extends javax.swing.JFrame {
                             .addComponent(jLabel24))
                         .addGap(37, 37, 37)
                         .addComponent(jButtonGenerarRVD)
-                        .addContainerGap(397, Short.MAX_VALUE))
+                        .addContainerGap(400, Short.MAX_VALUE))
                 );
 
                 getContentPane().add(jPanelReporteVentaDia, "card7");
@@ -943,6 +964,15 @@ public class Pedidos extends javax.swing.JFrame {
                     }
                 });
 
+                jLabel33.setText("Tipo de empleado");
+
+                jRTXTCE.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Quincenal", "Mensual" }));
+                jRTXTCE.addActionListener(new java.awt.event.ActionListener() {
+                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                        jRTXTCEActionPerformed(evt);
+                    }
+                });
+
                 javax.swing.GroupLayout jPanelReporteTXTLayout = new javax.swing.GroupLayout(jPanelReporteTXT);
                 jPanelReporteTXT.setLayout(jPanelReporteTXTLayout);
                 jPanelReporteTXTLayout.setHorizontalGroup(
@@ -960,7 +990,12 @@ public class Pedidos extends javax.swing.JFrame {
                                     .addComponent(jRTXTFh, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanelReporteTXTLayout.createSequentialGroup()
                                 .addGap(249, 249, 249)
-                                .addComponent(jButtonGenerarRTXT)))
+                                .addComponent(jButtonGenerarRTXT))
+                            .addGroup(jPanelReporteTXTLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel33)
+                                .addGap(18, 18, 18)
+                                .addComponent(jRTXTCE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap(553, Short.MAX_VALUE))
                 );
                 jPanelReporteTXTLayout.setVerticalGroup(
@@ -974,7 +1009,11 @@ public class Pedidos extends javax.swing.JFrame {
                         .addGroup(jPanelReporteTXTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel26)
                             .addComponent(jRTXTFh, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(54, 54, 54)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanelReporteTXTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel33)
+                            .addComponent(jRTXTCE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(19, 19, 19)
                         .addComponent(jButtonGenerarRTXT)
                         .addGap(346, 346, 346))
                 );
@@ -1021,7 +1060,7 @@ public class Pedidos extends javax.swing.JFrame {
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(36, 36, 36)
                     .addComponent(jButtonParamGuardar)
-                    .addContainerGap(330, Short.MAX_VALUE))
+                    .addContainerGap(333, Short.MAX_VALUE))
             );
 
             getContentPane().add(jPanelParametros, "card8");
@@ -1094,7 +1133,7 @@ public class Pedidos extends javax.swing.JFrame {
                     .addGroup(jPanelEmpleadosEliminarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jButtonEmpElim)
                         .addComponent(jButtonEmpElimCanc))
-                    .addContainerGap(421, Short.MAX_VALUE))
+                    .addContainerGap(424, Short.MAX_VALUE))
             );
 
             getContentPane().add(jPanelEmpleadosEliminar, "card9");
@@ -1160,7 +1199,7 @@ public class Pedidos extends javax.swing.JFrame {
                         .addComponent(jLabel31))
                     .addGap(42, 42, 42)
                     .addComponent(jButtonRCEGen)
-                    .addContainerGap(362, Short.MAX_VALUE))
+                    .addContainerGap(365, Short.MAX_VALUE))
             );
 
             getContentPane().add(jPanelReporteConsumosEmpleado, "card10");
@@ -1495,7 +1534,14 @@ public class Pedidos extends javax.swing.JFrame {
                 if (jTextEmpleadoTarjeta.getText() != "") {
                     tar = jTextEmpleadoTarjeta.getText();
                 }
-                Empleados_servicio.getInstance().guardarEmpleado(Integer.valueOf(jTextEmpleadoId.getText()), jTextEmpleadoNombre.getText(), Integer.valueOf(jTextEmpleadoDNI.getText()), tar, Double.valueOf(jTextEmpleadoBonPorc.getText()), Double.valueOf(jTextEmpleadoBon.getText()));
+                String tipo = null;
+                if(jComboEmpleadoTipo.getSelectedItem().toString() == "Quincenal"){
+                    tipo = "Q";
+                }
+                else{
+                    tipo = "M";
+                }
+                Empleados_servicio.getInstance().guardarEmpleado(Integer.valueOf(jTextEmpleadoId.getText()), jTextEmpleadoNombre.getText(), Integer.valueOf(jTextEmpleadoDNI.getText()), tar, Double.valueOf(jTextEmpleadoBonPorc.getText()), Double.valueOf(jTextEmpleadoBon.getText()),tipo);
                 JOptionPane.showMessageDialog(this, "El empleado fue creado correctamente", "Empleados", JOptionPane.INFORMATION_MESSAGE);
                 limpiarPantallaEmpleado();
             } else {
@@ -1583,9 +1629,14 @@ public class Pedidos extends javax.swing.JFrame {
 
     private void jButtonGenerarRTXTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGenerarRTXTActionPerformed
         if (!jRTXTFd.getText().equals("") && !jRTXTFh.getText().equals("") && isDate(jRTXTFd.getText()) && isDate(jRTXTFh.getText())) {
-            String[] param = new String[2];
+            String[] param = new String[3];
             param[0] = jRTXTFd.getText();
             param[1] = jRTXTFh.getText();
+            switch(jRTXTCE.getSelectedItem().toString()){
+                case "Quincenal": param[2]="'Q'"; break;
+                case "Mensual": param[2]="'M'"; break;
+                default: param[2]="'M','Q'"; break;
+            }   
             new Reportes("ReporteTXT", param);
         }
     }//GEN-LAST:event_jButtonGenerarRTXTActionPerformed
@@ -1865,6 +1916,14 @@ public class Pedidos extends javax.swing.JFrame {
     private void jTextEmpIdElimFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextEmpIdElimFocusGained
 
     }//GEN-LAST:event_jTextEmpIdElimFocusGained
+
+    private void jComboEmpleadoTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboEmpleadoTipoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboEmpleadoTipoActionPerformed
+
+    private void jRTXTCEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRTXTCEActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRTXTCEActionPerformed
 
     private void cargarComboUsuario(JComboBox combo) {
         List<Usuario> usr = null;
@@ -2374,6 +2433,7 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JButton jButtonParamGuardar;
     private javax.swing.JButton jButtonRCEGen;
     private javax.swing.JComboBox<String> jComboEmpleado;
+    private javax.swing.JComboBox<String> jComboEmpleadoTipo;
     private javax.swing.JComboBox<String> jComboRCEEmp;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -2400,6 +2460,8 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -2443,6 +2505,7 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JPopupMenu jPopupMenu2;
     private javax.swing.JPopupMenu jPopupMenu3;
+    private javax.swing.JComboBox<String> jRTXTCE;
     private javax.swing.JTextField jRTXTFd;
     private javax.swing.JTextField jRTXTFh;
     private javax.swing.JTextField jRVDTextFechaD;
