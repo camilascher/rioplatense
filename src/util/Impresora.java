@@ -5,6 +5,8 @@
  */
 package util;
 
+import java.io.FileInputStream;
+
 /**
  *
  * @author Nico
@@ -12,6 +14,6 @@ package util;
 public interface Impresora {
     
     public void escribir(String texto);
-    public void finalizar();
+    public java.io.File finalizar();
 
 }

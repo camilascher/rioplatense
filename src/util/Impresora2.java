@@ -44,15 +44,16 @@ public class Impresora2 implements Impresora {
         }
     }
 
-    public void finalizar() {
+    public java.io.File finalizar() {
         try {
             pw.close();
             if (this.dispositivo.trim().equals("pantalla.txt")) {
                 java.io.File archivo = new java.io.File("pantalla.txt");
-                java.awt.Desktop.getDesktop().open(archivo);
+                return archivo;
             }
         } catch (Exception e) {
             System.out.print(e);
         }
+        return null;
     }
 }

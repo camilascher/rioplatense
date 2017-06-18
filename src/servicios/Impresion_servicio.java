@@ -5,6 +5,19 @@
  */
 package servicios;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.print.Doc;
+import javax.print.DocFlavor;
+import javax.print.DocPrintJob;
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
+import javax.print.SimpleDoc;
+import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.PrintRequestAttributeSet;
 import modelos.DetallePedido;
 import modelos.Empleado;
 import modelos.Pedido;
@@ -90,6 +103,44 @@ public class Impresion_servicio {
         impresora.escribir("                          ");
         impresora.escribir("                          ");
         impresora.escribir("                          ");
-        impresora.finalizar();
+
+        char[] initEP = new char[]{0x1b, '@'};
+        char[] cutP = new char[]{0x1d, 'V', 1};
+        impresora.escribir(new String(initEP) + new String(cutP));
+
+        FileInputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(impresora.finalizar());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (inputStream == null) {
+            return;
+        }
+
+        DocFlavor docFormat = DocFlavor.INPUT_STREAM.AUTOSENSE;
+        Doc document = new SimpleDoc(inputStream, docFormat, null);
+
+        PrintRequestAttributeSet attributeSet = new HashPrintRequestAttributeSet();
+
+        PrintService defaultPrintService = PrintServiceLookup.lookupDefaultPrintService();
+
+        if (defaultPrintService != null) {
+            DocPrintJob printJob = defaultPrintService.createPrintJob();
+            try {
+                printJob.print(document, attributeSet);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.err.println("No existen impresoras instaladas");
+        }
+
+        try {
+            inputStream.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Impresion_servicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

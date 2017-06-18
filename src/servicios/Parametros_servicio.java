@@ -37,7 +37,7 @@ public class Parametros_servicio {
         String valor=null;
         PreparedStatement consulta;
         try {
-            consulta = Conexion.getConnection().prepareStatement("SELECT valor FROM ABMPrueba.parametros where codigo ='"+cod+"';");
+            consulta = Conexion.getConnection().prepareStatement("SELECT valor FROM rioplatense.parametros where codigo ='"+cod+"';");
             ResultSet resultado = consulta.executeQuery();
             resultado.next();
             valor = resultado.getString("valor");
@@ -52,7 +52,7 @@ public class Parametros_servicio {
         List <Parametros> par= new ArrayList<>();
         PreparedStatement consulta;
         try {
-            consulta = Conexion.getConnection().prepareStatement("SELECT * FROM ABMPrueba.parametros where visible = 1;");
+            consulta = Conexion.getConnection().prepareStatement("SELECT * FROM rioplatense.parametros where visible = 1;");
             ResultSet resultado = consulta.executeQuery();
             while(resultado.next()){
             par.add(new Parametros(resultado.getInt("idparametros"),resultado.getString("codigo"),resultado.getString("valor")));
@@ -65,7 +65,7 @@ public class Parametros_servicio {
     }
     
     public void guardarParametro(String codigo, String valor) {
-        String a = "UPDATE ABMPrueba.parametros SET valor='"+valor+"' where codigo='"+codigo+"';";
+        String a = "UPDATE rioplatense.parametros SET valor='"+valor+"' where codigo='"+codigo+"';";
 
         try {
             PreparedStatement insert = Conexion.getConnection().prepareStatement(a);

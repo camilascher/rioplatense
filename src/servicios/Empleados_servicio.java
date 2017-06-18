@@ -36,7 +36,7 @@ public class Empleados_servicio {
     public List<Empleado> recuperarTodas() throws SQLException {
         List<Empleado> emp = new ArrayList<>();
         try {
-            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT idempleado,nombre,dni,tarjeta,bonificado,bonif_tope from ABMPrueba.empleado ORDER BY nombre");
+            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT idempleado,nombre,dni,tarjeta,bonificado,bonif_tope from rioplatense.empleado ORDER BY nombre");
             ResultSet resultado = consulta.executeQuery();
             while (resultado.next()) {
                 emp.add(new Empleado(resultado.getInt("idEmpleado"), resultado.getString("nombre"), resultado.getInt("dni"), resultado.getString("tarjeta"), resultado.getDouble("bonificado"), resultado.getInt("bonif_tope")));
@@ -51,7 +51,7 @@ public class Empleados_servicio {
     public Empleado recuperarEmpPorDescripcion(String empleado) throws SQLException {
         Empleado emp = null;
         try {
-            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT idempleado,nombre,dni,tarjeta,bonificado,bonif_tope from ABMPrueba.empleado where nombre='" + empleado + "' ;");
+            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT idempleado,nombre,dni,tarjeta,bonificado,bonif_tope from rioplatense.empleado where nombre='" + empleado + "' ;");
             ResultSet resultado = consulta.executeQuery();
             while (resultado.next()) {
                 emp = new Empleado(resultado.getInt("idempleado"), resultado.getString("nombre"), resultado.getInt("dni"), resultado.getString("tarjeta"), resultado.getDouble("bonificado"), resultado.getInt("bonif_tope"));
@@ -66,7 +66,7 @@ public class Empleados_servicio {
     public Empleado recuperarEmpPorId(String id) throws SQLException {
         Empleado emp = null;
         try {
-            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT idempleado,nombre,dni,tarjeta,bonificado,bonif_tope from ABMPrueba.empleado where idempleado='" + id + "' and eliminado <> 1;");
+            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT idempleado,nombre,dni,tarjeta,bonificado,bonif_tope from rioplatense.empleado where idempleado='" + id + "' and eliminado <> 1;");
             ResultSet resultado = consulta.executeQuery();
             while (resultado.next()) {
                 emp = new Empleado(resultado.getInt("idempleado"), resultado.getString("nombre"), resultado.getInt("dni"), resultado.getString("tarjeta"), resultado.getDouble("bonificado"), resultado.getInt("bonif_tope"));
@@ -81,7 +81,7 @@ public class Empleados_servicio {
     public Empleado recuperarEmpPorIdTarj(String id) throws SQLException {
         Empleado emp = null;
         try {
-            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT idempleado,nombre,dni,tarjeta,bonificado,bonif_tope from ABMPrueba.empleado where (idempleado='" + id + "' or tarjeta='" + id + "' or dni='" + id + "') and eliminado <> 1;");
+            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT idempleado,nombre,dni,tarjeta,bonificado,bonif_tope from rioplatense.empleado where (idempleado='" + id + "' or tarjeta='" + id + "' or dni='" + id + "') and eliminado <> 1;");
             ResultSet resultado = consulta.executeQuery();
             while (resultado.next()) {
                 emp = new Empleado(resultado.getInt("idempleado"), resultado.getString("nombre"), resultado.getInt("dni"), resultado.getString("tarjeta"), resultado.getDouble("bonificado"), resultado.getInt("bonif_tope"));
@@ -98,7 +98,7 @@ public class Empleados_servicio {
         if (tarj != null) {
             tar = "'" + tarj + "'";
         }
-        String a = "INSERT INTO ABMPrueba.empleado (idempleado, nombre, dni,tarjeta,bonificado, bonif_tope,eliminado) VALUES (" + id + ",'" + nombre + "'," + dni + ", " + tar + "," + bonificado + "," + bonif_tope + ",0);";
+        String a = "INSERT INTO rioplatense.empleado (idempleado, nombre, dni,tarjeta,bonificado, bonif_tope,eliminado) VALUES (" + id + ",'" + nombre + "'," + dni + ", " + tar + "," + bonificado + "," + bonif_tope + ",0);";
 
         try {
             PreparedStatement insert = Conexion.getConnection().prepareStatement(a);
@@ -109,7 +109,7 @@ public class Empleados_servicio {
     }
     
     public void eliminarEmpleado(Integer id){
-        String a = "UPDATE ABMPrueba.empleado SET eliminado = 1 where idempleado = "+id+";";
+        String a = "UPDATE rioplatense.empleado SET eliminado = 1 where idempleado = "+id+";";
         try {
             PreparedStatement insert = Conexion.getConnection().prepareStatement(a);
             insert.executeUpdate();

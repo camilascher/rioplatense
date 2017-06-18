@@ -1690,6 +1690,7 @@ public class Pedidos extends javax.swing.JFrame {
             try {
                 pedido = Pedidos_servicio.getInstance().recuperarPedidoCompleto(idPedido);
                 Impresion_servicio.getInstance().imprimirPedido(pedido);
+                Impresion_servicio.getInstance().imprimirPedido(pedido);
             } catch (SQLException ex) {
                 Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
             }

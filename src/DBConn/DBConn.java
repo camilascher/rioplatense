@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 
 public class DBConn{ 
     public static void main(String args[]) { 
-        String dbURL = "jdbc:mysql://localhost:3306/ABMPrueba";
+        String dbURL = "jdbc:mysql://localhost:3306/rioplatense";
         String username ="root"; 
         String password = "Camila88"; 
         Connection dbCon = null; 
@@ -19,7 +19,7 @@ public class DBConn{
         ResultSet rs = null;
        
         try {
-            // String query ="select count(*) from ABMPrueba.producto";
+            // String query ="select count(*) from rioplatense.producto";
             //try {
 //getting database connection to MySQL server
 dbCon = DriverManager.getConnection(dbURL, username, password);

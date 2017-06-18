@@ -35,7 +35,7 @@ public class Usuarios_servicio {
     public List<Usuario> recuperarTodas() throws SQLException{
         List<Usuario> usuarios = new ArrayList<>();
         try{
-            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT idusuario,nombre,clave from ABMPrueba.usuario ORDER BY nombre");
+            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT idusuario,nombre,clave from rioplatense.usuario ORDER BY nombre");
             ResultSet resultado = consulta.executeQuery();
             while(resultado.next()){
                 usuarios.add(new Usuario(resultado.getInt("idusuario"),resultado.getString("nombre"),resultado.getString("clave")));
@@ -50,7 +50,7 @@ public class Usuarios_servicio {
     public Usuario recuperarUsuario(String nombre) throws SQLException{
         Usuario usuario = null;
         try{
-            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT idusuario,nombre,clave from ABMPrueba.usuario WHERE nombre='"+nombre+"'");
+            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT idusuario,nombre,clave from rioplatense.usuario WHERE nombre='"+nombre+"'");
             ResultSet resultado = consulta.executeQuery();
             while(resultado.next()){
                 usuario = new Usuario(resultado.getInt("idusuario"),resultado.getString("nombre"),resultado.getString("clave"));

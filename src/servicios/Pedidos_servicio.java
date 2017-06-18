@@ -55,7 +55,7 @@ public class Pedidos_servicio {
         }
         try {
             Pedido pedido = null;
-            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT ped.idpedido,ped.idempleado,emp.nombre,emp.dni,emp.tarjeta,emp.bonificado,emp.bonif_tope,ped.fecha,ped.total,ped.bonificacion,ped.eliminado,ped.usuarioid_creacion,usu.nombre FROM ABMPrueba.pedido ped JOIN ABMPrueba.empleado emp ON emp.idempleado = ped.idempleado JOIN ABMPrueba.usuario usu ON usu.idusuario = ped.usuarioid_creacion" + where + " and ped.eliminado=0;");
+            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT ped.idpedido,ped.idempleado,emp.nombre,emp.dni,emp.tarjeta,emp.bonificado,emp.bonif_tope,ped.fecha,ped.total,ped.bonificacion,ped.eliminado,ped.usuarioid_creacion,usu.nombre FROM rioplatense.pedido ped JOIN rioplatense.empleado emp ON emp.idempleado = ped.idempleado JOIN rioplatense.usuario usu ON usu.idusuario = ped.usuarioid_creacion" + where + " and ped.eliminado=0;");
             ResultSet resultado = consulta.executeQuery();
             while (resultado.next()) {
                 pedido = new Pedido(resultado.getInt("ped.idpedido"), new Empleado(resultado.getInt("ped.idempleado"), resultado.getString("emp.nombre"), resultado.getInt("emp.dni"), resultado.getString("emp.tarjeta"), resultado.getDouble("emp.bonificado"), resultado.getInt("emp.bonif_tope")), new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(resultado.getTimestamp("ped.fecha")), resultado.getDouble("ped.total"), resultado.getDouble("ped.bonificacion"), resultado.getInt("ped.eliminado"), new Usuario(resultado.getInt("ped.usuarioid_creacion"), resultado.getString("usu.nombre"), null));
@@ -71,7 +71,7 @@ public class Pedidos_servicio {
         String ped = "";
 
         try {
-            PreparedStatement consulta = Conexion.getConnection().prepareStatement("select ifnull(max(idpedido),0)+1 idpedido from ABMPrueba.pedido;");
+            PreparedStatement consulta = Conexion.getConnection().prepareStatement("select ifnull(max(idpedido),0)+1 idpedido from rioplatense.pedido;");
             ResultSet resultado = consulta.executeQuery();
             while (resultado.next()) {
                 ped = resultado.getString("idpedido");
@@ -84,7 +84,7 @@ public class Pedidos_servicio {
     }
 
     public void guardarPedidoCab(String idPedido, String idEmpleado, String bonificacion, String total, Integer eliminado, String idUsuario) {
-        String a = "INSERT INTO ABMPrueba.pedido (idpedido, idempleado, fecha,bonificacion,total,eliminado, usuarioid_creacion) VALUES (" + idPedido + "," + idEmpleado + ", sysdate(), " + bonificacion + "," + total + "," + eliminado + "," + idUsuario + ");";
+        String a = "INSERT INTO rioplatense.pedido (idpedido, idempleado, fecha,bonificacion,total,eliminado, usuarioid_creacion) VALUES (" + idPedido + "," + idEmpleado + ", sysdate(), " + bonificacion + "," + total + "," + eliminado + "," + idUsuario + ");";
 
         try {
             PreparedStatement insert = Conexion.getConnection().prepareStatement(a);
@@ -95,7 +95,7 @@ public class Pedidos_servicio {
     }
 
     public void guardarPedidoDet(String idPedido, String idProducto, String precio, String cant) {
-        String a = "INSERT INTO ABMPrueba.detalle_pedido (idpedido,idproducto,precio,cantidad) VALUES (" + idPedido + "," + idProducto + "," + precio + "," + cant + ");";
+        String a = "INSERT INTO rioplatense.detalle_pedido (idpedido,idproducto,precio,cantidad) VALUES (" + idPedido + "," + idProducto + "," + precio + "," + cant + ");";
         try {
             PreparedStatement insert = Conexion.getConnection().prepareStatement(a);
             insert.executeUpdate();
@@ -105,7 +105,7 @@ public class Pedidos_servicio {
     }
 
     public void borrarPedidoDet(String idPedido) {
-        String a = "DELETE FROM ABMPrueba.detalle_pedido where idpedido = " + idPedido + ";";
+        String a = "DELETE FROM rioplatense.detalle_pedido where idpedido = " + idPedido + ";";
         try {
             PreparedStatement delete = Conexion.getConnection().prepareStatement(a);
             delete.execute();
@@ -115,7 +115,7 @@ public class Pedidos_servicio {
     }
 
     public void borrarPedidoCab(String idPedido) {
-        String a = "UPDATE ABMPrueba.pedido SET eliminado = 1 where idpedido = " + idPedido + ";";
+        String a = "UPDATE rioplatense.pedido SET eliminado = 1 where idpedido = " + idPedido + ";";
         try {
             PreparedStatement delete = Conexion.getConnection().prepareStatement(a);
             delete.execute();
@@ -130,7 +130,7 @@ public class Pedidos_servicio {
         try {
             int pedidoAnterior = 0;
 
-            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT ped.idpedido,ped.idempleado,emp.nombre,emp.nombre,emp.dni,emp.tarjeta,emp.bonificado,emp.bonif_tope,ped.fecha,ped.total,ped.bonificacion,ped.eliminado,ped.usuarioid_creacion,usu.nombre,det.idproducto,prod.descripcion,det.precio,det.cantidad FROM ABMPrueba.pedido ped JOIN ABMPrueba.empleado emp ON emp.idempleado = ped.idempleado JOIN ABMPrueba.usuario usu ON usu.idusuario = ped.usuarioid_creacion LEFT JOIN (ABMPrueba.detalle_pedido det JOIN ABMPrueba.producto prod ON det.idproducto = prod.idproducto) ON ped.idpedido = det.idpedido" + where + ";");
+            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT ped.idpedido,ped.idempleado,emp.nombre,emp.nombre,emp.dni,emp.tarjeta,emp.bonificado,emp.bonif_tope,ped.fecha,ped.total,ped.bonificacion,ped.eliminado,ped.usuarioid_creacion,usu.nombre,det.idproducto,prod.descripcion,det.precio,det.cantidad FROM rioplatense.pedido ped JOIN rioplatense.empleado emp ON emp.idempleado = ped.idempleado JOIN rioplatense.usuario usu ON usu.idusuario = ped.usuarioid_creacion LEFT JOIN (rioplatense.detalle_pedido det JOIN rioplatense.producto prod ON det.idproducto = prod.idproducto) ON ped.idpedido = det.idpedido" + where + ";");
             ResultSet resultado = consulta.executeQuery();
             while (resultado.next()) {
                 if (pedidoAnterior != resultado.getInt("ped.idpedido")) {
@@ -161,7 +161,7 @@ public class Pedidos_servicio {
             where += " and ped.idpedido<>" + ped.getIdPedido().toString(); //agrego el <> del id de pedido modificado para que no lotenga en cuenta en el cálculo del total
         }
         try {
-            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT ifnull(sum(ped.total-ped.bonificacion),0) as Total FROM ABMPrueba.pedido ped where" + where + " and ped.eliminado = 0;");
+            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT ifnull(sum(ped.total-ped.bonificacion),0) as Total FROM rioplatense.pedido ped where" + where + " and ped.eliminado = 0;");
             resultado = consulta.executeQuery();
             resultado.next();
             tot = resultado.getDouble("Total");
@@ -180,7 +180,7 @@ public class Pedidos_servicio {
             where += " and ped.idpedido<>"+ped.getIdPedido().toString();
         }
         try {
-            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT ifnull(sum(ped.bonificacion),0) as Bonificacion FROM ABMPrueba.pedido ped where ped.idempleado=" + emp.toString() + " and ped.eliminado = 0 and date_format(fecha,'%Y-%m-%d') = date_format(sysdate(),'%Y-%m-%d')"+where+";");
+            PreparedStatement consulta = Conexion.getConnection().prepareStatement("SELECT ifnull(sum(ped.bonificacion),0) as Bonificacion FROM rioplatense.pedido ped where ped.idempleado=" + emp.toString() + " and ped.eliminado = 0 and date_format(fecha,'%Y-%m-%d') = date_format(sysdate(),'%Y-%m-%d')"+where+";");
             resultado = consulta.executeQuery();
             resultado.next();
             tot = resultado.getDouble("Bonificacion");
@@ -192,7 +192,7 @@ public class Pedidos_servicio {
     }
 
     public void actualizarTotalBonif(Integer idPedido, Double tot, Double bonif) {
-        String a = "UPDATE ABMPrueba.pedido SET bonificacion = "+bonif+",total="+tot+" where idpedido = " + idPedido + ";";
+        String a = "UPDATE rioplatense.pedido SET bonificacion = "+bonif+",total="+tot+" where idpedido = " + idPedido + ";";
         try {
             PreparedStatement delete = Conexion.getConnection().prepareStatement(a);
             delete.execute();
