@@ -116,15 +116,15 @@ public class Reportes {
         InputStream jasper1 = getClass().getResourceAsStream("/reportes/ReporteTXT.jasper");
         Map parametersMap = new HashMap();
         parametersMap.put("query", "SELECT \n"
-                + "concat(lpad(ped.idpedido,8,0),\n"
+                + "concat(date_format(str_to_date('"+param[0]+"','%d/%m/%Y'),'%d%m%Y'),date_format(str_to_date('"+param[1]+"','%d/%m/%Y'),'%d%m%Y'),lpad(ped.idpedido,8,0),\n"
                 + "lpad(ped.idempleado,6,0),\n"
                 + "date_format((ped.fecha),'%d%m%Y%H%i%s'),\n"
-                + "lpad(cast((ped.total*100) as decimal(11,0)),10,0) \n"
-                + ") res \n"
+                + "lpad(cast((det.cantidad*det.precio*100) as decimal(11,0)),10,0), \n"
+                + "prod.tipo) res \n"
                 + "from\n"
                 + "rioplatense.pedido ped,\n"
-                + "rioplatense.empleado emp\n"
-                + "where \n"
+                + "rioplatense.empleado emp, rioplatense.detalle_pedido det, rioplatense.producto prod\n"
+                + "where ped.idpedido = det.idpedido and det.idproducto = prod.idproducto and\n"
                 + "ped.idempleado = emp.idempleado and str_to_date(ped.fecha,'%Y-%m-%d') between str_to_date('" + param[0] + "','%d/%m/%Y') and str_to_date('" + param[1] + "','%d/%m/%Y') and ped.eliminado=0 and emp.tipo in ("+param[2]+"); \n"
         );
         parametersMap.put("fd", param[0]);
@@ -141,7 +141,7 @@ public class Reportes {
         InputStream jasper1 = getClass().getResourceAsStream("/reportes/ReporteTXTTotal.jasper");
         Map parametersMap = new HashMap();
         parametersMap.put("query", "SELECT \n"
-                + "				concat(\n"
+                + "		   concat(date_format(str_to_date('"+param[0]+"','%d/%m/%Y'),'%d%m%Y'),date_format(str_to_date('"+param[1]+"','%d/%m/%Y'),'%d%m%Y'),\n"
                 + "                lpad(ped.idempleado,6,0),\n"
                 + "                lpad(cast(sum(ped.total*100) as decimal(11,0)),10,0)) \n"
                 + "                res\n"
