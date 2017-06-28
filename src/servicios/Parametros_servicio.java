@@ -68,8 +68,10 @@ public class Parametros_servicio {
         String a = "UPDATE rioplatense.parametros SET valor='"+valor+"' where codigo='"+codigo+"';";
 
         try {
+            Conexion.getConnection().setAutoCommit(false);
             PreparedStatement insert = Conexion.getConnection().prepareStatement(a);
             insert.executeUpdate();
+            Conexion.getConnection().commit();
         } catch (SQLException ex) {
             Logger.getLogger(Pedidos_servicio.class.getName()).log(Level.SEVERE, null, ex);
         }

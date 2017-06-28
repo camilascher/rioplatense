@@ -5,6 +5,7 @@
  */
 package servicios;
 
+import Inicio.Pedidos;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import modelos.Empleado;
 
 /**
@@ -102,7 +104,9 @@ public class Empleados_servicio {
 
         try {
             PreparedStatement insert = Conexion.getConnection().prepareStatement(a);
+            Conexion.getConnection().setAutoCommit(false);
             insert.executeUpdate();
+            Conexion.getConnection().commit();            
         } catch (SQLException ex) {
             Logger.getLogger(Pedidos_servicio.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -112,7 +116,9 @@ public class Empleados_servicio {
         String a = "UPDATE rioplatense.empleado SET eliminado = 1 where idempleado = "+id+";";
         try {
             PreparedStatement insert = Conexion.getConnection().prepareStatement(a);
+            Conexion.getConnection().setAutoCommit(false);
             insert.executeUpdate();
+            Conexion.getConnection().commit();
         } catch (SQLException ex) {
             Logger.getLogger(Pedidos_servicio.class.getName()).log(Level.SEVERE, null, ex);
         }
