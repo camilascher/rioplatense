@@ -95,12 +95,12 @@ public class Empleados_servicio {
         return emp;
     }
 
-    public void guardarEmpleado(Integer id, String nombre, Integer dni, String tarj, Double bonificado, Double bonif_tope, String tipo) {
+    public String guardarEmpleado(Integer id, String nombre, Integer dni, String tarj, Double bonificado, Double bonif_tope, String tipo,String empresa) {
         String tar = null;
         if (tarj != null) {
             tar = "'" + tarj + "'";
         }
-        String a = "INSERT INTO rioplatense.empleado (idempleado, nombre, dni,tarjeta,bonificado, bonif_tope,eliminado,tipo) VALUES (" + id + ",'" + nombre + "'," + dni + ", " + tar + "," + bonificado + "," + bonif_tope + ",0,'"+tipo+"');";
+        String a = "INSERT INTO rioplatense.empleado (idempleado, nombre, dni,tarjeta,bonificado, bonif_tope,eliminado,tipo,idempresa) VALUES (" + id + ",'" + nombre + "'," + dni + ", " + tar + "," + bonificado + "," + bonif_tope + ",0,'"+tipo+"',"+empresa+");";
 
         try {
             PreparedStatement insert = Conexion.getConnection().prepareStatement(a);
@@ -109,7 +109,9 @@ public class Empleados_servicio {
             Conexion.getConnection().commit();            
         } catch (SQLException ex) {
             Logger.getLogger(Pedidos_servicio.class.getName()).log(Level.SEVERE, null, ex);
+            return ex.toString(); //error
         }
+        return ""; //exitoso
     }
     
     public void eliminarEmpleado(Integer id){

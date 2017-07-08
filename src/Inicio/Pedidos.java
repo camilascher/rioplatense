@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.EventObject;
@@ -32,7 +31,6 @@ import javax.imageio.ImageIO;
 import javax.swing.AbstractCellEditor;
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
-import javax.swing.InputVerifier;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -50,15 +48,17 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
+import modelos.ComboItem;
 import modelos.DetallePedido;
 import modelos.Empleado;
+import modelos.Empresa;
 import modelos.Parametros;
 import modelos.Pedido;
 import modelos.Producto;
 import modelos.Usuario;
-import org.eclipse.persistence.jpa.jpql.parser.DateTime;
 import servicios.Conexion;
 import servicios.Empleados_servicio;
+import servicios.Empresas_servicio;
 import servicios.Impresion_servicio;
 import servicios.Parametros_servicio;
 import servicios.Pedidos_servicio;
@@ -111,6 +111,7 @@ public class Pedidos extends javax.swing.JFrame {
         new RequeridoListener(jTextRCEFH);
         new RequeridoListener(jRTXTTFd);
         new RequeridoListener(jRTXTTFh);
+        new RequeridoListener(jTextEmpresaNombre);
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Imagenes/Bridar.png")));
     }
 
@@ -215,6 +216,8 @@ public class Pedidos extends javax.swing.JFrame {
             jButtonCancelarEmpleado = new javax.swing.JButton();
             jLabel32 = new javax.swing.JLabel();
             jComboEmpleadoTipo = new javax.swing.JComboBox<>();
+            jLabel37 = new javax.swing.JLabel();
+            jComboEmpleadoEmpresa = new javax.swing.JComboBox<>();
             jPanelReporteVentasProd = new javax.swing.JPanel();
             jRVPTextFechaDesde = new javax.swing.JFormattedTextField();
             jLabel20 = new javax.swing.JLabel();
@@ -267,12 +270,17 @@ public class Pedidos extends javax.swing.JFrame {
                 jButtonGenerarRTXTTotal = new javax.swing.JButton();
                 jLabel36 = new javax.swing.JLabel();
                 jRTXTTCE = new javax.swing.JComboBox<>();
+                jPanelEmpresa = new javax.swing.JPanel();
+                jTextEmpresaNombre = new javax.swing.JTextField();
+                jLabel38 = new javax.swing.JLabel();
+                jButtonEmpresaCrear = new javax.swing.JButton();
                 jMenuBar1 = new javax.swing.JMenuBar();
                 jMenuPedidos = new javax.swing.JMenu();
                 jMenu2 = new javax.swing.JMenu();
                 jMenuEmpleados = new javax.swing.JMenu();
                 jMenuEmpleadoNuevo = new javax.swing.JMenuItem();
                 jMenuEmpleadoEliminar = new javax.swing.JMenuItem();
+                jMenuEmpresa = new javax.swing.JMenuItem();
                 jMenuReportes = new javax.swing.JMenu();
                 jMenuRVP = new javax.swing.JMenuItem();
                 jMenuRVD = new javax.swing.JMenuItem();
@@ -722,10 +730,19 @@ public class Pedidos extends javax.swing.JFrame {
 
                 jLabel32.setText("Tipo de empleado");
 
-                jComboEmpleadoTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Quincenal", "Mensual" }));
+                jComboEmpleadoTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new ComboItem[] {}));
                 jComboEmpleadoTipo.addActionListener(new java.awt.event.ActionListener() {
                     public void actionPerformed(java.awt.event.ActionEvent evt) {
                         jComboEmpleadoTipoActionPerformed(evt);
+                    }
+                });
+
+                jLabel37.setText("Empresa");
+
+                jComboEmpleadoEmpresa.setModel(new javax.swing.DefaultComboBoxModel<>(new ComboItem[] {}));
+                jComboEmpleadoEmpresa.addActionListener(new java.awt.event.ActionListener() {
+                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                        jComboEmpleadoEmpresaActionPerformed(evt);
                     }
                 });
 
@@ -736,7 +753,7 @@ public class Pedidos extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelEmpleadosLayout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButtonCrearEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(33, 33, 33)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButtonCancelarEmpleado)
                         .addContainerGap())
                     .addGroup(jPanelEmpleadosLayout.createSequentialGroup()
@@ -752,7 +769,11 @@ public class Pedidos extends javax.swing.JFrame {
                         .addGap(45, 45, 45)
                         .addGroup(jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanelEmpleadosLayout.createSequentialGroup()
-                                .addComponent(jComboEmpleadoTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jComboEmpleadoTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(58, 58, 58)
+                                .addComponent(jLabel37)
+                                .addGap(45, 45, 45)
+                                .addComponent(jComboEmpleadoEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(jPanelEmpleadosLayout.createSequentialGroup()
                                 .addGroup(jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -800,9 +821,13 @@ public class Pedidos extends javax.swing.JFrame {
                             .addComponent(jTextEmpleadoBon, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel18))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel32)
-                            .addComponent(jComboEmpleadoTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel37)
+                                .addComponent(jComboEmpleadoEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel32)
+                                .addComponent(jComboEmpleadoTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(188, 188, 188)
                         .addGroup(jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButtonCrearEmpleado)
@@ -1288,6 +1313,53 @@ public class Pedidos extends javax.swing.JFrame {
 
             getContentPane().add(jPanelReporteTXTTotal, "card7");
 
+            jPanelEmpresa.setBorder(javax.swing.BorderFactory.createTitledBorder("Nueva Empresa"));
+
+            jTextEmpresaNombre.setPreferredSize(new java.awt.Dimension(6, 27));
+            jTextEmpresaNombre.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jTextEmpresaNombreActionPerformed(evt);
+                }
+            });
+
+            jLabel38.setText("Nombre de la empresa");
+
+            jButtonEmpresaCrear.setText("Crear");
+            jButtonEmpresaCrear.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jButtonEmpresaCrearActionPerformed(evt);
+                }
+            });
+
+            javax.swing.GroupLayout jPanelEmpresaLayout = new javax.swing.GroupLayout(jPanelEmpresa);
+            jPanelEmpresa.setLayout(jPanelEmpresaLayout);
+            jPanelEmpresaLayout.setHorizontalGroup(
+                jPanelEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelEmpresaLayout.createSequentialGroup()
+                    .addGap(25, 25, 25)
+                    .addComponent(jLabel38)
+                    .addGap(26, 26, 26)
+                    .addComponent(jTextEmpresaNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(395, Short.MAX_VALUE))
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelEmpresaLayout.createSequentialGroup()
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonEmpresaCrear)
+                    .addGap(101, 101, 101))
+            );
+            jPanelEmpresaLayout.setVerticalGroup(
+                jPanelEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelEmpresaLayout.createSequentialGroup()
+                    .addGap(21, 21, 21)
+                    .addGroup(jPanelEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jTextEmpresaNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel38))
+                    .addGap(30, 30, 30)
+                    .addComponent(jButtonEmpresaCrear)
+                    .addContainerGap(431, Short.MAX_VALUE))
+            );
+
+            getContentPane().add(jPanelEmpresa, "card12");
+
             jMenuPedidos.setBorder(javax.swing.BorderFactory.createEtchedBorder());
             jMenuPedidos.setForeground(new java.awt.Color(153, 153, 153));
             jMenuPedidos.setText("Pedidos");
@@ -1339,6 +1411,22 @@ public class Pedidos extends javax.swing.JFrame {
                 }
             });
             jMenuEmpleados.add(jMenuEmpleadoEliminar);
+
+            jMenuEmpresa.setText("Nueva empresa");
+            jMenuEmpresa.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    jMenuEmpresaMouseClicked(evt);
+                }
+                public void mousePressed(java.awt.event.MouseEvent evt) {
+                    jMenuEmpresaMousePressed(evt);
+                }
+            });
+            jMenuEmpresa.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jMenuEmpresaActionPerformed(evt);
+                }
+            });
+            jMenuEmpleados.add(jMenuEmpresa);
 
             jMenuBar1.add(jMenuEmpleados);
 
@@ -1627,15 +1715,22 @@ public class Pedidos extends javax.swing.JFrame {
                     tar = jTextEmpleadoTarjeta.getText();
                 }
                 String tipo = null;
-                if(jComboEmpleadoTipo.getSelectedItem().toString() == "Quincenal"){
-                    tipo = "Q";
+                Object item = jComboEmpleadoTipo.getSelectedItem();
+                tipo = ((ComboItem) item).getValue();
+                String empresa = null;
+                Object emp = jComboEmpleadoEmpresa.getSelectedItem();
+                empresa = ((ComboItem) emp).getValue();
+                if (empresa.isEmpty()) {
+                    empresa = "null";
                 }
-                else{
-                    tipo = "M";
+                String rdo = Empleados_servicio.getInstance().guardarEmpleado(Integer.valueOf(jTextEmpleadoId.getText()), jTextEmpleadoNombre.getText(), Integer.valueOf(jTextEmpleadoDNI.getText()), tar, Double.valueOf(jTextEmpleadoBonPorc.getText()), Double.valueOf(jTextEmpleadoBon.getText()), tipo, empresa);
+                if (rdo.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "El empleado fue creado correctamente", "Empleados", JOptionPane.INFORMATION_MESSAGE);
+                    limpiarPantallaEmpleado();
+                } else {
+                    JOptionPane.showMessageDialog(this, "No se ha podido crear el empleado:" + rdo, "Error", JOptionPane.ERROR_MESSAGE);
                 }
-                Empleados_servicio.getInstance().guardarEmpleado(Integer.valueOf(jTextEmpleadoId.getText()), jTextEmpleadoNombre.getText(), Integer.valueOf(jTextEmpleadoDNI.getText()), tar, Double.valueOf(jTextEmpleadoBonPorc.getText()), Double.valueOf(jTextEmpleadoBon.getText()),tipo);
-                JOptionPane.showMessageDialog(this, "El empleado fue creado correctamente", "Empleados", JOptionPane.INFORMATION_MESSAGE);
-                limpiarPantallaEmpleado();
+
             } else {
                 JOptionPane.showMessageDialog(this, "Verifique los datos ingresados", "Error", JOptionPane.WARNING_MESSAGE);
             }
@@ -1724,11 +1819,17 @@ public class Pedidos extends javax.swing.JFrame {
             String[] param = new String[3];
             param[0] = jRTXTFd.getText();
             param[1] = jRTXTFh.getText();
-            switch(jRTXTCE.getSelectedItem().toString()){
-                case "Jornal": param[2]="'J'"; break;
-                case "Mensual": param[2]="'M'"; break;
-                default: param[2]="'M','J'"; break;
-            }   
+            switch (jRTXTCE.getSelectedItem().toString()) {
+                case "Jornal":
+                    param[2] = "'J'";
+                    break;
+                case "Mensual":
+                    param[2] = "'M'";
+                    break;
+                default:
+                    param[2] = "'M','J'";
+                    break;
+            }
             new Reportes("ReporteTXT", param);
         }
     }//GEN-LAST:event_jButtonGenerarRTXTActionPerformed
@@ -1937,6 +2038,19 @@ public class Pedidos extends javax.swing.JFrame {
 
     private void jMenuEmpleadoNuevoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuEmpleadoNuevoMousePressed
         mostrarPanel(jPanelEmpleados, jMenuEmpleados);
+        jComboEmpleadoEmpresa.setEnabled(false);
+        if (jComboEmpleadoTipo.getItemCount() == 0) { //inicializo sólo si no tienen valores
+            jComboEmpleadoTipo.addItem(new ComboItem("J", "Jornal"));
+            jComboEmpleadoTipo.addItem(new ComboItem("M", "Mensual"));
+            jComboEmpleadoTipo.addItem(new ComboItem("X", "Externo"));
+        }
+        jComboEmpleadoEmpresa.removeAllItems(); //lo borro y lo vuelvo a generar por si hay nuevas empresas
+        List<Empresa> empresas = Empresas_servicio.getInstance().recuperarTodas();
+        for (Empresa empr : empresas) {
+            jComboEmpleadoEmpresa.addItem(new ComboItem(empr.getIdEmpresa().toString(), empr.getNombreEmpresa()));
+        }
+        jComboEmpleadoEmpresa.insertItemAt(new ComboItem("", ""), 0);
+        jComboEmpleadoEmpresa.setSelectedIndex(0);
     }//GEN-LAST:event_jMenuEmpleadoNuevoMousePressed
 
     private void jMenuEmpleadoEliminarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuEmpleadoEliminarMousePressed
@@ -2010,7 +2124,12 @@ public class Pedidos extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextEmpIdElimFocusGained
 
     private void jComboEmpleadoTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboEmpleadoTipoActionPerformed
-        // TODO add your handling code here:
+        Object item = jComboEmpleadoTipo.getSelectedItem();
+        if (((ComboItem) item).getValue() == "X") { //Es empleado externo
+            jComboEmpleadoEmpresa.setEnabled(true);
+        } else {
+            jComboEmpleadoEmpresa.setEnabled(false);
+        }
     }//GEN-LAST:event_jComboEmpleadoTipoActionPerformed
 
     private void jRTXTCEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRTXTCEActionPerformed
@@ -2022,11 +2141,17 @@ public class Pedidos extends javax.swing.JFrame {
             String[] param = new String[3];
             param[0] = jRTXTTFd.getText();
             param[1] = jRTXTTFh.getText();
-            switch(jRTXTTCE.getSelectedItem().toString()){
-                case "Jornal": param[2]="'J'"; break;
-                case "Mensual": param[2]="'M'"; break;
-                default: param[2]="'M','J'"; break;
-            }   
+            switch (jRTXTTCE.getSelectedItem().toString()) {
+                case "Jornal":
+                    param[2] = "'J'";
+                    break;
+                case "Mensual":
+                    param[2] = "'M'";
+                    break;
+                default:
+                    param[2] = "'M','J'";
+                    break;
+            }
             new Reportes("ReporteTXTTotal", param);
         }
     }//GEN-LAST:event_jButtonGenerarRTXTTotalActionPerformed
@@ -2036,8 +2161,43 @@ public class Pedidos extends javax.swing.JFrame {
     }//GEN-LAST:event_jRTXTTCEActionPerformed
 
     private void jMenuRTXTTotalMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuRTXTTotalMousePressed
-        mostrarPanel(jPanelReporteTXTTotal,jMenuReportes);
+        mostrarPanel(jPanelReporteTXTTotal, jMenuReportes);
     }//GEN-LAST:event_jMenuRTXTTotalMousePressed
+
+    private void jComboEmpleadoEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboEmpleadoEmpresaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboEmpleadoEmpresaActionPerformed
+
+    private void jTextEmpresaNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextEmpresaNombreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextEmpresaNombreActionPerformed
+
+    private void jButtonEmpresaCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEmpresaCrearActionPerformed
+        if (isAlphaNumericSpace(jTextEmpresaNombre.getText())) {
+            if ("OK".equals(Empresas_servicio.getInstance().crearEmpresa(jTextEmpresaNombre.getText()))) { //se creó correctamente
+                JOptionPane.showMessageDialog(Pedidos.this, "La empresa se ha creado exitosamente");
+                jTextEmpresaNombre.setText("");
+            } else //hubo algún error en el insert
+            {
+                JOptionPane.showMessageDialog(Pedidos.this, "No se puede dar de alta la empresa, por favor revise los datos ingresados", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(Pedidos.this, "No se puede dar de alta la empresa, por favor revise los datos ingresados", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButtonEmpresaCrearActionPerformed
+
+    private void jMenuEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuEmpresaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuEmpresaActionPerformed
+
+    private void jMenuEmpresaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuEmpresaMouseClicked
+
+    }//GEN-LAST:event_jMenuEmpresaMouseClicked
+
+    private void jMenuEmpresaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuEmpresaMousePressed
+        mostrarPanel(jPanelEmpresa, jMenuEmpleados);
+    }//GEN-LAST:event_jMenuEmpresaMousePressed
 
     private void cargarComboUsuario(JComboBox combo) {
         List<Usuario> usr = null;
@@ -2064,6 +2224,10 @@ public class Pedidos extends javax.swing.JFrame {
         return str.matches("^[a-zA-Z0-9]*$");
     }
     
+    public static boolean isAlphaNumericSpace(String str) {
+        return str.matches("^[a-zA-Z0-9 ]*$");
+    }
+
     public static boolean isAlphaNumericComma(String str) {
         return str.matches("^[a-zA-Z0-9,. ]*$");
     }
@@ -2102,6 +2266,7 @@ public class Pedidos extends javax.swing.JFrame {
         jPanelEmpleadosEliminar.setVisible(false);
         jPanelReporteConsumosEmpleado.setVisible(false);
         jPanelReporteTXTTotal.setVisible(false);
+        jPanelEmpresa.setVisible(false);
         jMenuEmpleados.setForeground(Color.BLACK);
         jMenuPedidos.setForeground(Color.BLACK);
         jMenuReportes.setForeground(Color.BLACK);
@@ -2540,6 +2705,7 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JButton jButtonDeleteItem;
     private javax.swing.JButton jButtonEmpElim;
     private javax.swing.JButton jButtonEmpElimCanc;
+    private javax.swing.JButton jButtonEmpresaCrear;
     private javax.swing.JButton jButtonGenerarRTXT;
     private javax.swing.JButton jButtonGenerarRTXTTotal;
     private javax.swing.JButton jButtonGenerarRVD;
@@ -2549,7 +2715,8 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JButton jButtonParamGuardar;
     private javax.swing.JButton jButtonRCEGen;
     private javax.swing.JComboBox<String> jComboEmpleado;
-    private javax.swing.JComboBox<String> jComboEmpleadoTipo;
+    private javax.swing.JComboBox<ComboItem> jComboEmpleadoEmpresa;
+    private javax.swing.JComboBox<ComboItem> jComboEmpleadoTipo;
     private javax.swing.JComboBox<String> jComboRCEEmp;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -2581,6 +2748,8 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel37;
+    private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -2604,6 +2773,7 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuEmpleadoEliminar;
     private javax.swing.JMenuItem jMenuEmpleadoNuevo;
     private javax.swing.JMenu jMenuEmpleados;
+    private javax.swing.JMenuItem jMenuEmpresa;
     private javax.swing.JMenu jMenuParam;
     private javax.swing.JMenu jMenuPedidos;
     private javax.swing.JMenuItem jMenuRCE;
@@ -2616,6 +2786,7 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelBusqPed;
     private javax.swing.JPanel jPanelEmpleados;
     private javax.swing.JPanel jPanelEmpleadosEliminar;
+    private javax.swing.JPanel jPanelEmpresa;
     private javax.swing.JPanel jPanelModifPed;
     private javax.swing.JPanel jPanelParametros;
     private javax.swing.JPanel jPanelReporteConsumosEmpleado;
@@ -2651,6 +2822,7 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JTextField jTextEmpleadoLeg;
     private javax.swing.JTextField jTextEmpleadoNombre;
     private javax.swing.JTextField jTextEmpleadoTarjeta;
+    private javax.swing.JTextField jTextEmpresaNombre;
     private javax.swing.JFormattedTextField jTextFecha;
     private javax.swing.JTextField jTextNroPedido;
     private javax.swing.JTextField jTextRCEFD;
