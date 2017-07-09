@@ -44,6 +44,9 @@ public class Reportes {
             case "ReporteTXTTotal":
                 crearReporteTXTTotal(param);
                 break;
+            case "ReporteConsumosEmpleadoExterno":
+                crearReporteConsumosEmpleadoExterno(param);
+                break;
             default:
                 break;
         }
@@ -182,13 +185,57 @@ public class Reportes {
                 + "and ped.idempleado = emp.idempleado\n"
                 + "and det.idproducto = prod.idproducto\n"
                 + "and ped.eliminado = 0";
-        if (param[2] != null) {
+        if (param[2] != null) { //si se eligió algún empleado
             query += " and emp.idempleado=" + param[2];
             parametersMap.put("emp", param[3]);
         } else {
             parametersMap.put("emp", "Todos");
         }
+        if (!param[4].isEmpty()) { //si se eligió turno
+            query += " and ped.usuarioid_creacion=" + param[4];
+            parametersMap.put("turno", param[5]);
+        } else {
+            parametersMap.put("turno", "Todos");
+        }
         query += " and str_to_date(ped.fecha,'%Y-%m-%d') between str_to_date('" + param[0] + "','%d/%m/%Y') and str_to_date('" + param[1] + "','%d/%m/%Y');";
+
+        parametersMap.put("query", query);
+        parametersMap.put("fd", param[0]);
+        parametersMap.put("fh", param[1]);
+        try {
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasper1, parametersMap, Conexion.getConnection());
+            JasperViewer.viewReport(jasperPrint, false);
+        } catch (Exception ex) {
+            Logger.getLogger(Reportes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void crearReporteConsumosEmpleadoExterno(String[] param){
+        InputStream jasper1 = getClass().getResourceAsStream("/reportes/ReporteConsumosEmpleadoExterno.jasper");
+        Map parametersMap = new HashMap();
+        String query = "SELECT \n"
+                + "emp.nombre Empleado,\n"
+                + "ped.idpedido TicketNro,\n"
+                + "ped.fecha Fecha,\n"
+                + "prod.descripcion Producto,\n"
+                + "det.cantidad Cantidad,\n"
+                + "det.precio Precio,\n"
+                + "det.cantidad * det.precio Total,\n"
+                + "empr.nombre Empresa \n"
+                + "FROM\n"
+                + "rioplatense.pedido ped,\n"
+                + "rioplatense.detalle_pedido det,\n"
+                + "rioplatense.empleado emp,\n"
+                + "rioplatense.producto prod,\n"
+                + "rioplatense.empresa empr \n"
+                + "WHERE\n"
+                + "ped.idpedido = det.idpedido\n"
+                + "and ped.idempleado = emp.idempleado\n"
+                + "and det.idproducto = prod.idproducto\n"
+                + "and emp.idempresa = empr.idempresa \n"
+                + "and ped.eliminado = 0 \n"
+                + "and emp.tipo = 'X' \n";//sólo empleados externos
+        query += " and str_to_date(ped.fecha,'%Y-%m-%d') between str_to_date('" + param[0] + "','%d/%m/%Y') and str_to_date('" + param[1] + "','%d/%m/%Y')  ORDER BY Empresa,Empleado;";
 
         parametersMap.put("query", query);
         parametersMap.put("fd", param[0]);
