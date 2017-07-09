@@ -1994,7 +1994,13 @@ public class Pedidos extends javax.swing.JFrame {
                     Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
-                Pedidos_servicio.getInstance().guardarPedidoCab(idPedido, emp.getIdEmpleado().toString(), jLabelBonifMonto.getText(), jLabelTotal.getText(), 0, Usuarios_servicio.getInstance().getUsuarioLogeado());
+                try {
+                    Pedidos_servicio.getInstance().guardarPedidoCab(idPedido, emp.getIdEmpleado().toString(), jLabelBonifMonto.getText(), jLabelTotal.getText(), 0, Usuarios_servicio.getInstance().getUsuarioLogeado());
+                } catch (SQLException ex) {
+                    Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(this, "Error al guardar el pedido", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 
             } else {
                 /**
@@ -2010,13 +2016,20 @@ public class Pedidos extends javax.swing.JFrame {
                     } catch (SQLException ex) {
                         Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    Pedidos_servicio.getInstance().guardarPedidoDet(idPedido, prod.getIdProducto().toString(), prod.getPrecio().toString(), (String) jTableEditPed.getValueAt(i, 3).toString());
+                    try {
+                        Pedidos_servicio.getInstance().guardarPedidoDet(idPedido, prod.getIdProducto().toString(), prod.getPrecio().toString(), (String) jTableEditPed.getValueAt(i, 3).toString());
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
+                        JOptionPane.showMessageDialog(this, "Error al guardar el pedido", "ERROR", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
                 }
             }
             try {
                 Conexion.getConnection().commit();
             } catch (SQLException ex) {
                 Logger.getLogger(Pedidos.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, "Error al guardar el pedido", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
             Pedido pedido;
             try {

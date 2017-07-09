@@ -83,25 +83,16 @@ public class Pedidos_servicio {
         return ped;
     }
 
-    public void guardarPedidoCab(String idPedido, String idEmpleado, String bonificacion, String total, Integer eliminado, String idUsuario) {
+    public void guardarPedidoCab(String idPedido, String idEmpleado, String bonificacion, String total, Integer eliminado, String idUsuario) throws SQLException {
         String a = "INSERT INTO rioplatense.pedido (idpedido, idempleado, fecha,bonificacion,total,eliminado, usuarioid_creacion) VALUES (" + idPedido + "," + idEmpleado + ", sysdate(), " + bonificacion + "," + total + "," + eliminado + "," + idUsuario + ");";
-
-        try {
             PreparedStatement insert = Conexion.getConnection().prepareStatement(a);
             insert.executeUpdate();
-        } catch (SQLException ex) {
-            Logger.getLogger(Pedidos_servicio.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
-    public void guardarPedidoDet(String idPedido, String idProducto, String precio, String cant) {
+    public void guardarPedidoDet(String idPedido, String idProducto, String precio, String cant) throws SQLException {
         String a = "INSERT INTO rioplatense.detalle_pedido (idpedido,idproducto,precio,cantidad) VALUES (" + idPedido + "," + idProducto + "," + precio + "," + cant + ");";
-        try {
             PreparedStatement insert = Conexion.getConnection().prepareStatement(a);
             insert.executeUpdate();
-        } catch (SQLException ex) {
-            Logger.getLogger(Pedidos_servicio.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
     public void borrarPedidoDet(String idPedido) {
