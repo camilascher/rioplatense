@@ -2395,6 +2395,7 @@ public class Pedidos extends javax.swing.JFrame {
         jPanelEmpleadosEliminar.setVisible(false);
         jPanelReporteConsumosEmpleado.setVisible(false);
         jPanelReporteTXTTotal.setVisible(false);
+        jPanelReporteExternos.setVisible(false);
         jPanelEmpresa.setVisible(false);
         jMenuEmpleados.setForeground(Color.BLACK);
         jMenuPedidos.setForeground(Color.BLACK);
